@@ -9,5 +9,6 @@ module.exports = {
   "list": require("./src/list"),
   "codeblock": require("./src/codeblock"),
   "webresource": require("./src/web_resource"),
-  "image": require("./src/image")
+  "image": require("./src/image"),
+  "richparagraph": require("./src/richparagraph")
 };
