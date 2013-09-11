@@ -1,0 +1,16 @@
+{
+  "name":"substance-nodes",
+  "private":true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/substance/nodes.git"
+  },
+  "dependencies":{
+    "underscore":"",
+    "substance-document":"",
+    "substance-util":"",
+    "substance-application":"",
+    "substance-operator":""
+  },
+  "version":"0.1.0"
+}
