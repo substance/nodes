@@ -10,7 +10,7 @@ var RichParagraph = function(node, document) {
 };
 
 RichParagraph.type = {
-  "id": "list",
+  "id": "richparagraph",
   "parent": "content",
   "properties": {
     "children": ["array", "paragraph"],
