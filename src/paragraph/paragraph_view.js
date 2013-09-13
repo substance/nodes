@@ -1,19 +1,24 @@
 "use strict";
 
-var TextView = require('../text/text_view');
+var CompositeView = require("../composite/composite_view");
 
-// Substance.Paragraph.View
+// Substance.Image.View
 // ==========================================================================
 
-var ParagraphView = function(node) {
-  TextView.call(this, node);
-
-  this.$el.addClass('content-node paragraph');
+var ParagraphView = function(node, viewFactory) {
+  CompositeView.call(this, node, viewFactory);
 };
 
-ParagraphView.Prototype = function() {};
+ParagraphView.Prototype = function() {
 
-ParagraphView.Prototype.prototype = TextView.prototype;
+  this.onNodeUpdate = function(op) {
+    if (op.path[0] === this.node.id && op.path[1] === "children") {
+      this.render();
+    }
+  };
+};
+
+ParagraphView.Prototype.prototype = CompositeView.prototype;
 ParagraphView.prototype = new ParagraphView.Prototype();
 
 module.exports = ParagraphView;
