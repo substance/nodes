@@ -21,10 +21,25 @@ FormulaView.Prototype = function() {
 
     // Render the formula
     // --------
-    if (this.node.format === "mathml") {
+    var format = this.node.format;
+    switch (format) {
+    case "mathml":
       this.$el.html(this.node.data);
-    } else if (this.node.format === "image") {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.el]);
+      break;
+    case "image":
       this.$el.append('<img src="'+this.node.url+'"/>');
+      break;
+    case "latex":
+      if (this.node.inline) {
+        this.$el.html("\\("+this.node.data+"\\)");
+      } else {
+        this.$el.html("\\["+this.node.data+"\\]");
+      }
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.el]);
+      break;
+    default:
+      console.error("Unknown formula format:", format);
     }
 
     // Add label to block formula
@@ -32,6 +47,7 @@ FormulaView.Prototype = function() {
     if (this.node.label) {
       this.$el.append($('<div class="label">').html(this.node.label));
     }
+
 
     return this;
   };

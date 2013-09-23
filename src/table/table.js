@@ -13,7 +13,9 @@ Table.type = {
   "parent": "content",
   "properties": {
     "source_id": "string",
-    "items": ["array", "array", "content"]
+    "headers": ["array", "content"],
+    "cells": ["array", "array", "content"],
+    "caption": "content"
   }
 };
 
@@ -38,7 +40,8 @@ Table.description = {
 Table.example = {
   "type": "list",
   "id": "list_1",
-  "items ": [
+  "headers": ["text_1", "text_2"],
+  "cells": [
     ["cell_1_1", "cell_1_2"],
     ["cell_2_1", "cell_2_2"]
   ]
@@ -48,26 +51,43 @@ Table.Prototype = function() {
 
   this.getLength = function() {
     var l = 0;
-    for (var row = 0; row < this.properties.items.length; row++) {
-      var tableRow = this.properties.items[row];
+    l += this.properties.headers.length;
+    for (var row = 0; row < this.properties.cells.length; row++) {
+      var tableRow = this.properties.cells[row];
       l += tableRow.length;
     }
+    if (this.properties.caption) {
+      l += 1;
+    }
+
     return l;
   };
 
   this.getNodes = function() {
     var ids = [];
-    for (var row = 0; row < this.properties.items.length; row++) {
-      var tableRow = this.properties.items[row];
+    for (var col = 0; col < this.properties.headers.length; col++) {
+      ids.push(this.properties.headers[col]);
+    }
+    for (var row = 0; row < this.properties.cells.length; row++) {
+      var tableRow = this.properties.cells[row];
       ids = ids.concat(tableRow);
+    }
+    if (this.properties.caption) {
+      ids.push(this.properties.caption);
     }
     return ids;
   };
 
-  this.getItems = function() {
+  this.getHeaders = function() {
+    return _.map(this.properties.headers, function(id) {
+      return this.document.get(id);
+    }, this);
+  };
+
+  this.getCells = function() {
     var children = [];
-    for (var i = 0; i < this.properties.items.length; i++) {
-      var rowIds = this.properties.items[i];
+    for (var i = 0; i < this.properties.cells.length; i++) {
+      var rowIds = this.properties.cells[i];
       var row = [];
       for (var j = 0; j < rowIds.length; j++) {
         row.push(this.document.get(rowIds[j]));
@@ -76,6 +96,14 @@ Table.Prototype = function() {
     }
     return children;
   };
+
+  this.getCaption = function() {
+    var caption;
+    if (this.properties.caption) {
+      caption = this.document.get(this.properties.caption);
+    }
+    return caption;
+  }
 
   this.getChangePosition = function(/*op*/) {
     // TODO: map to the corresponding cell
@@ -100,6 +128,6 @@ Table.Prototype.prototype = Composite.prototype;
 Table.prototype = new Table.Prototype();
 Table.prototype.constructor = Table;
 
-DocumentNode.defineProperties(Table.prototype, ["items"]);
+DocumentNode.defineProperties(Table.prototype, ["headers", "cells", "caption"]);
 
 module.exports = Table;
