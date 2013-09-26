@@ -1,6 +1,7 @@
 "use strict";
 
 var CompositeView = require("../composite/composite_view");
+var _ = require("underscore");
 
 // TableView
 // =========
