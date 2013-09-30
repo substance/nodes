@@ -11,5 +11,6 @@ module.exports = {
   "webresource": require("./src/web_resource"),
   "image": require("./src/image"),
   "formula": require("./src/formula"),
-  "table": require("./src/table")
+  "table": require("./src/table"),
+  "figure": require("./src/figure")
 };
