@@ -39,8 +39,8 @@ Table.description = {
 //
 
 Table.example = {
-  "type": "list",
-  "id": "list_1",
+  "type": "table",
+  "id": "table_1",
   "headers": ["text_1", "text_2"],
   "cells": [
     ["cell_1_1", "cell_1_2"],
@@ -104,7 +104,7 @@ Table.Prototype = function() {
       caption = this.document.get(this.properties.caption);
     }
     return caption;
-  }
+  };
 
   this.getChangePosition = function(/*op*/) {
     // TODO: map to the corresponding cell
@@ -128,6 +128,65 @@ Table.Prototype = function() {
 Table.Prototype.prototype = Composite.prototype;
 Table.prototype = new Table.Prototype();
 Table.prototype.constructor = Table;
+
+Table.create = function(data) {
+ var result = {};
+
+  var tableId = data.id;
+  var table = {
+    id: tableId,
+    type: "table",
+    headers: [],
+    cells: []
+  };
+
+  var id, node;
+  if (data.headers) {
+    for (var i = 0; i < data.headers.length; i++) {
+      var h = data.headers[i];
+      id = "th_" + i + "_" + tableId;
+      node = {
+        id: id,
+        type: "text",
+        content: h
+      };
+      result[id] = node;
+      table.headers.push(id);
+    }
+  }
+
+  for (var row = 0; row < data.cells.length; row++) {
+    var rowData = data.cells[row];
+    var tableRow = [];
+    for (var col = 0; col < rowData.length; col++) {
+      var cell = rowData[col];
+      id = "td_" + "_" + row + "_" + col + "_" + tableId;
+      node = {
+        id: id,
+        type: "text",
+        content: cell
+      };
+      result[id] = node;
+      tableRow.push(id);
+    }
+    table.cells.push(tableRow);
+  }
+
+  if (data.caption) {
+    id = "caption_"+ tableId;
+    node = {
+      id: id,
+      type: "text",
+      content: data.caption
+    };
+    result[id] = node;
+    table.caption = id;
+  }
+
+  result[table.id] = table;
+
+  return result;
+};
 
 DocumentNode.defineProperties(Table.prototype, ["headers", "cells", "caption"]);
 
