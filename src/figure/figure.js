@@ -55,7 +55,7 @@ Figure.create = function(data) {
   var figId = data.id;
   var figure = {
     id: figId,
-    type: "text",
+    type: "figure",
     url: data.url
   };
 
