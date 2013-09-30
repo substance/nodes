@@ -9,7 +9,6 @@ var Formula = function(node) {
   Node.call(this, node);
 };
 
-
 // Type definition
 // -----------------
 //

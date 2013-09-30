@@ -17,15 +17,18 @@ var FormulaView = function(node) {
 
 FormulaView.Prototype = function() {
 
+  // Render the formula
+  // --------
+    
   this.render = function() {
 
-    // Render the formula
-    // --------
     var format = this.node.format;
     switch (format) {
     case "mathml":
       this.$el.html(this.node.data);
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.el]);
+
+      // This makes the UI freeze when many formulas are in the document.
+      // MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.el]);
       break;
     case "image":
       this.$el.append('<img src="'+this.node.url+'"/>');
@@ -36,7 +39,9 @@ FormulaView.Prototype = function() {
       } else {
         this.$el.html("\\["+this.node.data+"\\]");
       }
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.el]);
+
+      // This makes the UI freeze when many formulas are in the document.
+      // MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.el]);
       break;
     default:
       console.error("Unknown formula format:", format);
