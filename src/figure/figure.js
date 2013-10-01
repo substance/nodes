@@ -10,6 +10,7 @@ Figure.type = {
   "parent": "content",
   "properties": {
     "url": "string",
+    "label": "string",
     "caption": "paragraph"
   }
 };
@@ -56,6 +57,7 @@ Figure.create = function(data) {
   var figure = {
     id: figId,
     type: "figure",
+    label: data.label,
     url: data.url
   };
 
@@ -75,5 +77,12 @@ Figure.create = function(data) {
 };
 
 Document.Node.defineProperties(Figure.prototype, ["url", "caption"]);
+
+Object.defineProperties(Figure.prototype, {
+  // Used as a resource header
+  header: {
+    get: function() { return this.properties.label; }
+  }
+});
 
 module.exports = Figure;
