@@ -13,5 +13,6 @@ module.exports = {
   "formula": require("./src/formula"),
   "table": require("./src/table"),
   "figure": require("./src/figure"),
-  "collaborator": require("./src/collaborator")
+  "collaborator": require("./src/collaborator"),
+  "cover": require("./src/cover")
 };
