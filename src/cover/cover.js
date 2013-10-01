@@ -18,8 +18,7 @@ Cover.type = {
   "parent": "content",
   "properties": {
     "source_id": "string",
-    "authors": ["array", "paragraph"]
-    // No properties as they are all derived from the document node
+    "authors": ["array", "person_reference"]
   }
 };
 
@@ -34,7 +33,7 @@ Cover.description = {
     "Virtual view on the title and authors of the paper."
   ],
   "properties": {
-    "authors": "A paragraph that has the authors names plus references to the person cards"
+    "authors": "An array of references to collaborators"
   }
 };
 
@@ -44,17 +43,16 @@ Cover.description = {
 
 Cover.example = {
   "id": "cover",
-  "type": "cover"
+  "type": "cover",
+  "authors": ["collaborator_reference_1", "collaborator_reference_2"]
 };
 
 Cover.Prototype = function() {
-
-  this.getAuthors = function() {
-    return _.map(this.properties.authors, function(paragraphId) {
-      return this.document.get(paragraphId);
+  this.getAuthorRefs = function() {
+    return _.map(this.properties.authors, function(id) {
+      return this.document.get(id);
     }, this);
   };
-
 };
 
 Cover.Prototype.prototype = DocumentNode.prototype;
@@ -73,7 +71,7 @@ Object.defineProperties(Cover.prototype, {
   authors: {
     // Expand author id's to corresponding person nodes
     get: function() {
-      return this.document.authors;
+      return this.properties.authors;
     }
   }
 });
