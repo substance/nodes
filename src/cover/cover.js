@@ -18,7 +18,8 @@ Cover.type = {
   "parent": "content",
   "properties": {
     "source_id": "string",
-    "authors": ["array", "person_reference"]
+    "authors": ["array", "person_reference"],
+    "image": "string"
   }
 };
 
@@ -72,6 +73,11 @@ Object.defineProperties(Cover.prototype, {
     // Expand author id's to corresponding person nodes
     get: function() {
       return this.properties.authors;
+    }
+  },
+  image: {
+    get: function() {
+      return this.properties.image;
     }
   }
 });

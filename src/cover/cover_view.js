@@ -23,12 +23,10 @@ CoverView.Prototype = function() {
 
     this.content.appendChild($$('.title', {text: node.title }));
 
-    var authorsEl = document.createElement("DIV");
-    authorsEl.classList.add("authors");
-
-    // dynamically create a reference to the
     var authorRefs = this.node.getAuthorRefs();
     if (authorRefs) {
+      var authorsEl = document.createElement("DIV");
+      authorsEl.classList.add("authors");
       var authorRefEl;
       for (var i = 0; i < authorRefs.length; i++) {
         var ref = authorRefs[i];
@@ -41,6 +39,10 @@ CoverView.Prototype = function() {
         authorsEl.appendChild(authorRefEl);
       }
       this.content.appendChild(authorsEl);
+    }
+
+    if (this.node.image) {
+      this.el.style.backgroundImage = "url('"+this.node.image+"')"
     }
 
     return this;
