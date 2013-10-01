@@ -13,6 +13,7 @@ Table.type = {
   "id": "table",
   "parent": "content",
   "properties": {
+    "label": "string",
     "source_id": "string",
     "headers": ["array", "content"],
     "cells": ["array", "array", "content"],
@@ -136,6 +137,7 @@ Table.create = function(data) {
   var table = {
     id: tableId,
     type: "table",
+    label: data.label,
     headers: [],
     cells: []
   };
@@ -189,5 +191,12 @@ Table.create = function(data) {
 };
 
 DocumentNode.defineProperties(Table.prototype, ["headers", "cells", "caption"]);
+
+Object.defineProperties(Table.prototype, {
+  // Used as a resource header
+  header: {
+    get: function() { return this.properties.label; }
+  }
+});
 
 module.exports = Table;
