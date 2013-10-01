@@ -12,5 +12,6 @@ module.exports = {
   "image": require("./src/image"),
   "formula": require("./src/formula"),
   "table": require("./src/table"),
-  "figure": require("./src/figure")
+  "figure": require("./src/figure"),
+  "cover": require("./src/cover")
 };
