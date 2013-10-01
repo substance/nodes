@@ -29,32 +29,38 @@ CollaboratorView.Prototype = function() {
     // -------
 
     if (this.node.image) {
-      this.content.appendChild($$('img', {src: this.node.image}));
+      this.content.appendChild($$('.image', {
+        children: [$$('img', {src: this.node.image})]
+      }));
     }
-
 
     // Organization
     // -------
 
-    this.content.appendChild($$('.label', {text: 'Organization'}));
-    this.content.appendChild($$('.organization', {
-      children: [$$('a', {href: this.node.organization, text: this.node.organization})]
-    }));
+    // this.content.appendChild($$('.label', {text: 'Organization'}));
+    if (this.node.organization) {
+      this.content.appendChild($$('.organization', {text: this.node.organization}));  
+    }
+    
 
     // Contribution
     // -------
 
-    this.content.appendChild($$('.label', {text: 'Contribution'}));
-    this.content.appendChild($$('.contribution', {text: this.node.contribution}));
+    if (this.node.contribution) {
+      this.content.appendChild($$('.label', {text: 'Contribution'}));
+      this.content.appendChild($$('.contribution', {text: this.node.contribution}));
+    }
 
 
     // Email
     // -------
 
-    this.content.appendChild($$('.label', {text: 'Email'}));
-    this.content.appendChild($$('.email', {
-      children: [$$('a', {href: this.node.email, text: this.node.email})]
-    }));
+    if (this.node.email) {
+      this.content.appendChild($$('.label', {text: 'Email'}));
+      this.content.appendChild($$('.email', {
+        children: [$$('a', {href: "mailto:"+ this.node.email, text: this.node.email})]
+      }));
+    }
 
 
 
