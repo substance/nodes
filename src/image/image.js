@@ -26,7 +26,7 @@ ImageNode.type = {
 ImageNode.example = {
   "type": "image",
   "id": "image_1",
-  "url": "http://elife.elifesciences.org/content/elife/1/e00311/F3.medium.gif"
+  "url": "http://substance.io/image_1.png"
 };
 
 // This is used for the auto-generated docs
