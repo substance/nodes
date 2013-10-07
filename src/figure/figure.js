@@ -15,6 +15,11 @@ Figure.type = {
   }
 };
 
+
+Figure.config = {
+  "zoomable": true
+};
+
 Figure.Prototype = function() {
 
   this.insertOperation = function(startChar, text) {
