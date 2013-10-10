@@ -1,16 +1,26 @@
 {
   "name": "substance-nodes",
-  "private": true,
+  "description": "Common node types for Substance.Article implementations",
+  "url": "http://github.com/substance/nodes/",
+  "keywords": [
+    "plugin system",
+    "content types",
+    "document"
+  ],
+  "author": "Michael Aufreiter",
+  "contributors": [
+    "Oliver Buchtala"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/substance/nodes.git"
   },
   "dependencies": {
     "underscore": "1.5.x",
-    "substance-document": "git+https://github.com/substance/document.git#0.5.x",
-    "substance-util": "git+https://github.com/substance/util.git#0.2.x",
-    "substance-application": "git+https://github.com/substance/application.git#0.1.x",
-    "substance-operator": "git+https://github.com/substance/operator.git#0.2.x"
+    "substance-document": "master",
+    "substance-util": "master",
+    "substance-application": "master",
+    "substance-operator": "master"
   },
   "version": "0.1.0",
   "engines": {
