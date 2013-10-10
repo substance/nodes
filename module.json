@@ -1,6 +1,7 @@
 {
   "name":"substance-nodes",
   "private":true,
+  "description"   : "Common node types for Substance.Article implementations",
   "repository": {
     "type": "git",
     "url": "https://github.com/substance/nodes.git"
