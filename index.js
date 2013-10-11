@@ -14,5 +14,6 @@ module.exports = {
   "table": require("./src/table"),
   "figure": require("./src/figure"),
   "collaborator": require("./src/collaborator"),
-  "cover": require("./src/cover")
+  "cover": require("./src/cover"),
+  "description": require("./src/description")
 };
