@@ -34,7 +34,8 @@ CoverView.Prototype = function() {
         authorRefEl = document.createElement("SPAN");
         // TODO: use data-* attribute to store the referenced collaborator node
         authorRefEl.setAttribute("id", ref.id);
-        authorRefEl.classList.add("annotation", "person_reference");
+        authorRefEl.classList.add("annotation");
+        authorRefEl.classList.add("person_reference");
         authorRefEl.innerHTML = author.name;
         authorsEl.appendChild(authorRefEl);
       }
