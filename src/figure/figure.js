@@ -7,6 +7,7 @@ var Figure = function(node, document) {
 };
 
 Figure.type = {
+  "id": "figure",
   "parent": "content",
   "properties": {
     "url": "string",
@@ -15,6 +16,28 @@ Figure.type = {
   }
 };
 
+Figure.description = {
+  "name": "Figure",
+  "remarks": [
+    "A figure is a figure is figure."
+  ],
+  "properties": {
+    "label": "Figure label (e.g. Figure 1)",
+    "url": "Image url",
+    "caption": "A reference to a paragraph that describes the figure",
+  }
+};
+
+// Example Figure
+// -----------------
+//
+
+Figure.example = {
+  "id": "figure_1",
+  "label": "Figure 1",
+  "url": "http://example.com/fig1.png",
+  "caption": "paragraph_1"
+};
 
 Figure.config = {
   "zoomable": true
