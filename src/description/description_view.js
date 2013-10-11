@@ -28,6 +28,9 @@ DescriptionView.Prototype = function() {
     bodyEl.appendChild(bodyView.render().el);
     this._bodyEl = bodyEl;
 
+    content.appendChild(topicEl);
+    content.appendChild(bodyEl);
+
     this.el.appendChild(content);
 
     return this;
