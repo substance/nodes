@@ -4,6 +4,7 @@ var _ = require("underscore");
 var NodeView = require("../node/node_view");
 var $$ = require("substance-application").$$;
 
+
 // Lens.Cover.View
 // ==========================================================================
 
@@ -14,14 +15,21 @@ var CoverView = function(node, viewFactory) {
   this.$el.addClass("content-node cover");
 };
 
-
 CoverView.Prototype = function() {
 
   this.render = function() {
     NodeView.prototype.render.call(this);
     var node = this.node;
 
+    if (this.node.document.published_on) {
+      this.content.appendChild($$('.published-on', {
+        html: new Date(this.node.document.published_on).toDateString()
+      }));      
+    }
+
+
     this.content.appendChild($$('.title', {text: node.title }));
+
 
     var authorRefs = this.node.getAuthorRefs();
     if (authorRefs) {
