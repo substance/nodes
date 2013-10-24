@@ -10,7 +10,7 @@ var HeadingView = function(node) {
 
   this.$el.addClass('heading');
   this.$el.addClass('level-'+this.node.level);
-
+  this.$el.attr('title', "Click to set anchor. Great for sharing!");
 };
 
 HeadingView.Prototype = function() {};
