@@ -30,7 +30,7 @@ List.description = {
     "Lists can either be numbered or bullet lists"
   ],
   "properties": {
-    "ordered": "Specifies wheter the list is ordered or not",
+    "ordered": "Specifies whether the list is ordered or not",
     "items": "An array of paragraph references",
   }
 };
