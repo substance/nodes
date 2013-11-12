@@ -19,7 +19,7 @@ Figure.type = {
 Figure.description = {
   "name": "Figure",
   "remarks": [
-    "A figure is a figure is figure."
+    "A figure is a figure go figure."
   ],
   "properties": {
     "label": "Figure label (e.g. Figure 1)",
