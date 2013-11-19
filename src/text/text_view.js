@@ -11,6 +11,17 @@ var $$ = require("substance-application").$$;
 
 var LAST_CHAR_HACK = false;
 
+function _getAnnotationBehavior(doc) {
+  if (doc.constructor && doc.constructor.annotationBehavior) {
+    return doc.constructor.annotationBehavior;
+  } else {
+    // Note: you should fix this by adding a static property `annotationBehavior` to the
+    // Article class (see Substance.Article, for instance)
+    console.error("No Annotation behavior specified. Using default behavior.");
+    return Annotator.defaultBehavior;
+  }
+}
+
 var TextView = function(node) {
   NodeView.call(this, node);
 
@@ -18,6 +29,7 @@ var TextView = function(node) {
   this.$el.attr('id', this.node.id);
 
   this._annotations = {};
+  this.annotationBehavior = _getAnnotationBehavior(node.document);
 };
 
 TextView.Prototype = function() {
@@ -195,7 +207,7 @@ TextView.Prototype = function() {
 
     // this splits the text and annotations into smaller pieces
     // which is necessary to generate proper HTML.
-    var fragmenter = new Annotator.Fragmenter(fragment, text, annotations);
+    var fragmenter = new Annotator.Fragmenter(this.annotationBehavior);
 
     fragmenter.onText = function(context, text) {
       context.appendChild(document.createTextNode(text));
