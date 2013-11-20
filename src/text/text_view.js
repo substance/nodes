@@ -78,7 +78,7 @@ TextView.Prototype = function() {
 
   this.onNodeUpdate = function(op) {
     if (op.path[1] === "content") {
-      console.log("Updating text view: ", op);
+      // console.log("Updating text view: ", op);
       if (op.type === "update") {
         var update = op.diff;
         if (update.isInsert()) {
