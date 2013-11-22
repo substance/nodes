@@ -28,7 +28,15 @@ var TextView = function(node, renderer, property) {
   this.property = property || "content";
 
   this.$el.addClass('content-node text');
-  this.$el.attr('id', this.node.id);
+
+  // If TextView is used to display a custom property,
+  // we don't have an id. Only full-fledged text nodes
+  // have id's.
+  if (property) {
+    this.$el.addClass(property);
+  } else {
+    this.$el.attr('id', this.node.id);  
+  }
 
   this._annotations = {};
   this.annotationBehavior = _getAnnotationBehavior(node.document);

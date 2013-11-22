@@ -43,6 +43,7 @@ FigureView.Prototype = function() {
     if (caption) {
       var captionView = this.viewFactory.createView(caption);
       var captionEl = captionView.render().el;
+      captionEl.classList.add('caption');
       this.content.appendChild(captionEl);
       this.childrenViews.push(captionView);
     }
