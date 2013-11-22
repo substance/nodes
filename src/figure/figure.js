@@ -104,7 +104,7 @@ Figure.create = function(data) {
   return result;
 };
 
-Document.Node.defineProperties(Figure.prototype, ["url", "caption"]);
+Document.Node.defineProperties(Figure.prototype, ["url", "caption", "label"]);
 
 Object.defineProperties(Figure.prototype, {
   // Used as a resource header
