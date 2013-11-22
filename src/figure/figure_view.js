@@ -2,6 +2,7 @@
 
 var CompositeView = require("../composite").View;
 var $$ = require ("substance-application").$$;
+var TextView = require("../text").View;
 
 // Substance.Figure.View
 // ==========================================================================
@@ -20,6 +21,16 @@ FigureView.Prototype = function() {
     this.el.innerHTML = "";
     this.content = $$('div.content');
 
+    var i;
+    // dispose existing children views if called multiple times
+    for (i = 0; i < this.childrenViews.length; i++) {
+      this.childrenViews[i].dispose();
+    }
+
+    this.labelView = new TextView(this.node, this.viewFactory, "label");
+    this.content.appendChild(this.labelView.render().el);
+    this.childrenViews.push(this.labelView);
+
     // Add graphic (img element)
     var imgEl = $$('.image-wrapper', {
       children: [ $$("img", {src: this.node.url}) ]
@@ -27,11 +38,6 @@ FigureView.Prototype = function() {
 
     this.content.appendChild(imgEl);
 
-    var i;
-    // dispose existing children views if called multiple times
-    for (i = 0; i < this.childrenViews.length; i++) {
-      this.childrenViews[i].dispose();
-    }
 
     var caption = this.node.getCaption();
     if (caption) {
