@@ -22,8 +22,10 @@ function _getAnnotationBehavior(doc) {
   }
 }
 
-var TextView = function(node) {
+var TextView = function(node, renderer, property) {
   NodeView.call(this, node);
+
+  this.property = property || "content";
 
   this.$el.addClass('content-node text');
   this.$el.attr('id', this.node.id);
@@ -127,7 +129,7 @@ TextView.Prototype = function() {
     range.setStart(this.content.childNodes[0], 0);
     range.setEnd(el, offset);
     var str = range.toString();
-    var charPos = Math.min(this.node.content.length, str.length);
+    var charPos = Math.min(this.node[this.property].length, str.length);
 
     // console.log("Requested char pos: ", charPos, this.node.content[charPos]);
 
@@ -147,7 +149,7 @@ TextView.Prototype = function() {
 
     var range = document.createRange();
 
-    if (this.node.content.length === 0) {
+    if (this.node[this.property].length === 0) {
       range.setStart(this.content.childNodes[0], 0);
       return range;
     }
@@ -202,7 +204,7 @@ TextView.Prototype = function() {
 
   this.renderWithAnnotations = function(annotations) {
     var that = this;
-    var text = this.node.content;
+    var text = this.node[this.property];
     var fragment = document.createDocumentFragment();
 
     // this splits the text and annotations into smaller pieces
