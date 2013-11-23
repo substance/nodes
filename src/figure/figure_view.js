@@ -27,7 +27,7 @@ FigureView.Prototype = function() {
       this.childrenViews[i].dispose();
     }
 
-    this.labelView = new TextView(this.node, this.viewFactory, "label");
+    this.labelView = new TextView(this.node, this.viewFactory, {property: "label"});
     this.content.appendChild(this.labelView.render().el);
     this.childrenViews.push(this.labelView);
 

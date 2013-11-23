@@ -22,20 +22,21 @@ function _getAnnotationBehavior(doc) {
   }
 }
 
-var TextView = function(node, renderer, property) {
+var TextView = function(node, renderer, options) {
   NodeView.call(this, node);
+  options = options || {};
 
-  this.property = property || "content";
+  this.property = options.property || "content";
 
   this.$el.addClass('content-node text');
 
   // If TextView is used to display a custom property,
   // we don't have an id. Only full-fledged text nodes
   // have id's.
-  if (property) {
-    this.$el.addClass(property);
+  if (options.property) {
+    this.$el.addClass(options.property);
   } else {
-    this.$el.attr('id', this.node.id);  
+    this.$el.attr('id', this.node.id);
   }
 
   this._annotations = {};
