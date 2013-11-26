@@ -7,9 +7,7 @@ var TextView = require('../text/text_view');
 
 var HeadingView = function(node) {
   TextView.call(this, node);
-
   this.$el.addClass('heading');
-  this.$el.attr('title', "Click to set anchor. Great for sharing!");
 
   this._level = this.node.level;
   this.$el.addClass('level-'+this._level);
