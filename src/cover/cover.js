@@ -54,6 +54,22 @@ Cover.Prototype = function() {
       return this.document.get(id);
     }, this);
   };
+
+  this.getLength = function() {
+    var l = 0;
+    // HACK: view specific +1 as there seems no space between title and authors
+    l += this.title.length + 1;
+    var authorRefs = this.getAuthorRefs();
+    if (authorRefs) {
+      for (var i = 0; i < authorRefs.length; i++) {
+        var ref = authorRefs[i];
+        var author = this.document.get(ref.target);
+        l += author.name.length;
+      }
+    }
+
+    return l;
+  };
 };
 
 Cover.Prototype.prototype = DocumentNode.prototype;
