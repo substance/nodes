@@ -27,7 +27,8 @@ CoverView.Prototype = function() {
       }));
     }
 
-    this.content.appendChild($$('.title', {text: node.title }));
+    this.titleEl = $$('.title', {text: node.title });
+    this.content.appendChild(this.titleEl);
 
     var authorRefs = this.node.getAuthorRefs();
     if (authorRefs) {
@@ -64,7 +65,7 @@ CoverView.Prototype = function() {
   this.getCharPosition = function(el, offset) {
     if (!this.__mapping__) this.createMapping();
     var charPos = this.__getCharPosition__(el, offset);
-    console.log("Cover.View: getCharPosition()", charPos);
+    // console.log("Cover.View: getCharPosition()", charPos);
     return charPos;
   };
 
@@ -74,10 +75,8 @@ CoverView.Prototype = function() {
 
   this.getDOMPosition = function(charPos) {
     if (!this.__mapping__) this.createMapping();
-
     var range = this.__getDOMPosition__(charPos);
-    console.log("Cover.View: getDOMPosition()", range);
-
+    // console.log("Cover.View: getDOMPosition()", range);
     return range;
   };
 
@@ -118,7 +117,7 @@ CoverView.Prototype = function() {
       range: this.__createRange__(titleEl),
       getRange: function(charPos) {
         var range = document.createRange();
-        range.setStart(titleEl.children[0], charPos);
+        range.setStart(titleEl.childNodes[0], charPos);
         return range;
       }
     });
@@ -137,7 +136,7 @@ CoverView.Prototype = function() {
           },
           getRange: function(charPos) {
             var range = document.createRange();
-            range.setStart(el.children[0], charPos);
+            range.setStart(el.childNodes[0], charPos);
             return range;
           }
         });
@@ -157,13 +156,13 @@ CoverView.Prototype = function() {
       var mapping = this.__mapping__[i];
 
       var cmpStart = range.compareBoundaryPoints(0, mapping.range);
-      console.log("Comparing boundaries for", mapping.label, "START", cmpStart);
+      // console.log("Comparing boundaries for", mapping.label, "START", cmpStart);
       if (cmpStart < 0) {
         break;
       }
 
       var cmpEnd = range.compareBoundaryPoints(3, mapping.range);
-      console.log("Comparing boundaries for", mapping.label, "END", cmpEnd);
+      // console.log("Comparing boundaries for", mapping.label, "END", cmpEnd);
 
       // the cursor is within this element
       if (cmpEnd < 0) {
@@ -190,6 +189,12 @@ CoverView.Prototype = function() {
       }
     }
     return mapping.getRange(l);
+  };
+
+  this.onGraphUpdate = function(op) {
+    if (op.path[0] === "document" && op.path[1] === "title") {
+      this.titleEl.childNodes[0].textContent = this.node.title;
+    }
   };
 
 };
