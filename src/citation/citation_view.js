@@ -4,6 +4,7 @@ var _ = require('underscore');
 var util = require('substance-util');
 var html = util.html;
 var NodeView = require("../node").View;
+var TextView = require("../text").View;
 
 var $$ = require("substance-application").$$;
 
@@ -11,6 +12,9 @@ var Renderer = function(view) {
   var frag = document.createDocumentFragment(),
       node = view.node;
 
+  view.labelView = new TextView(view.node, view.viewFactory, {property: "title"});
+  frag.appendChild(view.labelView.render().el);
+  // this.childrenViews.push(this.labelView);
 
   // Add Authors
   // -------
@@ -84,7 +88,7 @@ CitationView.Prototype = function() {
 
   this.render = function() {
     NodeView.prototype.render.call(this);
-    this.content.appendChild(new Renderer(this));
+    this.content.appendChild(Renderer(this));
     return this;
   };
 

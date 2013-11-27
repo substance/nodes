@@ -5,8 +5,8 @@ var Node = require('substance-document').Node;
 // -----------------
 //
 
-var Citation = function(node) {
-  Node.call(this, node);
+var Citation = function(node, document) {
+  Node.call(this, node, document);
 };
 
 // Type definition
