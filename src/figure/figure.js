@@ -1,9 +1,10 @@
 "use strict";
 
-var Document = require("substance-document");
+var DocumentNode = require("../node/node");
+var Composite = require("../composite/composite");
 
 var Figure = function(node, document) {
-  Document.Composite.call(this, node, document);
+  Composite.call(this, node, document);
 };
 
 Figure.type = {
@@ -45,11 +46,11 @@ Figure.config = {
 
 Figure.Prototype = function() {
 
-  this.insertOperation = function(startChar, text) {
+  this.insertOperation = function(/*startChar, text*/) {
     return null;
   };
 
-  this.deleteOperation = function(startChar, endChar) {
+  this.deleteOperation = function(/*startChar, endChar*/) {
     return null;
   };
 
@@ -68,7 +69,7 @@ Figure.Prototype = function() {
   };
 };
 
-Figure.Prototype.prototype = Document.Composite.prototype;
+Figure.Prototype.prototype = Composite.prototype;
 Figure.prototype = new Figure.Prototype();
 Figure.prototype.constructor = Figure;
 
@@ -104,7 +105,7 @@ Figure.create = function(data) {
   return result;
 };
 
-Document.Node.defineProperties(Figure.prototype, ["url", "caption", "label"]);
+DocumentNode.defineProperties(Figure.prototype, ["url", "caption", "label"]);
 
 Object.defineProperties(Figure.prototype, {
   // Used as a resource header

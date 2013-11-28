@@ -1,6 +1,6 @@
 "use strict";
 
-var NodeView = require('../node').View;
+var NodeView = require('../node/node_view');
 
 // FormulaView
 // ===========
@@ -19,7 +19,7 @@ FormulaView.Prototype = function() {
 
   // Render the formula
   // --------
-    
+
   this.render = function() {
 
     var format = this.node.format;

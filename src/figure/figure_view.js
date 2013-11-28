@@ -1,8 +1,8 @@
 "use strict";
 
-var CompositeView = require("../composite").View;
+var CompositeView = require("../composite/composite_view");
 var $$ = require ("substance-application").$$;
-var TextView = require("../text").View;
+var TextView = require("../text/text_view");
 
 // Substance.Figure.View
 // ==========================================================================

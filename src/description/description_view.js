@@ -1,6 +1,6 @@
 "use strict";
 
-var NodeView = require("../node").View;
+var NodeView = require("../node/node_view");
 
 var DescriptionView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);

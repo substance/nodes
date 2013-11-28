@@ -1,6 +1,6 @@
 "use strict";
 
-var NodeView = require("../node").View;
+var NodeView = require("../node/node");
 
 // Substance.Image.View
 // ==========================================================================

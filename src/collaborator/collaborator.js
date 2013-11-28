@@ -1,12 +1,12 @@
 var _ = require('underscore');
-var Node = require('substance-document').Node;
+var DocumentNode = require('../node/node');
 
 // Substance.Collaborator
 // -----------------
 //
 
 var Collaborator = function(node, doc) {
-  Node.call(this, node, doc);
+  DocumentNode.call(this, node, doc);
 };
 
 
@@ -65,7 +65,7 @@ Collaborator.Prototype = function() {
   }
 };
 
-Collaborator.Prototype.prototype = Node.prototype;
+Collaborator.Prototype.prototype = DocumentNode.prototype;
 Collaborator.prototype = new Collaborator.Prototype();
 Collaborator.prototype.constructor = Collaborator;
 

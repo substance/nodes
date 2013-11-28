@@ -1,3 +1,5 @@
+"use strict";
+
 var View = require("substance-application").View;
 
 // Substance.Node.View

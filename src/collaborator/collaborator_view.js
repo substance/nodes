@@ -39,9 +39,9 @@ CollaboratorView.Prototype = function() {
 
     // this.content.appendChild($$('.label', {text: 'Organization'}));
     if (this.node.organization) {
-      this.content.appendChild($$('.organization', {text: this.node.organization}));  
+      this.content.appendChild($$('.organization', {text: this.node.organization}));
     }
-    
+
 
     // Contribution
     // -------
@@ -61,8 +61,6 @@ CollaboratorView.Prototype = function() {
         children: [$$('a', {href: "mailto:"+ this.node.email, text: this.node.email})]
       }));
     }
-
-
 
     return this;
   };

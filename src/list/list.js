@@ -1,9 +1,8 @@
 "use strict";
 
 var _ = require("underscore");
-var Document = require("substance-document");
-var DocumentNode = Document.Node;
-var Composite = Document.Composite;
+var DocumentNode = require('../node/node');
+var Composite = require('../composite/composite');
 
 var List = function(node, document) {
   Composite.call(this, node, document);

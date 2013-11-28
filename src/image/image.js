@@ -1,6 +1,6 @@
 "use strict";
 
-var DocumentNode = require("substance-document").Node;
+var DocumentNode = require('../node/node');
 var WebResource = require("../web_resource/web_resource");
 
 var ImageNode = function(node, document) {

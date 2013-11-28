@@ -1,12 +1,12 @@
 var _ = require('underscore');
-var Node = require('substance-document').Node;
+var DocumentNode = require('../node/node');
 
 // Formula
 // -----------------
 //
 
 var Formula = function(node) {
-  Node.call(this, node);
+  DocumentNode.call(this, node);
 };
 
 // Type definition
@@ -59,7 +59,7 @@ Formula.Prototype = function() {
   this.inline = false;
 };
 
-Formula.Prototype.prototype = Node.prototype;
+Formula.Prototype.prototype = DocumentNode.prototype;
 Formula.prototype = new Formula.Prototype();
 Formula.prototype.constuctor = new Formula;
 

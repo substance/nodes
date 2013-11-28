@@ -1,3 +1,3 @@
 "use strict";
 
-module.exports = require("../node").View;
+module.exports = require("../node/node_view");

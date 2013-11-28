@@ -1,7 +1,8 @@
+"use strict";
+
 var NodeView = require('../node/node_view');
-var Document = require("substance-document");
-var Annotator = Document.Annotator;
 var $$ = require("substance-application").$$;
+var Fragmenter = require("substance-util").Fragmenter;
 
 // Substance.Text.View
 // -----------------
@@ -15,10 +16,7 @@ function _getAnnotationBehavior(doc) {
   if (doc.constructor && doc.constructor.annotationBehavior) {
     return doc.constructor.annotationBehavior;
   } else {
-    // Note: you should fix this by adding a static property `annotationBehavior` to the
-    // Article class (see Substance.Article, for instance)
-    console.error("No Annotation behavior specified. Using default behavior.");
-    return Annotator.defaultBehavior;
+    throw new Error("Missing AnnotationBehavior.");
   }
 }
 
@@ -218,7 +216,7 @@ TextView.Prototype = function() {
 
     // this splits the text and annotations into smaller pieces
     // which is necessary to generate proper HTML.
-    var fragmenter = new Annotator.Fragmenter(this.annotationBehavior);
+    var fragmenter = new Fragmenter(this.annotationBehavior.levels);
 
     fragmenter.onText = function(context, text) {
       context.appendChild(document.createTextNode(text));

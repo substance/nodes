@@ -1,12 +1,12 @@
 var _ = require('underscore');
-var Node = require('substance-document').Node;
+var DocumentNode = require('../node/node');
 
 // Citation
 // -----------------
 //
 
 var Citation = function(node, document) {
-  Node.call(this, node, document);
+  DocumentNode.call(this, node, document);
 };
 
 // Type definition
@@ -90,7 +90,7 @@ Citation.Prototype = function() {
   };
 };
 
-Citation.Prototype.prototype = Node.prototype;
+Citation.Prototype.prototype = DocumentNode.prototype;
 Citation.prototype = new Citation.Prototype();
 Citation.prototype.constructor = Citation;
 
