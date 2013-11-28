@@ -60,7 +60,7 @@ CompositeView.Prototype = function() {
   };
 
   this.getCharPosition = function(/*el, offset*/) {
-    return 0;
+    throw new Error("CompositeView.getCharPosition() is abstract.");
   };
 
   this.getDOMPosition = function() {
