@@ -33,11 +33,10 @@ FigureView.Prototype = function() {
 
     // Add graphic (img element)
     var imgEl = $$('.image-wrapper', {
-      children: [ $$("img", {src: this.node.url}) ]
+      children: [ $$("img", { src: this.node.url, title: "Edit image URL" }) ]
     });
 
     this.content.appendChild(imgEl);
-
 
     var caption = this.node.getCaption();
     if (caption) {
@@ -50,6 +49,25 @@ FigureView.Prototype = function() {
 
     this.el.appendChild(this.content);
     return this;
+  };
+
+
+  // Updates image src when figure is updated by ImageUrlEditor
+  // --------
+  // 
+  // TODO: what to do if label is updated?
+
+  this.onNodeUpdate = function(op) {
+    console.log('updating... node', op);
+
+    // More efficient ?
+    // Just update url
+    this.$('img').attr({
+      src: this.node.url
+    });
+
+    // Or re-render the whole thing to be safe?
+    // this.render();
   };
 };
 
