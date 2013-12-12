@@ -195,7 +195,7 @@ TextView.Prototype = function() {
 
     // this splits the text and annotations into smaller pieces
     // which is necessary to generate proper HTML.
-    var fragmenter = new Annotator.Fragmenter(fragment, text, annotations);
+    var fragmenter = new Annotator.Fragmenter({});
 
     fragmenter.onText = function(context, text) {
       context.appendChild(document.createTextNode(text));
