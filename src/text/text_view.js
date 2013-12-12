@@ -32,9 +32,11 @@ var TextView = function(node, renderer, options) {
   // we don't have an id. Only full-fledged text nodes
   // have id's.
   if (options.property) {
+    // Note: currently NodeView sets the id. In this mode the must not be set
+    // as we are displaying a textish property of a node, not a text node.
+    // IMO it is ok to have the id set by default, as it is the 99% case.
+    this.$el.removeAttr('id');
     this.$el.addClass(options.property);
-  } else {
-    this.$el.attr('id', this.node.id);
   }
 
   this._annotations = {};
