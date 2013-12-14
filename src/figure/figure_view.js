@@ -58,7 +58,6 @@ FigureView.Prototype = function() {
   // TODO: what to do if label is updated?
 
   this.onNodeUpdate = function(op) {
-    console.log('updating... node', op);
 
     // More efficient ?
     // Just update url
