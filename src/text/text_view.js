@@ -28,6 +28,10 @@ var TextView = function(node, renderer, options) {
 
   this.$el.addClass('content-node text');
 
+  if (node.type === "text") {
+    this.$el.addClass("text-node");
+  }
+
   // If TextView is used to display a custom property,
   // we don't have an id. Only full-fledged text nodes
   // have id's.
