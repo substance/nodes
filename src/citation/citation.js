@@ -102,7 +102,7 @@ var getters = {
     get: function() {
       return this.properties.title;
     }
-  }
+  },
 };
 
 _.each(Citation.type.properties, function(prop, key) {
@@ -112,6 +112,16 @@ _.each(Citation.type.properties, function(prop, key) {
     }
   };
 });
+
+
+// Derive label from authors list
+// HACK: this is more of a quick and dirty solution
+
+getters["label"] = {
+  get: function() {
+    return this.properties.authors.join(", ");
+  }
+};
 
 Object.defineProperties(Citation.prototype, getters);
 

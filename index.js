@@ -14,5 +14,7 @@ module.exports = {
   "collaborator": require("./src/collaborator"),
   "cover": require("./src/cover"),
   "description": require("./src/description"),
-  "citation": require("./src/citation")
+  "citation": require("./src/citation"),
+  "annotation": require("./src/annotation"),
+  "emphasis": require("./src/emphasis")
 };
