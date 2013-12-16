@@ -36,18 +36,16 @@ Emphasis.description = {
 //
 
 Emphasis.example = {
-  "emphasis_1": {
-    "type": "emphasis",
-    "id": "emphasis_1",
-    "path": [
-      "text_54",
-      "content"
-    ],
-    "range": [
-      85,
-      95
-    ]
-  }
+  "type": "emphasis",
+  "id": "emphasis_1",
+  "path": [
+    "text_54",
+    "content"
+  ],
+  "range": [
+    85,
+    95
+  ]
 };
 
 Emphasis.Prototype = function() {};

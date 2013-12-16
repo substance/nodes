@@ -40,18 +40,16 @@ Annotation.description = {
 //
 
 Annotation.example = {
-  "emphasis_1": {
-    "type": "emphasis",
-    "id": "emphasis_1",
-    "path": [
-      "text_54",
-      "content"
-    ],
-    "range": [
-      85,
-      95
-    ]
-  }
+  "type": "emphasis",
+  "id": "emphasis_1",
+  "path": [
+    "text_54",
+    "content"
+  ],
+  "range": [
+    85,
+    95
+  ]
 };
 
 Annotation.Prototype = function() {};
@@ -59,7 +57,6 @@ Annotation.Prototype = function() {};
 Annotation.Prototype.prototype = DocumentNode.prototype;
 Annotation.prototype = new Annotation.Prototype();
 Annotation.prototype.constructor = Annotation;
-
 
 
 // Generate getters

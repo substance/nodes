@@ -16,5 +16,8 @@ module.exports = {
   "description": require("./src/description"),
   "citation": require("./src/citation"),
   "annotation": require("./src/annotation"),
-  "emphasis": require("./src/emphasis")
+  "emphasis": require("./src/emphasis"),
+  "strong": require("./src/strong"),
+  "subscript": require("./src/subscript"),
+  "superscript": require("./src/superscript")
 };
