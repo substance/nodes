@@ -53,6 +53,12 @@ FigureView.Prototype = function() {
       .element(function() {
         return self.childViews["label"].el;
       })
+      .length(function() {
+        return self.node.label.length;
+      })
+      .mapping(function(charPos) {
+        return self.childViews.getDOMPosition(charPos);
+      })
     );
     if (this.node.caption) {
       structure = structure.concat(this.childViews["caption"].describeStructure());
