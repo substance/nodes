@@ -1,8 +1,5 @@
 "use strict";
 
-var _ = require("underscore");
-var util = require("substance-util");
-var html = util.html;
 var NodeView = require("../node").View;
 var $$ = require("substance-application").$$;
 
@@ -29,9 +26,10 @@ CollaboratorView.Prototype = function() {
     // -------
 
     if (this.node.image) {
-      this.content.appendChild($$('.image', {
+      this.imageEl = $$('.image', {
         children: [$$('img', {src: this.node.image})]
-      }));
+      });
+      this.content.appendChild(this.imageEl);
     }
 
     // Organization
@@ -39,7 +37,8 @@ CollaboratorView.Prototype = function() {
 
     // this.content.appendChild($$('.label', {text: 'Organization'}));
     if (this.node.organization) {
-      this.content.appendChild($$('.organization', {text: this.node.organization}));
+      this.orgEl = $$('.organization.node-property',{text: this.node.organization, "data-path": "organization"});
+      this.content.appendChild(this.orgEl);
     }
 
 
@@ -48,7 +47,8 @@ CollaboratorView.Prototype = function() {
 
     if (this.node.contribution) {
       this.content.appendChild($$('.label', {text: 'Contribution'}));
-      this.content.appendChild($$('.contribution', {text: this.node.contribution}));
+      this.contribEl = $$('.contribution.node-property', {text: this.node.contribution, "data-path": "contribution"});
+      this.content.appendChild(this.contribEl);
     }
 
 
@@ -57,14 +57,23 @@ CollaboratorView.Prototype = function() {
 
     if (this.node.email) {
       this.content.appendChild($$('.label', {text: 'Email'}));
-      this.content.appendChild($$('.email', {
-        children: [$$('a', {href: "mailto:"+ this.node.email, text: this.node.email})]
-      }));
+      this.emailEl = $$('.email.node-property', {
+        children: [$$('a', {href: "mailto:"+ this.node.email, text: this.node.email})],
+        "data-path": "email"
+      });
+      this.content.appendChild(this.emailEl);
     }
 
     return this;
   };
 
+  this.describeStructure = function() {
+    var structure = [];
+    structure.push(this.propertyComponent("organization", this.orgEl));
+    structure.push(this.propertyComponent("contribution", this.contribEl));
+    structure.push(this.propertyComponent("email", this.emailEl));
+    return structure;
+  };
 };
 
 CollaboratorView.Prototype.prototype = NodeView.prototype;

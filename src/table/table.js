@@ -2,10 +2,9 @@
 
 var _ = require("underscore");
 var DocumentNode = require("../node/node");
-var Composite = require("../composite/composite");
 
 var Table = function(node, document) {
-  Composite.call(this, node, document);
+  DocumentNode.call(this, node, document);
 };
 
 Table.type = {
@@ -50,35 +49,6 @@ Table.example = {
 
 Table.Prototype = function() {
 
-  this.getLength = function() {
-    var l = 0;
-    l += this.properties.headers.length;
-    for (var row = 0; row < this.properties.cells.length; row++) {
-      var tableRow = this.properties.cells[row];
-      l += tableRow.length;
-    }
-    if (this.properties.caption) {
-      l += 1;
-    }
-
-    return l;
-  };
-
-  this.getNodes = function() {
-    var ids = [];
-    for (var col = 0; col < this.properties.headers.length; col++) {
-      ids.push(this.properties.headers[col]);
-    }
-    for (var row = 0; row < this.properties.cells.length; row++) {
-      var tableRow = this.properties.cells[row];
-      ids = ids.concat(tableRow);
-    }
-    if (this.properties.caption) {
-      ids.push(this.properties.caption);
-    }
-    return ids;
-  };
-
   this.getHeaders = function() {
     return _.map(this.properties.headers, function(id) {
       return this.document.get(id);
@@ -106,26 +76,9 @@ Table.Prototype = function() {
     return caption;
   };
 
-  this.getChangePosition = function(/*op*/) {
-    // TODO: map to the corresponding cell
-    return -1;
-  };
-
-  this.isMutable = function() {
-    return false;
-  };
-
-  this.canJoin = function(/*other*/) {
-    return false;
-  };
-
-  this.isBreakable = function() {
-    return false;
-  };
-
 };
 
-Table.Prototype.prototype = Composite.prototype;
+Table.Prototype.prototype = DocumentNode.prototype;
 Table.prototype = new Table.Prototype();
 Table.prototype.constructor = Table;
 

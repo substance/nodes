@@ -1,10 +1,9 @@
 "use strict";
 
 var DocumentNode = require('../node/node');
-var Composite = require('../composite/composite');
 
 var Description = function(node, document) {
-  Composite.call(this, node, document);
+  DocumentNode.call(this, node, document);
 };
 
 Description.type = {
@@ -12,7 +11,7 @@ Description.type = {
   "parent": "content",
   "properties": {
     "source_id": "string",
-    "topic": "text",
+    "topic": "string",
     "body": "paragraph"
   }
 };
@@ -31,23 +30,11 @@ Description.description = {
 Description.example = {
   "type": "description",
   "id": "description_1",
-  "topic": "text_1",
+  "topic": "Something",
   "body": "paragraph_2"
 };
 
 Description.Prototype = function() {
-
-  this.getLength = function() {
-    return 2;
-  };
-
-  this.getNodes = function() {
-    return [this.properties.topic, this.properties.body];
-  };
-
-  this.getTopic = function() {
-    return this.document.get(this.properties.topic);
-  };
 
   this.getBody = function() {
     return this.document.get(this.properties.body);
@@ -55,7 +42,7 @@ Description.Prototype = function() {
 
 };
 
-Description.Prototype.prototype = Composite.prototype;
+Description.Prototype.prototype = DocumentNode.prototype;
 Description.prototype = new Description.Prototype();
 Description.prototype.constructor = Description;
 

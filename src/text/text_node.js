@@ -161,7 +161,7 @@ Text.Prototype = function() {
     });
 
     // 3. Trim this node's content;
-    doc.update([this.properties.id, "content"], TextOperation.Delete(pos, tail))
+    doc.update([this.properties.id, "content"], TextOperation.Delete(pos, tail));
 
     // return the new node
     return newNode;

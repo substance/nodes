@@ -2,10 +2,9 @@
 
 var _ = require("underscore");
 var DocumentNode = require('../node/node');
-var Composite = require('../composite/composite');
 
 var List = function(node, document) {
-  Composite.call(this, node, document);
+  DocumentNode.call(this, node, document);
 };
 
 List.type = {
@@ -50,79 +49,15 @@ List.example = {
 
 List.Prototype = function() {
 
-  this.getLength = function() {
-    return this.properties.items.length;
-  };
-
-  this.getNodes = function() {
-    return _.clone(this.items);
-  };
-
   this.getItems = function() {
     return _.map(this.properties.items, function(id) {
       return this.document.get(id);
     }, this);
   };
 
-  this.getChangePosition = function(op) {
-    if (op.path[1] === "items") {
-
-      if (op.type === "update") {
-        var diff = op.diff;
-        if (diff.isInsert()) {
-          return op.diff.pos+1;
-        }
-        else if (diff.isDelete()) {
-          return op.diff.pos;
-        }
-        else if (diff.isMove()) {
-          return op.diff.target;
-        }
-      }
-      else if (op.type === "set") {
-        return this.properties.items.length-1;
-      }
-    }
-
-    return -1;
-  };
-
-  this.isMutable = function() {
-    return true;
-  };
-
-  this.insertChild = function(doc, pos, nodeId) {
-    doc.update([this.id, "items"], ["+", pos, nodeId]);
-  };
-
-  this.deleteChild = function(doc, nodeId) {
-    var pos = this.items.indexOf(nodeId);
-    doc.update([this.id, "items"], ["-", pos, nodeId]);
-    doc.delete(nodeId);
-  };
-
-  this.canJoin = function(other) {
-    return (other.type === "list");
-  };
-
-  this.isBreakable = function() {
-    return true;
-  };
-
-  this.break = function(doc, childId, charPos) {
-    var childPos = this.properties.items.indexOf(childId);
-    if (childPos < 0) {
-      throw new Error("Unknown child " + childId);
-    }
-    var child = doc.get(childId);
-    var newNode = child.break(doc, charPos);
-    doc.update([this.id, "items"], ["+", childPos+1, newNode.id]);
-    return newNode;
-  };
-
 };
 
-List.Prototype.prototype = Composite.prototype;
+List.Prototype.prototype = DocumentNode.prototype;
 List.prototype = new List.Prototype();
 List.prototype.constructor = List;
 

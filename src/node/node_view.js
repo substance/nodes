@@ -2,6 +2,7 @@
 
 var View = require("substance-application").View;
 var ViewComponents = require("../view_components");
+var _ = require("underscore");
 
 // Substance.Node.View
 // -----------------
@@ -11,7 +12,7 @@ var NodeView = function(node, viewFactory) {
   this.node = node;
   this.viewFactory = viewFactory;
 
-  this.$el.addClass('content-node');
+  this.$el.addClass('content-node').addClass(node.type);
   this.$el.attr('id', this.node.id);
 };
 
@@ -21,6 +22,8 @@ NodeView.Prototype = function() {
   // --------
   //
   this.render = function() {
+    this.disposeChildViews();
+    this.el.innerHTML = "";
     this.content = document.createElement("DIV");
     this.content.classList.add("content");
     this.el.appendChild(this.content);
@@ -29,6 +32,15 @@ NodeView.Prototype = function() {
 
   this.dispose = function() {
     this.stopListening();
+    this.disposeChildViews();
+  };
+
+  this.disposeChildViews = function() {
+    if (this.childViews) {
+      _.each(this.childViews, function(view) {
+        if (view) view.dispose();
+      });
+    }
   };
 
   // A general graph update listener that dispatches
@@ -83,16 +95,11 @@ NodeView.Prototype = function() {
   //
 
   this.__describeStructure__ = function() {
-    this.__components__ = [];
-    this.describeStructure();
+    this.__components__ = this.describeStructure();
   };
 
   this.describeStructure = function() {
-    this.addComponent(new ViewComponents.NodeComponent(this.node, this));
-  };
-
-  this.addComponent = function(component) {
-    this.__components__.push(component);
+    throw new Error("NodeView.describeStructure() is abstract and must be overridden.");
   };
 
   this.getViewComponents = function() {
@@ -102,6 +109,18 @@ NodeView.Prototype = function() {
       // throw new Error("You have to run describe layout first. node.type:" + this.node.type);
     }
     return this.__components__;
+  };
+
+  this.nodeComponent = function() {
+    return new ViewComponents.NodeComponent(this.node, this);
+  };
+
+  this.propertyComponent = function(name, propertyPath) {
+    return new ViewComponents.PropertyComponent(this.node, this, name, propertyPath);
+  };
+
+  this.customComponent = function(path, data) {
+    return new ViewComponents.CustomComponent(this.node, this, path, data);
   };
 
   this.__getCharPosition__ = function(el, offset) {

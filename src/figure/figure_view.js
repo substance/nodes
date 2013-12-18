@@ -1,14 +1,19 @@
 "use strict";
 
-var CompositeView = require("../composite/composite_view");
 var $$ = require ("substance-application").$$;
+var NodeView = require("../node/node_view");
 var TextView = require("../text/text_view");
 
 // Substance.Figure.View
 // ==========================================================================
 
 var FigureView = function(node, viewFactory) {
-  CompositeView.call(this, node, viewFactory);
+  NodeView.call(this, node, viewFactory);
+
+  this.childViews = {
+    "label": null,
+    "caption": null
+  };
 };
 
 FigureView.Prototype = function() {
@@ -18,59 +23,61 @@ FigureView.Prototype = function() {
   //
 
   this.render = function() {
-    this.el.innerHTML = "";
-    this.content = $$('div.content');
+    NodeView.prototype.render.call(this);
 
-    var i;
-    // dispose existing children views if called multiple times
-    for (i = 0; i < this.childrenViews.length; i++) {
-      this.childrenViews[i].dispose();
-    }
-
-    this.labelView = new TextView(this.node, this.viewFactory, {property: "label"});
-    this.content.appendChild(this.labelView.render().el);
-    this.childrenViews.push(this.labelView);
+    var labelView = this.childViews["label"] = new TextView(this.node, this.viewFactory, {property: "label"});
+    this.content.appendChild(labelView.render().el);
 
     // Add graphic (img element)
     var imgEl = $$('.image-wrapper', {
       children: [ $$("img", { src: this.node.url, title: "Edit image URL" }) ]
     });
-
     this.content.appendChild(imgEl);
 
     var caption = this.node.getCaption();
     if (caption) {
-      var captionView = this.viewFactory.createView(caption);
+      var captionView = this.childViews["caption"] = this.viewFactory.createView(caption);
       var captionEl = captionView.render().el;
       captionEl.classList.add('caption');
       this.content.appendChild(captionEl);
-      this.childrenViews.push(captionView);
     }
 
-    this.el.appendChild(this.content);
     return this;
   };
 
+  this.describeStructure = function() {
+    var structure = [];
+    var self = this;
+    structure.push(
+      this.propertyComponent("label")
+      .element(function() {
+        return self.childViews["label"].el;
+      })
+    );
+    if (this.node.caption) {
+      structure = structure.concat(this.childViews["caption"].describeStructure());
+    }
+    return structure;
+  };
 
   // Updates image src when figure is updated by ImageUrlEditor
   // --------
-  // 
+  //
   // TODO: what to do if label is updated?
 
-  this.onNodeUpdate = function(op) {
-
+  this.onNodeUpdate = function(/*op*/) {
     // More efficient ?
     // Just update url
     this.$('img').attr({
       src: this.node.url
     });
-
     // Or re-render the whole thing to be safe?
     // this.render();
   };
+
 };
 
-FigureView.Prototype.prototype = CompositeView.prototype;
+FigureView.Prototype.prototype = NodeView.prototype;
 FigureView.prototype = new FigureView.Prototype();
 
 module.exports = FigureView;

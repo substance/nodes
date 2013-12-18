@@ -40,7 +40,10 @@ var TextView = function(node, renderer, options) {
     // as we are displaying a textish property of a node, not a text node.
     // IMO it is ok to have the id set by default, as it is the 99% case.
     this.$el.removeAttr('id');
+    this.$el.removeClass('content-node');
+    // this.$el.addClass('node-property');
     this.$el.addClass(options.property);
+    this.$el.attr('data-path', options.property);
   }
 
   this._annotations = {};
@@ -60,17 +63,14 @@ TextView.Prototype = function() {
     return this;
   };
 
-
-  this.dispose = function() {
-    NodeView.prototype.dispose.call(this);
-    console.log('disposing paragraph view');
-  };
-
   this.renderContent = function() {
     this.content.innerHTML = "";
-
-    this._annotations = this.node.getAnnotations();
+    this._annotations = this.node.document.getIndex("annotations").get([this.node.id, this.property]);
     this.renderWithAnnotations(this._annotations);
+  };
+
+  this.describeStructure = function() {
+    return [this.nodeComponent()];
   };
 
   this.insert = function(pos, str) {

@@ -61,7 +61,7 @@ Formula.Prototype = function() {
 
 Formula.Prototype.prototype = DocumentNode.prototype;
 Formula.prototype = new Formula.Prototype();
-Formula.prototype.constuctor = new Formula;
+Formula.prototype.constuctor = Formula;
 
 
 // Generate getters

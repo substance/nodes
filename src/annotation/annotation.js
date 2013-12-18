@@ -71,7 +71,8 @@ _.each(Annotation.type.properties, function(prop, key) {
       return this.properties[key];
     },
     set: function(value) {
-      return this.properties[key] = value;
+      this.properties[key] = value;
+      return this;
     }
   };
 });

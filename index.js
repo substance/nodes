@@ -2,7 +2,6 @@
 
 module.exports = {
   "node": require("./src/node"),
-  "composite": require("./src/composite"),
   "text": require("./src/text"),
   "paragraph": require("./src/paragraph"),
   "heading": require("./src/heading"),

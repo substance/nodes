@@ -61,15 +61,16 @@ CitationView.Prototype = function() {
       source.push(node.year);
     }
 
-    frag.appendChild($$('.source', {
+    this.sourceEl = $$('.source', {
       html: source.join('')
-    }));
+    });
+    frag.appendChild(this.sourceEl);
 
     // Add DOI (if available)
     // -------
 
     if (node.doi) {
-      frag.appendChild($$('.doi', {
+      this.doiEl = $$('.doi', {
         children: [
           $$('b', {text: "DOI: "}),
           $$('a', {
@@ -78,7 +79,8 @@ CitationView.Prototype = function() {
             text: node.doi
           })
         ]
-      }));
+      });
+      frag.appendChild(this.doiEl);
     }
 
     this.content.appendChild(frag);
@@ -86,6 +88,26 @@ CitationView.Prototype = function() {
     return this;
   };
 
+  this.describeStructure = function() {
+    var structure = [];
+    var self = this;
+    structure.push(this.propertyComponent("label", [this.node.id, "title"])
+      .element(function() {
+        return self.labelView.el;
+      })
+    );
+    structure.push(this.customComponent("source")
+      .element(function() {
+        return self.sourceEl;
+      })
+    );
+    structure.push(this.customComponent("doi")
+      .element(function() {
+        return self.doiEl;
+      })
+    );
+    return structure;
+  };
 };
 
 CitationView.Prototype.prototype = NodeView.prototype;

@@ -1,10 +1,9 @@
 "use strict";
 
 var DocumentNode = require("../node/node");
-var Composite = require("../composite/composite");
 
 var Figure = function(node, document) {
-  Composite.call(this, node, document);
+  DocumentNode.call(this, node, document);
 };
 
 Figure.type = {
@@ -46,22 +45,8 @@ Figure.config = {
 
 Figure.Prototype = function() {
 
-  this.insertOperation = function(/*startChar, text*/) {
-    return null;
-  };
-
-  this.deleteOperation = function(/*startChar, endChar*/) {
-    return null;
-  };
-
   this.hasCaption = function() {
     return (!!this.properties.caption);
-  };
-
-  this.getNodes = function() {
-    var nodes = [];
-    if (this.properties.caption) nodes.push(this.properties.caption);
-    return nodes;
   };
 
   this.getCaption = function() {
@@ -69,7 +54,7 @@ Figure.Prototype = function() {
   };
 };
 
-Figure.Prototype.prototype = Composite.prototype;
+Figure.Prototype.prototype = DocumentNode.prototype;
 Figure.prototype = new Figure.Prototype();
 Figure.prototype.constructor = Figure;
 

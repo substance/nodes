@@ -62,7 +62,7 @@ Collaborator.Prototype = function() {
     return _.map(this.properties.affiliations, function(affId) {
       return this.document.get(affId);
     }, this);
-  }
+  };
 };
 
 Collaborator.Prototype.prototype = DocumentNode.prototype;

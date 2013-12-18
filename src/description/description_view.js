@@ -1,5 +1,6 @@
 "use strict";
 
+var $$ = require("substance-application").$$;
 var NodeView = require("../node/node_view");
 
 var DescriptionView = function(node, viewFactory) {
@@ -7,31 +8,27 @@ var DescriptionView = function(node, viewFactory) {
 
   this.$el.addClass('description');
   this.$el.attr('id', this.node.id);
+
+  this.childViews = {
+    "topic": null,
+    "body": null
+  };
 };
 
 DescriptionView.Prototype = function() {
 
   this.render = function() {
+    NodeView.prototype.render.call(this);
 
-    var content = document.createElement('div');
-    content.className = 'content';
-
-    var topicEl = document.createElement('div');
-    topicEl.className = 'topic';
-    var topicView = this.viewFactory.createView(this.node.getTopic());
+    var topicEl = $$(".topic");
+    var topicView = this.childViews["topic"] = this.viewFactory.createView(this.node.getTopic());
     topicEl.appendChild(topicView.render().el);
-    this._topicEl = topicEl;
+    this.content.appendChild(topicEl);
 
-    var bodyEl = document.createElement('div');
-    bodyEl.className = 'body';
-    var bodyView = this.viewFactory.createView(this.node.getBody());
+    var bodyEl = $$(".body");
+    var bodyView = this.childViews["body"] = this.viewFactory.createView(this.node.getBody());
     bodyEl.appendChild(bodyView.render().el);
-    this._bodyEl = bodyEl;
-
-    content.appendChild(topicEl);
-    content.appendChild(bodyEl);
-
-    this.el.appendChild(content);
+    this.content.appendChild(bodyEl);
 
     return this;
   };

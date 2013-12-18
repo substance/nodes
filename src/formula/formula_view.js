@@ -21,6 +21,7 @@ FormulaView.Prototype = function() {
   // --------
 
   this.render = function() {
+    NodeView.prototype.render.call(this);
 
     var format = this.node.format;
     switch (format) {
@@ -52,7 +53,6 @@ FormulaView.Prototype = function() {
     if (this.node.label) {
       this.$el.append($('<div class="label">').html(this.node.label));
     }
-
 
     return this;
   };

@@ -1,17 +1,14 @@
 "use strict";
 
-var CompositeView = require("../composite/composite_view");
-var List = require("./list");
+var NodeView = require("../node/node_view");
+// var List = require("./list");
 
 // Substance.Image.View
 // ==========================================================================
 
 var ListView = function(node, viewFactory) {
-  CompositeView.call(this, node, viewFactory);
+  NodeView.call(this, node, viewFactory);
 };
-
-ListView.whoami = "SubstanceListView";
-
 
 ListView.Prototype = function() {
 
@@ -20,37 +17,8 @@ ListView.Prototype = function() {
   //
 
   this.render = function() {
-    this.el.innerHTML = "";
-
-    var ltype = (this.node.ordered) ? "OL" : "UL";
-    this.content = document.createElement(ltype);
-    this.content.classList.add("content");
-
-    var i;
-
-    // dispose existing children views if called multiple times
-    for (i = 0; i < this.childrenViews.length; i++) {
-      this.childrenViews[i].dispose();
-    }
-
-    // create children views
-    var children = this.node.getNodes();
-    for (i = 0; i < children.length; i++) {
-      var child = this.node.document.get(children[i]);
-      var childView = this.viewFactory.createView(child);
-
-      var listEl;
-      if (child instanceof List) {
-        listEl = childView.render().el;
-      } else {
-        listEl = document.createElement("LI");
-        listEl.appendChild(childView.render().el);
-      }
-      this.content.appendChild(listEl);
-      this.childrenViews.push(childView);
-    }
-
-    this.el.appendChild(this.content);
+    NodeView.prototype.render.call(this);
+    // TODO
     return this;
   };
 
@@ -61,7 +29,7 @@ ListView.Prototype = function() {
   };
 };
 
-ListView.Prototype.prototype = CompositeView.prototype;
+ListView.Prototype.prototype = NodeView.prototype;
 ListView.prototype = new ListView.Prototype();
 
 module.exports = ListView;
