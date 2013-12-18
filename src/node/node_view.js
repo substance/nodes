@@ -24,7 +24,6 @@ NodeView.Prototype = function() {
     this.content = document.createElement("DIV");
     this.content.classList.add("content");
     this.el.appendChild(this.content);
-    this.__describeStructure__();
     return this;
   };
 
@@ -114,22 +113,21 @@ NodeView.Prototype = function() {
     for (var i = 0; i < this.__components__.length; i++) {
       var component = this.__components__[i];
 
-      var cmpStart = range.compareBoundaryPoints(0, component.range);
+      var cmpStart = range.compareBoundaryPoints(0, component.getRange());
 
       // console.log("Comparing boundaries for", component.label, "START", cmpStart);
       if (cmpStart < 0) {
         break;
       }
 
-      var cmpEnd = range.compareBoundaryPoints(3, component.range);
+      var cmpEnd = range.compareBoundaryPoints(3, component.getRange());
       // console.log("Comparing boundaries for", component.label, "END", cmpEnd);
 
       // the cursor is within this component
       if (cmpEnd < 0) {
-        charPos += offset;
-        break;
+        charPos = offset;
       } else {
-        charPos += component.getLength();
+        charPos = component.getLength();
       }
     }
 

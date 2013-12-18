@@ -28,23 +28,22 @@ CoverView.Prototype = function() {
       }));
     }
 
-    this.titleEl = $$('.title', {text: node.title });
+    this.titleEl = $$('.title.node-property', {'data-path': "title", text: node.title });
     this.content.appendChild(this.titleEl);
 
     var authorRefs = this.node.getAuthorRefs();
     if (authorRefs) {
-      var authorsEl = document.createElement("DIV");
-      authorsEl.classList.add("authors");
+      var authorsEl = $$(".authors");
       var authorRefEl;
       for (var i = 0; i < authorRefs.length; i++) {
+        // TODO: use data-* attribute to store the referenced collaborator node
         var ref = authorRefs[i];
         var author = this.node.document.get(ref.target);
-        authorRefEl = document.createElement("SPAN");
-        // TODO: use data-* attribute to store the referenced collaborator node
-        authorRefEl.setAttribute("id", ref.id);
-        authorRefEl.classList.add("annotation");
-        authorRefEl.classList.add("person_reference");
-        authorRefEl.innerHTML = author.name;
+        authorRefEl = $$("span.annotation.person_reference.node-property", {
+          id: ref.id,
+          text: author.name,
+          'data-path': "author"+i
+        });
         authorsEl.appendChild(authorRefEl);
       }
       this.content.appendChild(authorsEl);
@@ -75,11 +74,10 @@ CoverView.Prototype = function() {
     };
     titleComponent.mapCharPos = function(charPos) {
       var range = document.createRange();
-      range.setStart(this.titleEl.childNodes[0], charPos);
+      range.setStart(titleEl.childNodes[0], charPos);
       return range;
     };
     this.addComponent(titleComponent);
-
 
     var authorRefs = this.node.getAuthorRefs();
     if (authorRefs) {
@@ -89,7 +87,7 @@ CoverView.Prototype = function() {
         var author = this.node.document.get(ref.target);
         var el = authorRefEls[i];
 
-        var authorRefComponent = new ViewComponents.PropertyComponent(author, this, name, el);
+        var authorRefComponent = new ViewComponents.PropertyComponent(this.node, this, "author"+i, el, [author.id, "name"]);
         authorRefComponent.getLength = function() {
           return author.name.length;
         };

@@ -32,20 +32,21 @@ NodeComponent.Prototype = function() {
     return this.node.getLength();
   };
 };
-NodeComponent.prototype.prototype = AbstractComponent.prototype;
+NodeComponent.Prototype.prototype = AbstractComponent.prototype;
 NodeComponent.prototype = new NodeComponent.Prototype();
 
-var PropertyComponent = function(node, view, property, el) {
+var PropertyComponent = function(node, view, property, el, propertyPath) {
   AbstractComponent.call(this, node, view, el);
   this.type = "property";
   this.path = [node.id, property];
+  this.propertyPath = propertyPath || this.path;
 };
 PropertyComponent.Prototype = function() {
   this.getLength = function() {
     throw new Error("This is abstract and must be overridden");
   };
 };
-PropertyComponent.prototype.prototype = AbstractComponent.prototype;
+PropertyComponent.Prototype.prototype = AbstractComponent.prototype;
 PropertyComponent.prototype = new PropertyComponent.Prototype();
 
 module.exports = {
