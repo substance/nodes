@@ -3,7 +3,7 @@
 var _ = require("underscore");
 var NodeView = require("../node/node_view");
 var $$ = require("substance-application").$$;
-
+var ViewComponents = require("../view_components");
 
 // Lens.Cover.View
 // ==========================================================================
@@ -19,6 +19,7 @@ CoverView.Prototype = function() {
 
   this.render = function() {
     NodeView.prototype.render.call(this);
+
     var node = this.node;
 
     if (this.node.document.published_on) {
@@ -53,53 +54,12 @@ CoverView.Prototype = function() {
       this.el.style.backgroundImage = "url('"+this.node.image+"')";
     }
 
-    this.__mapping__ = null;
-
     return this;
   };
 
-  // Retrieves the corresponding character position for the given DOM position.
-  // --------
-  //
-
-  this.getCharPosition = function(el, offset) {
-    if (!this.__mapping__) this.createMapping();
-    var charPos = this.__getCharPosition__(el, offset);
-    // console.log("Cover.View: getCharPosition()", charPos);
-    return charPos;
-  };
-
-  // Retrieves the corresponding DOM position for a given character.
-  // --------
-  //
-
-  this.getDOMPosition = function(charPos) {
-    if (!this.__mapping__) this.createMapping();
-    var range = this.__getDOMPosition__(charPos);
-    // console.log("Cover.View: getDOMPosition()", range);
-    return range;
-  };
-
-  this.getLength = function() {
-    if (!this.__mapping__) this.createMapping();
-
-    return this.__getLength__();
-  };
-
-  this.__createRange__ = function(el) {
-    var range = document.createRange();
-    range.selectNode(el);
-    return range;
-  };
-
-  this.createMapping = function() {
-    // this view allows to set the cursor on
-    // - title
-    // - author refs
-    var mapping = [];
+  // TODO: invent an API for declaring the structure of the rendered node
+  this.describeStructure = function() {
     var self = this;
-
-    var titleEl = this.el.querySelector(".title");
 
     // TODO: there is redundancy here: the model needs to define a getLength()
     // maybe it is possible to let the model give certain type of items in the expected order
@@ -107,88 +67,40 @@ CoverView.Prototype = function() {
     // TODO2: the range can not be created before the root element is inserted into the DOM
     // therefor it would be interesting to specify the mappings not providing the range instances
     // but the elements instead and create the ranges lazily
+    var titleEl = this.titleEl;
+    var titleComponent = new ViewComponents.PropertyComponent(this.node, this, "title", titleEl);
+    // HACK: +1 to have an extra position after the title
+    titleComponent.getLength = function() {
+      return self.node.title.length + 1;
+    };
+    titleComponent.mapCharPos = function(charPos) {
+      var range = document.createRange();
+      range.setStart(this.titleEl.childNodes[0], charPos);
+      return range;
+    };
+    this.addComponent(titleComponent);
 
-    mapping.push({
-      label: "title",
-      getLength: function() {
-        // HACK: +1 to have an extra position after the title
-        return self.node.title.length + 1;
-      },
-      range: this.__createRange__(titleEl),
-      getRange: function(charPos) {
-        var range = document.createRange();
-        range.setStart(titleEl.childNodes[0], charPos);
-        return range;
-      }
-    });
 
     var authorRefs = this.node.getAuthorRefs();
     if (authorRefs) {
       var authorRefEls = this.el.querySelectorAll("SPAN.person_reference");
+
       _.each(authorRefs, function(ref, i) {
         var author = this.node.document.get(ref.target);
         var el = authorRefEls[i];
-        mapping.push({
-          label: "author_"+i,
-          range: this.__createRange__(el),
-          getLength: function() {
-            return author.name.length;
-          },
-          getRange: function(charPos) {
-            var range = document.createRange();
-            range.setStart(el.childNodes[0], charPos);
-            return range;
-          }
-        });
+
+        var authorRefComponent = new ViewComponents.PropertyComponent(author, this, name, el);
+        authorRefComponent.getLength = function() {
+          return author.name.length;
+        };
+        authorRefComponent.mapCharPos = function(charPos) {
+          var range = document.createRange();
+          range.setStart(el.childNodes[0], charPos);
+          return range;
+        };
+        this.addComponent(authorRefComponent);
       }, this);
     }
-
-    this.__mapping__ = mapping;
-  };
-
-  this.__getCharPosition__ = function(el, offset) {
-    var range = document.createRange();
-    range.setStart(el, offset);
-
-    var charPos = 0;
-
-    for (var i = 0; i < this.__mapping__.length; i++) {
-      var mapping = this.__mapping__[i];
-
-      var cmpStart = range.compareBoundaryPoints(0, mapping.range);
-      // console.log("Comparing boundaries for", mapping.label, "START", cmpStart);
-      if (cmpStart < 0) {
-        break;
-      }
-
-      var cmpEnd = range.compareBoundaryPoints(3, mapping.range);
-      // console.log("Comparing boundaries for", mapping.label, "END", cmpEnd);
-
-      // the cursor is within this element
-      if (cmpEnd < 0) {
-        charPos += offset;
-        break;
-      } else {
-        charPos += mapping.getLength();
-      }
-    }
-
-    return charPos;
-  };
-
-  this.__getDOMPosition__ = function(charPos) {
-    var l, mapping;
-    for (var i = 0; i < this.__mapping__.length; i++) {
-      mapping = this.__mapping__[i];
-      l = mapping.getLength();
-
-      if (charPos<l) {
-        return mapping.getRange(charPos);
-      } else {
-        charPos -= l;
-      }
-    }
-    return mapping.getRange(l);
   };
 
   this.onGraphUpdate = function(op) {
@@ -196,7 +108,6 @@ CoverView.Prototype = function() {
       this.titleEl.childNodes[0].textContent = this.node.title;
     }
   };
-
 };
 
 CoverView.Prototype.prototype = NodeView.prototype;
