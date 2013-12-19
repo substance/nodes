@@ -1,6 +1,7 @@
 "use strict";
 
 var NodeSurface = require("../node/node_surface");
+var TextSurface = require("../text/text_surface");
 
 var __titleComponent;
 var __authorRefComponent;
@@ -21,17 +22,16 @@ var CoverSurface = function(node, surfaceProvider) {
 CoverSurface.prototype = NodeSurface.prototype;
 
 __titleComponent = function(self) {
-  var titleComponent = self.propertyComponent("title", ["document", "title"])
-    .element(function() {
-      return self.view.childViews["title"].el;
-    })
-    .length(function() {
-      // HACK: somehow we need a plus one here... dunno
-      return self.node.title.length + 1;
-    })
-    .mapping(function(charPos) {
-      return self.getDOMPosition(charPos);
-    });
+  // TODO: it is not very convenient to create a Text sub-surface for a textish property:
+  var titleSurface = new TextSurface(self.node, self.surfaceProvider, { property: "title", propertyPath: ["document", "title"]});
+  var titleComponent = titleSurface.components[0];
+  titleComponent.element(function() {
+    return self.view.childViews["title"].el;
+  });
+  titleComponent.length(function() {
+    // HACK: somehow we need a plus one here... dunno
+    return self.node.title.length + 1;
+  });
   return titleComponent;
 };
 
@@ -39,7 +39,7 @@ __authorRefComponent = function(self, ref) {
   var author = self.node.document.get(ref.target);
   var authorRefComponent = self.customComponent(["cover", "authors", ref.id], {propertyPath: [author.id, "name"]})
     .element(function() {
-      var el = self.el.querySelector("span.person_reference#"+ref.id);
+      var el = self.view.el.querySelector("span.person_reference#"+ref.id);
       if (!el) {
         throw new Error("Could not select element for person reference");
       }

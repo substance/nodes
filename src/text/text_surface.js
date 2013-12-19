@@ -8,11 +8,16 @@ var TextSurface = function(node, surfaceProvider, options) {
   this.property = options.property || "content";
 
   var self = this;
-  this.components.push(this.nodeComponent()
-    .length(function() {
-      self.node[self.property].length;
-    })
-  );
+
+  if (options.property) {
+    this.components.push(this.propertyComponent(options.property, options.propertyPath));
+  } else {
+    this.components.push(this.nodeComponent()
+      .length(function() {
+        self.node[self.property].length;
+      })
+    );
+  }
 };
 
 // This surface has not been refactored. We simply override the default implementation
@@ -96,6 +101,9 @@ TextSurface.Prototype = function() {
     return range;
   };
 
+  this.getComponent = function() {
+    return this.components[0];
+  };
 };
 TextSurface.Prototype.prototype = NodeSurface.prototype;
 TextSurface.prototype = new TextSurface.Prototype();
