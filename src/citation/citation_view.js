@@ -1,8 +1,5 @@
 "use strict";
 
-var _ = require('underscore');
-var util = require('substance-util');
-var html = util.html;
 var NodeView = require("../node").View;
 var TextView = require("../text").View;
 
@@ -17,6 +14,10 @@ var CitationView = function(node) {
 
   this.$el.attr({id: node.id});
   this.$el.addClass('citation');
+
+  this.childViews = {
+    "title": null
+  };
 };
 
 
@@ -28,21 +29,28 @@ CitationView.Prototype = function() {
     var frag = document.createDocumentFragment(),
         node = this.node;
 
-    this.labelView = new TextView(this.node, this.viewFactory, {property: "title"});
-    frag.appendChild(this.labelView.render().el);
-    // this.childrenViews.push(this.labelView);
+    // TODO: rename this to title*
+    var titleView = this.childViews["title"] = new TextView(this.node, this.viewFactory, {property: "title"});
+    frag.appendChild(titleView.render().el);
 
     // Add Authors
     // -------
 
-    frag.appendChild($$('.authors', {
-      html: node.authors.join(', ')
-    }));
-
+    this.authorEls = [];
+    var authorsEl = $$('.authors');
+    for (var i = 0; i < node.authors.length; i++) {
+      var author = node.authors[i];
+      this.authorEls.push($$('span.author', {
+        text: author,
+        "data-path": "author"+i
+      }));
+      authorsEl.appendChild(this.authorEls[i]);
+      authorsEl.appendChild(document.createTextNode(" "));
+    }
+    frag.appendChild(authorsEl);
 
     // Add Source
     // -------
-
     var source = [];
 
     if (node.source && node.volume) {
@@ -62,7 +70,8 @@ CitationView.Prototype = function() {
     }
 
     this.sourceEl = $$('.source', {
-      html: source.join('')
+      html: source.join(''),
+      // "data-path": "source"
     });
     frag.appendChild(this.sourceEl);
 
@@ -86,27 +95,6 @@ CitationView.Prototype = function() {
     this.content.appendChild(frag);
 
     return this;
-  };
-
-  this.describeStructure = function() {
-    var structure = [];
-    var self = this;
-    structure.push(this.propertyComponent("label", [this.node.id, "title"])
-      .element(function() {
-        return self.labelView.el;
-      })
-    );
-    structure.push(this.customComponent("source")
-      .element(function() {
-        return self.sourceEl;
-      })
-    );
-    structure.push(this.customComponent("doi")
-      .element(function() {
-        return self.doiEl;
-      })
-    );
-    return structure;
   };
 };
 
