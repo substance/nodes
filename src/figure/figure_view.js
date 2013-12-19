@@ -45,27 +45,6 @@ FigureView.Prototype = function() {
     return this;
   };
 
-  this.describeStructure = function() {
-    var structure = [];
-    var self = this;
-    structure.push(
-      this.propertyComponent("label")
-      .element(function() {
-        return self.childViews["label"].el;
-      })
-      .length(function() {
-        return self.node.label.length;
-      })
-      .mapping(function(charPos) {
-        return self.childViews["label"].getDOMPosition(charPos);
-      })
-    );
-    if (this.node.caption) {
-      structure = structure.concat(this.childViews["caption"].describeStructure());
-    }
-    return structure;
-  };
-
   // Updates image src when figure is updated by ImageUrlEditor
   // --------
   //

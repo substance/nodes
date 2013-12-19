@@ -58,56 +58,6 @@ CoverView.Prototype = function() {
     return this;
   };
 
-  // TODO: invent an API for declaring the structure of the rendered node
-  this.describeStructure = function() {
-    var structure = [];
-    var self = this;
-
-    var titleComponent = this.propertyComponent("title", ["document", "title"])
-      .element(function() {
-        return self.childViews["title"].el;
-      })
-      .length(function() {
-        // HACK: somehow we need a plus one here... dunno
-        return self.node.title.length + 1;
-      })
-      .mapping(function(charPos) {
-        return self.childViews["title"].getDOMPosition(charPos);
-      });
-    structure.push(titleComponent);
-
-    var authorRefs = this.node.getAuthorRefs();
-    if (authorRefs) {
-      for (var i = 0; i < authorRefs.length; i++) {
-        var ref = authorRefs[i];
-        structure.push(this.__describeAuthorRef(ref));
-      }
-    }
-    return structure;
-  };
-
-  this.__describeAuthorRef = function(ref) {
-    var self = this;
-    var author = this.node.document.get(ref.target);
-    var authorRefComponent = this.customComponent(["cover", "authors", ref.id], {propertyPath: [author.id, "name"]})
-      .element(function() {
-        var el = self.el.querySelector("span.person_reference#"+ref.id);
-        if (!el) {
-          throw new Error("Could not select element for person reference");
-        }
-        return el;
-      })
-      .length(function() {
-        return author.name.length;
-      })
-      .mapping(function(charPos) {
-        var range = document.createRange();
-        range.setStart(this.el.childNodes[0], charPos);
-        return range;
-      });
-    return authorRefComponent;
-  };
-
   this.onGraphUpdate = function(op) {
     if (op.path[0] === "document" && op.path[1] === "title") {
       this.childViews["title"].el.childNodes[0].textContent = this.node.title;

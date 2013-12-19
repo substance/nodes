@@ -50,6 +50,8 @@ var TextView = function(node, renderer, options) {
   this.annotationBehavior = _getAnnotationBehavior(node.document);
 };
 
+var _findTextEl;
+
 TextView.Prototype = function() {
 
   // Rendering
@@ -69,23 +71,20 @@ TextView.Prototype = function() {
     this.renderWithAnnotations(this._annotations);
   };
 
-  this.describeStructure = function() {
-    return [this.nodeComponent()];
-  };
 
   this.insert = function(pos, str) {
-    var range = this.getDOMPosition(pos);
-    var textNode = range.startContainer;
-    var offset = range.startOffset;
+    var wrange = _findTextEl(this.content, pos);
+    var textNode = wrange[0];
+    var offset = wrange[1];
     var text = textNode.textContent;
     text = text.substring(0, offset) + str + text.substring(offset);
     textNode.textContent = text;
   };
 
   this.delete = function(pos, length) {
-    var range = this.getDOMPosition(pos);
-    var textNode = range.startContainer;
-    var offset = range.startOffset;
+    var wrange = _findTextEl(this.content, pos);
+    var textNode = wrange[0];
+    var offset = wrange[1];
     var text = textNode.textContent;
     text = text.substring(0, offset) + text.substring(offset+length);
     textNode.textContent = text;
@@ -132,71 +131,6 @@ TextView.Prototype = function() {
         this.renderContent();
       }
     }
-  };
-
-  this.getCharPosition = function(el, offset) {
-    // TODO: this is maybe too naive
-    // lookup the given element and compute a
-    // the corresponding char position in the plain document
-    var range = document.createRange();
-    range.setStart(this.content.childNodes[0], 0);
-    range.setEnd(el, offset);
-    var str = range.toString();
-    var charPos = Math.min(this.node[this.property].length, str.length);
-
-    // console.log("Requested char pos: ", charPos, this.node.content[charPos]);
-
-    return charPos;
-  };
-
-  // Returns the corresponding DOM element position for the given character
-  // --------
-  //
-  // A DOM position is specified by a tuple of element and offset.
-  // In the case of text nodes it is a TEXT element.
-
-  this.getDOMPosition = function(charPos) {
-    if (this.content === undefined) {
-      throw new Error("Not rendered yet.");
-    }
-
-    var range = document.createRange();
-
-    if (this.node[this.property].length === 0) {
-      range.setStart(this.content.childNodes[0], 0);
-      return range;
-    }
-
-    // otherwise look for the containing node in DFS order
-    // TODO: this could be optimized using some indexing or caching?
-    var stack = [this.content];
-    while(stack.length > 0) {
-      var el = stack.pop();
-      if (el.nodeType === Node.TEXT_NODE) {
-        var text = el;
-        if (text.length >= charPos) {
-          range.setStart(el, charPos);
-          return range;
-        } else {
-          charPos -= text.length;
-        }
-      } else if (el.childNodes.length > 0) {
-        // push in reverse order to have a left bound DFS
-        for (var i = el.childNodes.length - 1; i >= 0; i--) {
-          stack.push(el.childNodes[i]);
-        }
-      }
-    }
-
-    console.log("Bug-Alarm: the model and the view are out of sync.");
-    console.log("The model as "+charPos+" more characters");
-    console.log("Returning the last available position... but please fix me. Anyone?");
-
-    var children = this.content.childNodes;
-    var last = children[children.length-1];
-    range.setStart(last, last.length);
-
-    return range;
   };
 
   this.createAnnotationElement = function(entry) {
@@ -259,5 +193,31 @@ TextView.Prototype = function() {
 
 TextView.Prototype.prototype = NodeView.prototype;
 TextView.prototype = new TextView.Prototype();
+
+var _unshiftAll = function(arr, other) {
+  for (var i = 0; i < other.length; i++) {
+    arr.unshift(other[i]);
+  };
+};
+
+_findTextEl = function(el, pos) {
+  var childNodes = [];
+  _unshiftAll(childNodes, el.childNodes);
+
+  while(childNodes.length) {
+    var next = childNodes.shift();
+    if (next.nodeType === Node.TEXT_NODE) {
+      var t = next.textContent;
+      if (t.length >= pos) {
+        return [next, pos];
+      } else {
+        pos -= t.length;
+      }
+    } else {
+      _unshiftAll(childNodes, next.childNodes);
+    }
+  }
+};
+
 
 module.exports = TextView;

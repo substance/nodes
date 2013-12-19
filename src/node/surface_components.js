@@ -8,12 +8,13 @@ var __createRange__ = function(el) {
   return range;
 };
 
-var AbstractComponent = function(node, view, el, path) {
-  this.node = node;
-  this.view = view;
-  this.path = path;
+var AbstractComponent = function(surface) {
+  this.surface = surface;
+  this.node = surface.node;
+  this.path = null;
   this.__range__ = null;
 };
+
 AbstractComponent.Prototype = function() {
   this.getRange = function() {
     if (!this.__range__) {
@@ -48,7 +49,7 @@ AbstractComponent.Prototype = function() {
   };
 
   this.__getElement__ = function() {
-    return this.view.el;
+    throw new Error("This method is abstract and must be overridden");
   };
 
   this.getLength = function() {
@@ -56,7 +57,7 @@ AbstractComponent.Prototype = function() {
   };
 
   this.__getLength__ = function() {
-    return this.node.getLength();
+    throw new Error("This is abstract and must be overridden");
   };
 
   this.mapCharPos = function(charPos) {
@@ -70,44 +71,36 @@ AbstractComponent.Prototype = function() {
 };
 AbstractComponent.prototype = new AbstractComponent.Prototype();
 
-var NodeComponent = function(node, view) {
-  AbstractComponent.call(this, node, view, view.el);
+var NodeComponent = function(surface) {
+  AbstractComponent.call(this, surface);
   this.type = "node";
-  this.path = [node.id];
+  this.path = [surface.node.id];
 };
 NodeComponent.Prototype = function() {
 };
 NodeComponent.Prototype.prototype = AbstractComponent.prototype;
 NodeComponent.prototype = new NodeComponent.Prototype();
 
-var PropertyComponent = function(node, view, property, propertyPath) {
-  AbstractComponent.call(this, node, view);
+var PropertyComponent = function(surface, property, propertyPath) {
+  AbstractComponent.call(this, surface);
   this.type = "property";
-  this.path = [node.id, property];
+  this.path = [surface.node.id, property];
   this.propertyPath = propertyPath || this.path;
 };
-PropertyComponent.Prototype = function() {
-  this.__getLength__ = function() {
-    throw new Error("This is abstract and must be overridden");
-  };
-};
+PropertyComponent.Prototype = function() {};
 PropertyComponent.Prototype.prototype = AbstractComponent.prototype;
 PropertyComponent.prototype = new PropertyComponent.Prototype();
 
-var CustomComponent = function(node, view, path, data) {
-  AbstractComponent.call(this, node, view);
+var CustomComponent = function(surface, path, data) {
+  AbstractComponent.call(this, surface);
   this.type = "custom";
   if (_.isString(path)) {
-    path = [node.id, path];
+    path = [surface.node.id, path];
   }
   this.path = path;
   _.extend(this, data);
 };
-CustomComponent.Prototype = function() {
-  this.__getLength__ = function() {
-    throw new Error("This is abstract and must be overridden");
-  };
-};
+CustomComponent.Prototype = function() {};
 CustomComponent.Prototype.prototype = AbstractComponent.prototype;
 CustomComponent.prototype = new CustomComponent.Prototype();
 
