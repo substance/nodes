@@ -53,7 +53,7 @@ var TextView = function(node, renderer, options) {
   // Note: usually the surface is not needed within the view.
   // However, here I wan't to use the getDOMPosition function to an easy implementation of the
   // incremental text insertion/deletion.
-  this.__surface = new TextSurface(this.node);
+  this.__surface = new TextSurface(this.node, null, {property: this.property});
   this.__surface.attachView(this);
 };
 
@@ -99,7 +99,8 @@ TextView.Prototype = function() {
   };
 
   this.onNodeUpdate = function(op) {
-    if (op.path[1] === "content") {
+    console.log("TextView.onNodeUpdate()", op);
+    if (op.path[1] === this.property) {
       // console.log("Updating text view: ", op);
       if (op.type === "update") {
         var update = op.diff;

@@ -50,14 +50,11 @@ FigureView.Prototype = function() {
   //
   // TODO: what to do if label is updated?
 
-  this.onNodeUpdate = function(/*op*/) {
-    // More efficient ?
-    // Just update url
+  this.onNodeUpdate = function(op) {
     this.$('img').attr({
       src: this.node.url
     });
-    // Or re-render the whole thing to be safe?
-    // this.render();
+    this.childViews["label"].onNodeUpdate(op);
   };
 
 };
