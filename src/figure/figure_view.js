@@ -57,7 +57,7 @@ FigureView.Prototype = function() {
         return self.node.label.length;
       })
       .mapping(function(charPos) {
-        return self.childViews.getDOMPosition(charPos);
+        return self.childViews["label"].getDOMPosition(charPos);
       })
     );
     if (this.node.caption) {
