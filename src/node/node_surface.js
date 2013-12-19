@@ -150,8 +150,12 @@ NodeSurface.Prototype = function() {
     return range;
   };
 
-  this.addSubSurface = function(childSurface) {
-    this.components = this.components.concat(childSurface.components);
+  this.addSubSurface = function(name, childSurface) {
+    for (var i = 0; i < childSurface.components.length; i++) {
+      var c = childSurface.components[i];
+      c.name = name;
+      this.components.push(c);
+    };
   };
 };
 NodeSurface.prototype = new NodeSurface.Prototype();

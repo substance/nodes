@@ -17,7 +17,7 @@ var FigureSurface = function(node, surfaceProvider) {
   if (this.node.caption) {
     var caption = this.node.getCaption();
     var captionSurface = this.surfaceProvider.getNodeSurface(caption);
-    this.addSubSurface(captionSurface);
+    this.addSubSurface("caption", captionSurface);
   }
 };
 FigureSurface.prototype = NodeSurface.prototype;
@@ -32,7 +32,7 @@ __labelComponent = function(self) {
     })
     .length(function() {
       // HACK: somehow we need a plus one here... dunno
-      return self.node.label.length;
+      return self.node.label.length + 1;
     });
 
   return labelComponent;
