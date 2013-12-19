@@ -3,6 +3,7 @@
 var NodeView = require('../node/node_view');
 var $$ = require("substance-application").$$;
 var Fragmenter = require("substance-util").Fragmenter;
+var TextSurface = require("./text_surface");
 
 // Substance.Text.View
 // -----------------
@@ -48,6 +49,12 @@ var TextView = function(node, renderer, options) {
 
   this._annotations = {};
   this.annotationBehavior = _getAnnotationBehavior(node.document);
+
+  // Note: usually the surface is not needed within the view.
+  // However, here I wan't to use the getDOMPosition function to an easy implementation of the
+  // incremental text insertion/deletion.
+  this.__surface = new TextSurface(this.node);
+  this.__surface.attachView(this);
 };
 
 var _findTextEl;
@@ -73,18 +80,19 @@ TextView.Prototype = function() {
 
 
   this.insert = function(pos, str) {
-    var wrange = _findTextEl(this.content, pos);
-    var textNode = wrange[0];
-    var offset = wrange[1];
+    var range = this.__surface.getDOMPosition(pos);
+    var textNode = range.startContainer;
+    var offset = range.startOffset;
+
     var text = textNode.textContent;
     text = text.substring(0, offset) + str + text.substring(offset);
     textNode.textContent = text;
   };
 
   this.delete = function(pos, length) {
-    var wrange = _findTextEl(this.content, pos);
-    var textNode = wrange[0];
-    var offset = wrange[1];
+    var range = this.__surface.getDOMPosition(pos);
+    var textNode = range.startContainer;
+    var offset = range.startOffset;
     var text = textNode.textContent;
     text = text.substring(0, offset) + text.substring(offset+length);
     textNode.textContent = text;
