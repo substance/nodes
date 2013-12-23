@@ -18,5 +18,10 @@ module.exports = {
   "emphasis": require("./src/emphasis"),
   "strong": require("./src/strong"),
   "subscript": require("./src/subscript"),
-  "superscript": require("./src/superscript")
+  "superscript": require("./src/superscript"),
+  "code": require("./src/code"),
+  "link": require("./src/link"),
+  "math": require("./src/math"),
+  "issue": require("./src/issue"),
+  "comment": require("./src/comment")
 };
