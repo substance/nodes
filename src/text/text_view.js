@@ -99,7 +99,7 @@ TextView.Prototype = function() {
   };
 
   this.onNodeUpdate = function(op) {
-    console.log("TextView.onNodeUpdate()", op);
+    // console.log("TextView.onNodeUpdate()", op);
     if (op.path[1] === this.property) {
       // console.log("Updating text view: ", op);
       if (op.type === "update") {
