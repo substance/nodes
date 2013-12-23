@@ -23,5 +23,9 @@ module.exports = {
   "link": require("./src/link"),
   "math": require("./src/math"),
   "issue": require("./src/issue"),
-  "comment": require("./src/comment")
+  "comment": require("./src/comment"),
+  "figure_reference": require("./src/figure_reference"),
+  "citation_reference": require("./src/citation_reference"),
+  "cross_reference": require("./src/cross_reference"),
+  "collaborator_reference": require("./src/collaborator_reference")
 };
