@@ -19,6 +19,7 @@ var CoverSurface = function(node, surfaceProvider) {
     }
   }
 };
+
 CoverSurface.prototype = NodeSurface.prototype;
 
 __titleComponent = function(self) {
