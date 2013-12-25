@@ -1,6 +1,7 @@
 "use strict";
 
 var Annotation = require('../annotation/annotation');
+var _ = require('underscore');
 
 var Comment = function(node, document) {
   Annotation.call(this, node, document);
@@ -54,6 +55,28 @@ Comment.Prototype = function() {};
 
 Comment.Prototype.prototype = Annotation.prototype;
 Comment.prototype = new Comment.Prototype();
+
+
+// Getters and setters
+// -----------------
+//
+
+var getters = {};
+
+_.each(Comment.type.properties, function(prop, key) {
+  getters[key] = {
+    get: function() {
+      return this.properties[key];
+    },
+    set: function(value) {
+      this.properties[key] = value;
+      return this;
+    }
+  };
+});
+
+Object.defineProperties(Comment.prototype, getters);
+
 Comment.prototype.constructor = Comment;
 
 module.exports = Comment;

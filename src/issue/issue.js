@@ -1,6 +1,7 @@
 "use strict";
 
 var Annotation = require('../annotation/annotation');
+var _ = require('underscore');
 
 var Issue = function(node, document) {
   Annotation.call(this, node, document);
@@ -13,6 +14,9 @@ Issue.type = {
   "id": "issue",
   "parent": "annotation",
   "properties": {
+    "title": "string",
+    "issue_type": "string",
+    "description": "string"
   }
 };
 
@@ -42,6 +46,9 @@ Issue.example = {
     "text_54",
     "content"
   ],
+  "title": "Add high resolution images",
+  "descr": "By adding high resolution images, this paper gains a lot of quality.",
+  "issue_type": "idea",
   "range": [
     85,
     95
@@ -52,6 +59,27 @@ Issue.Prototype = function() {};
 
 Issue.Prototype.prototype = Annotation.prototype;
 Issue.prototype = new Issue.Prototype();
+
+// Getters and setters
+// -----------------
+//
+
+var getters = {};
+
+_.each(Issue.type.properties, function(prop, key) {
+  getters[key] = {
+    get: function() {
+      return this.properties[key];
+    },
+    set: function(value) {
+      this.properties[key] = value;
+      return this;
+    }
+  };
+});
+
+Object.defineProperties(Issue.prototype, getters);
+
 Issue.prototype.constructor = Issue;
 
 module.exports = Issue;
