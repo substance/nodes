@@ -2,6 +2,7 @@
 
 var NodeView = require("../node").View;
 var $$ = require("substance-application").$$;
+var TextView = require("../text/text_view");
 
 // Substance.Collaborator.View
 // ==========================================================================
@@ -21,6 +22,9 @@ CollaboratorView.Prototype = function() {
 
   this.render = function() {
     NodeView.prototype.render.call(this);
+
+    var nameView = new TextView(this.node, this.viewFactory, {property: "name"});
+    this.content.appendChild(nameView.render().el);
 
     // Image
     // -------
