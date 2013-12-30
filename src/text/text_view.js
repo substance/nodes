@@ -136,7 +136,7 @@ TextView.Prototype = function() {
       }
 
       if (rerender) {
-        console.log("Rerendering TextView due to annotation update", op);
+        //console.log("Rerendering TextView due to annotation update", op);
         this.renderContent();
       }
     }
@@ -206,7 +206,7 @@ TextView.prototype = new TextView.Prototype();
 var _unshiftAll = function(arr, other) {
   for (var i = 0; i < other.length; i++) {
     arr.unshift(other[i]);
-  };
+  }
 };
 
 _findTextEl = function(el, pos) {
