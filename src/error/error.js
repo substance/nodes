@@ -38,14 +38,8 @@ Error.description = {
 Error.example = {
   "type": "error",
   "id": "error_1",
-  "path": [
-    "text_54",
-    "content"
-  ],
-  "range": [
-    85,
-    95
-  ]
+  "title": "Hi I am an a error",
+  "description": "An error, yes."
 };
 
 Error.Prototype = function() {};
