@@ -16,7 +16,7 @@ Issue.type = {
   "properties": {
     "title": "string",
     "issue_type": "string",
-    "description": "string"
+    "description": "string" // should be a reference a text node?
   }
 };
 
@@ -43,7 +43,17 @@ Issue.example = {
   "abstract": "type"
 };
 
-Issue.Prototype = function() {};
+Issue.Prototype = function() {
+
+  this.hasDescription = function() {
+    return (!!this.properties.caption);
+  };
+
+  this.getDescription = function() {
+    if (this.properties.description) return this.document.get(this.properties.description);
+  };
+
+};
 
 Issue.Prototype.prototype = Annotation.prototype;
 Issue.prototype = new Issue.Prototype();

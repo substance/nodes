@@ -29,5 +29,6 @@ module.exports = {
   "figure_reference": require("./src/figure_reference"),
   "citation_reference": require("./src/citation_reference"),
   "cross_reference": require("./src/cross_reference"),
-  "collaborator_reference": require("./src/collaborator_reference")
+  "collaborator_reference": require("./src/collaborator_reference"),
+  "remark_reference": require("./src/remark_reference")
 };

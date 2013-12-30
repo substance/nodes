@@ -1,5 +1,6 @@
 "use strict";
 
 module.exports = {
-  Model: require("./issue")
+  Model: require("./issue"),
+  View: require("./issue_view")
 };
