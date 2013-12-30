@@ -14,7 +14,7 @@ var TextSurface = function(node, surfaceProvider, options) {
   } else {
     this.components.push(this.nodeComponent()
       .length(function() {
-        self.node[self.property].length;
+        return self.node[self.property].length;
       })
     );
   }
