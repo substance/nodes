@@ -2,15 +2,15 @@
 
 var Issue = require('../issue/issue');
 
-var Question = function(node, document) {
+var Remark = function(node, document) {
   Issue.call(this, node, document);
 };
 
 // Type definition
 // --------
 
-Question.type = {
-  "id": "question",
+Remark.type = {
+  "id": "remark",
   "parent": "issue",
   "properties": {
   }
@@ -20,8 +20,8 @@ Question.type = {
 // -----------------
 //
 
-Question.description = {
-  "name": "Question",
+Remark.description = {
+  "name": "Remark",
   "remarks": [
     "References a range in a text-ish node and tags it as emphasized"
   ],
@@ -30,13 +30,13 @@ Question.description = {
 };
 
 
-// Example Question annotation
+// Example Remark annotation
 // -----------------
 //
 
-Question.example = {
-  "type": "question",
-  "id": "question_1",
+Remark.example = {
+  "type": "remark",
+  "id": "remark_1",
   "path": [
     "text_54",
     "content"
@@ -47,10 +47,10 @@ Question.example = {
   ]
 };
 
-Question.Prototype = function() {};
+Remark.Prototype = function() {};
 
-Question.Prototype.prototype = Issue.prototype;
-Question.prototype = new Question.Prototype();
-Question.prototype.constructor = Question;
+Remark.Prototype.prototype = Issue.prototype;
+Remark.prototype = new Remark.Prototype();
+Remark.prototype.constructor = Remark;
 
-module.exports = Question;
+module.exports = Remark;

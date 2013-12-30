@@ -40,19 +40,7 @@ Issue.description = {
 //
 
 Issue.example = {
-  "type": "issue_1",
-  "id": "issue_1",
-  "path": [
-    "text_54",
-    "content"
-  ],
-  "title": "Add high resolution images",
-  "descr": "By adding high resolution images, this paper gains a lot of quality.",
-  "issue_type": "idea",
-  "range": [
-    85,
-    95
-  ]
+  "abstract": "type"
 };
 
 Issue.Prototype = function() {};

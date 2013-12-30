@@ -1,5 +1,5 @@
 "use strict";
 
 module.exports = {
-  Model: require("./question")
+  Model: require("./remark")
 };
