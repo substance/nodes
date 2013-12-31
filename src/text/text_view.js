@@ -11,8 +11,6 @@ var TextSurface = require("./text_surface");
 // Manipulation interface shared by all textish types (paragraphs, headings)
 // This behavior can overriden by the concrete node types
 
-var LAST_CHAR_HACK = false;
-
 function _getAnnotationBehavior(doc) {
   if (doc.constructor && doc.constructor.annotationBehavior) {
     return doc.constructor.annotationBehavior;
@@ -179,13 +177,6 @@ TextView.Prototype = function() {
 
     // this calls onText and onEnter in turns...
     fragmenter.start(fragment, text, annotations);
-
-    // EXPERIMENTAL HACK:
-    // append a trailing white-space to improve the browser's behaviour with softbreaks at the end
-    // of a node.
-    if (LAST_CHAR_HACK) {
-      fragment.appendChild(document.createTextNode(" "));
-    }
 
     // set the content
     this.content.innerHTML = "";
