@@ -11,6 +11,8 @@ var TextView = require("../text/text_view");
 var IssueView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
 
+  this.$el.addClass('issue');
+
   this.childViews = {
     "title": null,
     "description": null
