@@ -76,41 +76,50 @@ TextView.Prototype = function() {
     this.renderWithAnnotations(this._annotations);
   };
 
+  // This is a bunch of rubbish:
+  // Incremental updates are not working properly as the annotation boundaries are not
+  // taken into account.
+  // TODO: rewrite this and use the annotations as a hint to look up the right position.
+  // Falling back to full rerender for now
 
-  this.insert = function(pos, str) {
-    var range = this.__surface.getDOMPosition(pos);
-    var textNode = range.startContainer;
-    var offset = range.startOffset;
+  // this.insert = function(pos, str) {
+  //   var range = this.__surface.getDOMPosition(pos);
+  //   var textNode = range.startContainer;
+  //   var offset = range.startOffset;
 
-    var text = textNode.textContent;
-    text = text.substring(0, offset) + str + text.substring(offset);
-    textNode.textContent = text;
-  };
+  //   var text = textNode.textContent;
+  //   text = text.substring(0, offset) + str + text.substring(offset);
+  //   textNode.textContent = text;
+  // };
 
-  this.delete = function(pos, length) {
-    var range = this.__surface.getDOMPosition(pos);
-    var textNode = range.startContainer;
-    var offset = range.startOffset;
-    var text = textNode.textContent;
-    text = text.substring(0, offset) + text.substring(offset+length);
-    textNode.textContent = text;
-  };
+  // this.delete = function(pos, length) {
+  //   var range = this.__surface.getDOMPosition(pos);
+  //   var textNode = range.startContainer;
+  //   var offset = range.startOffset;
+  //   var text = textNode.textContent;
+  //   text = text.substring(0, offset) + text.substring(offset+length);
+  //   textNode.textContent = text;
+  // };
+
+  // this.onNodeUpdate = function(op) {
+  //   // console.log("TextView.onNodeUpdate()", op);
+  //   if (op.path[1] === this.property) {
+  //     // console.log("Updating text view: ", op);
+  //     if (op.type === "update") {
+  //       var update = op.diff;
+  //       if (update.isInsert()) {
+  //         this.insert(update.pos, update.str);
+  //       } else if (update.isDelete()) {
+  //         this.delete(update.pos, update.str.length);
+  //       }
+  //     } else if (op.type === "set") {
+  //       this.renderContent();
+  //     }
+  //   }
+  // };
 
   this.onNodeUpdate = function(op) {
-    // console.log("TextView.onNodeUpdate()", op);
-    if (op.path[1] === this.property) {
-      // console.log("Updating text view: ", op);
-      if (op.type === "update") {
-        var update = op.diff;
-        if (update.isInsert()) {
-          this.insert(update.pos, update.str);
-        } else if (update.isDelete()) {
-          this.delete(update.pos, update.str.length);
-        }
-      } else if (op.type === "set") {
-        this.renderContent();
-      }
-    }
+    this.renderContent();
   };
 
   this.onGraphUpdate = function(op) {
