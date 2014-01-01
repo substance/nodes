@@ -21,6 +21,10 @@
     "substance-application": "git+https://github.com/substance/application.git#appstates",
     "substance-operator": "git+https://github.com/substance/operator.git#0.3.x"
   },
+  "devDependencies": {
+    "mocha": "1.12.x",
+    "substance-test": "git+https://github.com/substance/test.git#0.3.x"
+  },
   "version": "0.3.0",
   "engines": {
     "node": ">=0.8.x",
