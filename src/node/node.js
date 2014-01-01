@@ -44,6 +44,10 @@ DocumentNode.Prototype = function() {
     return this.document.getIndex("annotations").get(this.properties.id);
   };
 
+  this.isInstanceOf = function(type) {
+    var schema = this.document.getSchema();
+    return schema.isInstanceOf(this.type, type);
+  };
 };
 
 DocumentNode.prototype = new DocumentNode.Prototype();
