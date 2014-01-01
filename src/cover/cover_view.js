@@ -1,8 +1,10 @@
 "use strict";
 
+var _ = require("underscore");
 var $$ = require("substance-application").$$;
 var NodeView = require("../node/node_view");
 var TextView = require("../text/text_view");
+var Annotator = require("substance-document").Annotator;
 
 // Lens.Cover.View
 // ==========================================================================
@@ -59,8 +61,23 @@ CoverView.Prototype = function() {
   };
 
   this.onGraphUpdate = function(op) {
-    if (op.path[0] === "document" && op.path[1] === "title") {
+    // Call super handler and return if that has processed the operation already
+    if (NodeView.prototype.onGraphUpdate.call(this, op)) {
+      return true;
+    }
+
+    if (_.isEqual(op.path, ["document","title"])) {
       this.childViews["title"].el.childNodes[0].textContent = this.node.title;
+      return true;
+    }
+
+    // Otherwise deal with annotation changes
+    // Note: the annotations do not get attached to ["document", "title"],
+    // as it seems strange to annotate property with is used in such an indirect way
+    if (Annotator.changesAnnotations(this.node.document, op, ["cover", "title"])) {
+      //console.log("Rerendering TextView due to annotation update", op);
+      this.childViews["title"].renderContent();
+      return true;
     }
   };
 };
