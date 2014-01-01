@@ -4,6 +4,7 @@ var NodeView = require('../node/node_view');
 var $$ = require("substance-application").$$;
 var Fragmenter = require("substance-util").Fragmenter;
 var TextSurface = require("./text_surface");
+var Annotator = require("substance-document").Annotator;
 
 // Substance.Text.View
 // -----------------
@@ -118,34 +119,22 @@ TextView.Prototype = function() {
   //   }
   // };
 
-  this.onNodeUpdate = function(op) {
+  this.onNodeUpdate = function(/*op*/) {
     this.renderContent();
+    return true;
   };
 
   this.onGraphUpdate = function(op) {
-    NodeView.prototype.onGraphUpdate.call(this, op);
-
-    var doc = this.node.document;
-    var schema = doc.getSchema();
-
-    var node;
-    if (op.type !== "delete") {
-      node = doc.get(op.path[0]);
-    } else {
-      node = op.val;
+    // Call super handler and return if that has processed the operation already
+    if (NodeView.prototype.onGraphUpdate.call(this, op)) {
+      return true;
     }
-    if (schema.isInstanceOf(node.type, "annotation")) {
-      var rerender = false;
-      if (node.path[0] === this.node.id) {
-        rerender = true;
-      } else if (op.type === "set" && op.path[1] === "path" && op.original[0] === this.node.id) {
-        rerender = true;
-      }
 
-      if (rerender) {
-        //console.log("Rerendering TextView due to annotation update", op);
-        this.renderContent();
-      }
+    // Otherwise deal with annotation changes
+    if (Annotator.changesAnnotations(this.node.document, op, [this.node.id, this.property])) {
+      //console.log("Rerendering TextView due to annotation update", op);
+      this.renderContent();
+      return true;
     }
   };
 
