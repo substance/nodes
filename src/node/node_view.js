@@ -50,6 +50,9 @@ NodeView.Prototype = function() {
   this.onGraphUpdate = function(op) {
     if(op.path[0] === this.node.id && (op.type === "update" || op.type === "set") ) {
       this.onNodeUpdate(op);
+      return true;
+    } else {
+      return false;
     }
   };
 
