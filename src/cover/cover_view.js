@@ -67,7 +67,7 @@ CoverView.Prototype = function() {
     }
 
     if (_.isEqual(op.path, ["document","title"])) {
-      this.childViews["title"].el.childNodes[0].textContent = this.node.title;
+      this.childViews["title"].renderContent();
       return true;
     }
 
