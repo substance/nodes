@@ -15,5 +15,9 @@
     "substance-application":"",
     "substance-operator":""
   },
+  "devDependencies": {
+    "mocha": "",
+    "substance-test": ""
+  },
   "version":"0.3.0"
 }
