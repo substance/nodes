@@ -29,7 +29,6 @@ Remark.description = {
   }
 };
 
-
 // Example Remark annotation
 // -----------------
 //
@@ -37,14 +36,8 @@ Remark.description = {
 Remark.example = {
   "type": "remark",
   "id": "remark_1",
-  "path": [
-    "text_54",
-    "content"
-  ],
-  "range": [
-    85,
-    95
-  ]
+  "title": "Can you explain?",
+  "description": "I don't get the argument here."
 };
 
 Remark.Prototype = function() {};

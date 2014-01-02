@@ -1,10 +1,10 @@
 "use strict";
 
-var Annotation = require('../annotation/annotation');
+var DocumentNode = require('../node/node');
 var _ = require('underscore');
 
 var Issue = function(node, document) {
-  Annotation.call(this, node, document);
+  DocumentNode.call(this, node, document);
 };
 
 // Type definition
@@ -12,11 +12,9 @@ var Issue = function(node, document) {
 
 Issue.type = {
   "id": "issue",
-  "parent": "annotation",
   "properties": {
     "title": "string",
-    "issue_type": "string",
-    "description": "string" // should be a reference a text node?
+    "description": "string" // should be a reference to a text node?
   }
 };
 
@@ -31,6 +29,8 @@ Issue.description = {
     "References a range in a text-ish node and tags it as subscript"
   ],
   "properties": {
+    "title": "Issue Title",
+    "description": "More verbose issue description"
   }
 };
 
@@ -55,7 +55,7 @@ Issue.Prototype = function() {
 
 };
 
-Issue.Prototype.prototype = Annotation.prototype;
+Issue.Prototype.prototype = DocumentNode.prototype;
 Issue.prototype = new Issue.Prototype();
 
 // Getters and setters
