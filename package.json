@@ -19,7 +19,8 @@
     "underscore": "1.5.x",
     "substance-util": "git+https://github.com/substance/util.git#0.3.x",
     "substance-application": "git+https://github.com/substance/application.git#appstates",
-    "substance-operator": "git+https://github.com/substance/operator.git#0.3.x"
+    "substance-operator": "git+https://github.com/substance/operator.git#0.3.x",
+    "substance-document": "git+https://github.com/substance/document.git#refactor"
   },
   "devDependencies": {
     "mocha": "1.12.x",
