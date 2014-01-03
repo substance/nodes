@@ -3,16 +3,12 @@
 module.exports = {
   "node": require("./src/node"),
   "text": require("./src/text"),
-  "paragraph": require("./src/paragraph"),
   "heading": require("./src/heading"),
-  "list": require("./src/list"),
   "codeblock": require("./src/codeblock"),
   "image": require("./src/image"),
-  "table": require("./src/table"),
   "figure": require("./src/figure"),
   "collaborator": require("./src/collaborator"),
   "cover": require("./src/cover"),
-  "description": require("./src/description"),
   "citation": require("./src/citation"),
   "annotation": require("./src/annotation"),
   "emphasis": require("./src/emphasis"),
@@ -31,5 +27,11 @@ module.exports = {
   "cross_reference": require("./src/cross_reference"),
   "collaborator_reference": require("./src/collaborator_reference"),
   "remark_reference": require("./src/remark_reference"),
-  "error_reference": require("./src/error_reference")
+  "error_reference": require("./src/error_reference"),
+
+  // deprecated: these node types will be re-implemented
+  "paragraph": require("./src/paragraph"),
+  "list": require("./src/list"),
+  "table": require("./src/table"),
+  "formula": require("./src/formula"),
 };
