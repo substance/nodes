@@ -58,6 +58,19 @@ Figure.Prototype.prototype = DocumentNode.prototype;
 Figure.prototype = new Figure.Prototype();
 Figure.prototype.constructor = Figure;
 
+Figure.prototype.defineProperties();
+
+// Property aliases:
+// ----
+
+Object.defineProperties(Figure.prototype, {
+  // Used as a resource header
+  header: {
+    get: function() { return this.properties.label; },
+    set: function() { throw new Error("This is a read-only alias property."); }
+  }
+});
+
 // a factory method to create nodes more conveniently
 // Supported
 //  - id: unique id
@@ -89,14 +102,5 @@ Figure.create = function(data) {
   result[figId] = figure;
   return result;
 };
-
-DocumentNode.defineProperties(Figure.prototype, ["url", "caption", "label"]);
-
-Object.defineProperties(Figure.prototype, {
-  // Used as a resource header
-  header: {
-    get: function() { return this.properties.label; }
-  }
-});
 
 module.exports = Figure;

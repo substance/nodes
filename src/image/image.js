@@ -47,16 +47,12 @@ ImageNode.example = {
   "url": "http://substance.io/image_1.png"
 };
 
-
-
-ImageNode.Prototype = function() {
-
-};
-
-
+ImageNode.Prototype = function() {};
 
 ImageNode.Prototype.prototype = DocumentNode.prototype;
 ImageNode.prototype = new ImageNode.Prototype();
 ImageNode.prototype.constructor = ImageNode;
+
+ImageNode.prototype.defineProperties();
 
 module.exports = ImageNode;

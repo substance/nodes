@@ -2,14 +2,14 @@
 
 var Issue = require('../issue/issue');
 
-var Error = function(node, document) {
+var ErrorNode = function(node, document) {
   Issue.call(this, node, document);
 };
 
 // Type definition
 // --------
 
-Error.type = {
+ErrorNode.type = {
   "id": "error",
   "parent": "issue",
   "properties": {
@@ -21,7 +21,7 @@ Error.type = {
 // -----------------
 //
 
-Error.description = {
+ErrorNode.description = {
   "name": "Error",
   "remarks": [
     "References a range in a text-ish node and tags it as emphasized"
@@ -35,17 +35,17 @@ Error.description = {
 // -----------------
 //
 
-Error.example = {
+ErrorNode.example = {
   "type": "error",
   "id": "error_1",
   "title": "Hi I am an a error",
   "description": "An error, yes."
 };
 
-Error.Prototype = function() {};
+ErrorNode.Prototype = function() {};
 
-Error.Prototype.prototype = Issue.prototype;
-Error.prototype = new Error.Prototype();
-Error.prototype.constructor = Error;
+ErrorNode.Prototype.prototype = Issue.prototype;
+ErrorNode.prototype = new ErrorNode.Prototype();
+ErrorNode.prototype.constructor = ErrorNode;
 
-module.exports = Error;
+module.exports = ErrorNode;

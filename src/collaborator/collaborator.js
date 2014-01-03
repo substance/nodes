@@ -69,28 +69,16 @@ Collaborator.Prototype.prototype = DocumentNode.prototype;
 Collaborator.prototype = new Collaborator.Prototype();
 Collaborator.prototype.constructor = Collaborator;
 
+Collaborator.prototype.defineProperties();
 
-// Generate getters
-// --------
+// Property aliases
+// ----
 
-var getters = {};
-
-var getters = {
-  header: {
-    get: function() {
-      return this.properties.name;
-    }
+Object.defineProperties(Collaborator.prototype, {
+  "header": {
+    get: function() { return this.properties.name; },
+    set: function() { throw new Error("This is a read-only alias property."); }
   }
-};
-
-_.each(Collaborator.type.properties, function(prop, key) {
-  getters[key] = {
-    get: function() {
-      return this.properties[key];
-    }
-  };
 });
 
-
-Object.defineProperties(Collaborator.prototype, getters);
 module.exports = Collaborator;

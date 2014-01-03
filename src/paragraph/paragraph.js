@@ -58,6 +58,6 @@ Paragraph.Prototype.prototype = DocumentNode.prototype;
 Paragraph.prototype = new Paragraph.Prototype();
 Paragraph.prototype.constructor = Paragraph;
 
-DocumentNode.defineProperties(Paragraph.prototype, ["children"]);
+Paragraph.prototype.defineProperties();
 
 module.exports = Paragraph;

@@ -61,6 +61,6 @@ List.Prototype.prototype = DocumentNode.prototype;
 List.prototype = new List.Prototype();
 List.prototype.constructor = List;
 
-DocumentNode.defineProperties(List.prototype, ["items", "ordered"]);
+List.prototype.defineProperties();
 
 module.exports = List;

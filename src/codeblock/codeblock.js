@@ -53,5 +53,7 @@ Codeblock.Prototype.prototype = Text.prototype;
 Codeblock.prototype = new Codeblock.Prototype();
 Codeblock.prototype.constructor = Codeblock;
 
+Codeblock.prototype.defineProperties();
+
 module.exports = Codeblock;
 

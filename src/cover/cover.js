@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var DocumentNode = require('../node/node');
 
-// Lens.Cover
+// Cover
 // -----------------
 //
 
@@ -62,27 +62,18 @@ Cover.Prototype.prototype = DocumentNode.prototype;
 Cover.prototype = new Cover.Prototype();
 Cover.prototype.constructor = Cover;
 
-// Generate getters
+Cover.prototype.defineProperties();
+
+// Property aliases
 // --------
 
 Object.defineProperties(Cover.prototype, {
   title: {
     get: function() {
       return this.document.title;
-    }
-  },
-  authors: {
-    // Expand author id's to corresponding person nodes
-    get: function() {
-      return this.properties.authors;
     },
-    set: function(authors) {
-      this.properties.authors = authors;
-    }
-  },
-  image: {
-    get: function() {
-      return this.properties.image;
+    set: function() {
+      throw new Error("This is a read-only property alias.");
     }
   }
 });

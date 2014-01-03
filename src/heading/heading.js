@@ -1,6 +1,5 @@
 "use strict";
 
-var DocumentNode = require('../node/node');
 var Text = require("../text/text_node");
 
 var Heading = function(node, document) {
@@ -56,6 +55,6 @@ Heading.Prototype.prototype = Text.prototype;
 Heading.prototype = new Heading.Prototype();
 Heading.prototype.constructor = Heading;
 
-DocumentNode.defineProperties(Heading.prototype, ["level"]);
+Heading.prototype.defineProperties();
 
 module.exports = Heading;

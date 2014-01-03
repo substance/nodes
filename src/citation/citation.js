@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var DocumentNode = require('../node/node');
 
 // Citation
@@ -97,13 +96,15 @@ Citation.prototype.constructor = Citation;
 // Generate getters
 // --------
 
-DocumentNode.defineProperties(Citation.prototype, Object.keys(Citation.type.properties));
+Citation.prototype.defineProperties();
+
+// Property aliases
+// ----
 
 Object.defineProperties(Citation.prototype, {
   "header": {
-    get: function() {
-      return this.properties.title;
-    }
+    get: function() { return this.properties.title; },
+    set: function() { throw new Error("This is a read-only alias property."); }
   }
 });
 

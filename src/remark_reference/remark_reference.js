@@ -1,7 +1,6 @@
 "use strict";
 
 var Annotation = require('../annotation/annotation');
-var _ = require('underscore');
 
 var RemarkReference = function(node, document) {
   Annotation.call(this, node, document);
@@ -54,24 +53,8 @@ RemarkReference.Prototype = function() {};
 
 RemarkReference.Prototype.prototype = Annotation.prototype;
 RemarkReference.prototype = new RemarkReference.Prototype();
-
-
-var getters = {};
-
-_.each(RemarkReference.type.properties, function(prop, key) {
-  getters[key] = {
-    get: function() {
-      return this.properties[key];
-    },
-    set: function(value) {
-      this.properties[key] = value;
-      return this;
-    }
-  };
-});
-
-Object.defineProperties(RemarkReference.prototype, getters);
-
 RemarkReference.prototype.constructor = RemarkReference;
+
+RemarkReference.prototype.defineProperties();
 
 module.exports = RemarkReference;

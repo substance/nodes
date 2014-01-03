@@ -64,26 +64,6 @@ Annotation.Prototype.prototype = DocumentNode.prototype;
 Annotation.prototype = new Annotation.Prototype();
 Annotation.prototype.constructor = Annotation;
 
-
-// Generate getters
-// --------
-
-var getters = {};
-
-
-_.each(Annotation.type.properties, function(prop, key) {
-  getters[key] = {
-    get: function() {
-      return this.properties[key];
-    },
-    set: function(value) {
-      this.properties[key] = value;
-      return this;
-    }
-  };
-});
-
-
-Object.defineProperties(Annotation.prototype, getters);
+Annotation.prototype.defineProperties();
 
 module.exports = Annotation;

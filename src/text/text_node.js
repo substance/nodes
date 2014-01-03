@@ -173,6 +173,6 @@ Text.Prototype.prototype = DocumentNode.prototype;
 Text.prototype = new Text.Prototype();
 Text.prototype.constructor = Text;
 
-DocumentNode.defineProperties(Text.prototype, ["content"]);
+Text.prototype.defineProperties();
 
 module.exports = Text;

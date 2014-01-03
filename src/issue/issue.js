@@ -1,7 +1,6 @@
 "use strict";
 
 var DocumentNode = require('../node/node');
-var _ = require('underscore');
 
 var Issue = function(node, document) {
   DocumentNode.call(this, node, document);
@@ -57,27 +56,8 @@ Issue.Prototype = function() {
 
 Issue.Prototype.prototype = DocumentNode.prototype;
 Issue.prototype = new Issue.Prototype();
-
-// Getters and setters
-// -----------------
-//
-
-var getters = {};
-
-_.each(Issue.type.properties, function(prop, key) {
-  getters[key] = {
-    get: function() {
-      return this.properties[key];
-    },
-    set: function(value) {
-      this.properties[key] = value;
-      return this;
-    }
-  };
-});
-
-Object.defineProperties(Issue.prototype, getters);
-
 Issue.prototype.constructor = Issue;
+
+Issue.prototype.defineProperties();
 
 module.exports = Issue;

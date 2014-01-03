@@ -1,7 +1,6 @@
 "use strict";
 
 var Annotation = require('../annotation/annotation');
-var _ = require('underscore');
 
 var FigureReference = function(node, document) {
   Annotation.call(this, node, document);
@@ -54,24 +53,8 @@ FigureReference.Prototype = function() {};
 
 FigureReference.Prototype.prototype = Annotation.prototype;
 FigureReference.prototype = new FigureReference.Prototype();
-
-
-var getters = {};
-
-_.each(FigureReference.type.properties, function(prop, key) {
-  getters[key] = {
-    get: function() {
-      return this.properties[key];
-    },
-    set: function(value) {
-      this.properties[key] = value;
-      return this;
-    }
-  };
-});
-
-Object.defineProperties(FigureReference.prototype, getters);
-
 FigureReference.prototype.constructor = FigureReference;
+
+FigureReference.prototype.defineProperties();
 
 module.exports = FigureReference;

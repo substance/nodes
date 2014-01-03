@@ -55,4 +55,6 @@ Link.Prototype.prototype = Annotation.prototype;
 Link.prototype = new Link.Prototype();
 Link.prototype.constructor = Link;
 
+Link.prototype.defineProperties();
+
 module.exports = Link;

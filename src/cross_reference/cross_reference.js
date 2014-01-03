@@ -28,7 +28,7 @@ CrossReference.description = {
     "References a range in a text-ish node and references a content node."
   ],
   "properties": {
-    
+
   }
 };
 
@@ -55,5 +55,7 @@ CrossReference.Prototype = function() {};
 CrossReference.Prototype.prototype = Annotation.prototype;
 CrossReference.prototype = new CrossReference.Prototype();
 CrossReference.prototype.constructor = CrossReference;
+
+CrossReference.prototype.defineProperties();
 
 module.exports = CrossReference;

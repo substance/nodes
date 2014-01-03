@@ -82,6 +82,22 @@ Table.Prototype.prototype = DocumentNode.prototype;
 Table.prototype = new Table.Prototype();
 Table.prototype.constructor = Table;
 
+Table.prototype.defineProperties();
+
+// Property aliases
+// ----
+
+Object.defineProperties(Table.prototype, {
+  // Used as a resource header
+  header: {
+    get: function() { return this.properties.label; },
+    set: function() { throw new Error("This is a read-only alias property."); }
+  }
+});
+
+// Construction
+// ----
+
 Table.create = function(data) {
  var result = {};
 
@@ -141,14 +157,5 @@ Table.create = function(data) {
 
   return result;
 };
-
-DocumentNode.defineProperties(Table.prototype, ["headers", "cells", "caption"]);
-
-Object.defineProperties(Table.prototype, {
-  // Used as a resource header
-  header: {
-    get: function() { return this.properties.label; }
-  }
-});
 
 module.exports = Table;
