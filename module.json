@@ -14,7 +14,8 @@
     "substance-util":"",
     "substance-application":"",
     "substance-operator":"",
-    "substance-document":""
+    "substance-document":"",
+    "substance-regexp":""
   },
   "devDependencies": {
     "mocha": "",

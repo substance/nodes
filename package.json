@@ -20,7 +20,8 @@
     "substance-util": "git+https://github.com/substance/util.git#0.3.x",
     "substance-application": "git+https://github.com/substance/application.git#appstates",
     "substance-operator": "git+https://github.com/substance/operator.git#0.3.x",
-    "substance-document": "git+https://github.com/substance/document.git#refactor"
+    "substance-document": "git+https://github.com/substance/document.git#refactor",
+    "substance-regexp": "git+https://github.com/substance/regexp.git#0.2.x"
   },
   "devDependencies": {
     "mocha": "1.12.x",
