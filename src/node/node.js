@@ -50,10 +50,10 @@ DocumentNode.Prototype = function() {
   };
 
   this.defineProperties = function(readonly) {
-    var NodeClass = this.constructor;
-    if (!NodeClass) {
+    if (!this.hasOwnProperty("constructor")) {
       throw new Error("Constructor property is not set. E.g.: MyNode.prototype.constructor = MyNode;");
     }
+    var NodeClass = this.constructor;
     DocumentNode.defineAllProperties(NodeClass, readonly);
   };
 };
