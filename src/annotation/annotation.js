@@ -52,7 +52,13 @@ Annotation.example = {
   ]
 };
 
-Annotation.Prototype = function() {};
+Annotation.Prototype = function() {
+  this.getContent = function() {
+    var content = this.document.get(this.path);
+    var range = this.range;
+    return content.substring(range[0], range[1]);
+  };
+};
 
 Annotation.Prototype.prototype = DocumentNode.prototype;
 Annotation.prototype = new Annotation.Prototype();
