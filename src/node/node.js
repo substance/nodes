@@ -48,6 +48,14 @@ DocumentNode.Prototype = function() {
     var schema = this.document.getSchema();
     return schema.isInstanceOf(this.type, type);
   };
+
+  this.defineProperties = function(readonly) {
+    var NodeClass = this.constructor;
+    if (!NodeClass) {
+      throw new Error("Constructor property is not set. E.g.: MyNode.prototype.constructor = MyNode;");
+    }
+    DocumentNode.defineAllProperties(NodeClass, readonly);
+  };
 };
 
 DocumentNode.prototype = new DocumentNode.Prototype();
@@ -68,6 +76,10 @@ DocumentNode.defineProperties = function(NodePrototype, properties, readonly) {
     }
     Object.defineProperty(NodePrototype, name, spec);
   });
+};
+
+DocumentNode.defineAllProperties = function(NodeClass, readonly) {
+  DocumentNode.defineProperties(NodeClass.prototype, Object.keys(NodeClass.type.properties), readonly);
 };
 
 DocumentNode.defineProperties(DocumentNode.prototype, ["id", "type"]);
