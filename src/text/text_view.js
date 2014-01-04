@@ -3,7 +3,6 @@
 var NodeView = require('../node/node_view');
 var $$ = require("substance-application").$$;
 var Fragmenter = require("substance-util").Fragmenter;
-var TextSurface = require("./text_surface");
 var Annotator = require("substance-document").Annotator;
 
 // Substance.Text.View
@@ -41,19 +40,13 @@ var TextView = function(node, renderer, options) {
     // IMO it is ok to have the id set by default, as it is the 99% case.
     this.$el.removeAttr('id');
     this.$el.removeClass('content-node');
-    // this.$el.addClass('node-property');
     this.$el.addClass(options.property);
-    this.$el.attr('data-path', options.property);
   }
+
+  this.$el.attr('data-path', this.property);
 
   this._annotations = {};
   this.annotationBehavior = _getAnnotationBehavior(node.document);
-
-  // Note: usually the surface is not needed within the view.
-  // However, here I wan't to use the getDOMPosition function to an easy implementation of the
-  // incremental text insertion/deletion.
-  this.__surface = new TextSurface(this.node, null, {property: this.property});
-  this.__surface.attachView(this);
 };
 
 var _findTextEl;
@@ -73,6 +66,7 @@ TextView.Prototype = function() {
 
   this.renderContent = function() {
     this.content.innerHTML = "";
+
     this._annotations = this.node.document.getIndex("annotations").get([this.node.id, this.property]);
     this.renderWithAnnotations(this._annotations);
   };

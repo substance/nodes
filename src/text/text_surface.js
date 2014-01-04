@@ -12,7 +12,13 @@ var TextSurface = function(node, surfaceProvider, options) {
   if (options.property) {
     this.components.push(this.propertyComponent(options.property, options.propertyPath));
   } else {
-    this.components.push(this.nodeComponent()
+    // NOTE: trying to get rid of the "NodeComponent" as everything is connected to a specific property.
+    // this.components.push(this.nodeComponent()
+    //   .length(function() {
+    //     return self.node[self.property].length;
+    //   })
+    // );
+    this.components.push(this.propertyComponent(self.property)
       .length(function() {
         return self.node[self.property].length;
       })
