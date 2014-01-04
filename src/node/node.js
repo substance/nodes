@@ -20,20 +20,6 @@ DocumentNode.type = {
   }
 };
 
-// Define node behavior
-// --------
-// These properties define the default behavior of a node, e.g., used when manipulating the document.
-// Sub-types override these settings
-// Note: it is quite experimental, and we will consolidate them soon.
-
-DocumentNode.properties = {
-  abstract: true,
-  immutable: true,
-  mergeableWith: [],
-  preventEmpty: true,
-  allowedAnnotations: []
-};
-
 DocumentNode.Prototype = function() {
 
   this.toJSON = function() {
