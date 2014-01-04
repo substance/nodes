@@ -71,16 +71,6 @@ AbstractComponent.Prototype = function() {
 };
 AbstractComponent.prototype = new AbstractComponent.Prototype();
 
-var NodeComponent = function(surface) {
-  AbstractComponent.call(this, surface);
-  this.type = "node";
-  this.path = [surface.node.id];
-};
-NodeComponent.Prototype = function() {
-};
-NodeComponent.Prototype.prototype = AbstractComponent.prototype;
-NodeComponent.prototype = new NodeComponent.Prototype();
-
 var PropertyComponent = function(surface, property, propertyPath) {
   AbstractComponent.call(this, surface);
   this.type = "property";
@@ -105,7 +95,6 @@ CustomComponent.Prototype.prototype = AbstractComponent.prototype;
 CustomComponent.prototype = new CustomComponent.Prototype();
 
 module.exports = {
-  NodeComponent: NodeComponent,
   PropertyComponent: PropertyComponent,
   CustomComponent: CustomComponent
 };

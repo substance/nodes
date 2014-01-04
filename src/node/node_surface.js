@@ -78,11 +78,6 @@ NodeSurface.Prototype = function() {
     return range;
   };
 
-
-  this.nodeComponent = function() {
-    return new SurfaceComponents.NodeComponent(this);
-  };
-
   this.propertyComponent = function(name, propertyPath) {
     return new SurfaceComponents.PropertyComponent(this, name, propertyPath);
   };
