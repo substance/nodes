@@ -30,8 +30,6 @@ IssueView.Prototype = function() {
 
     var labelView = this.childViews["title"] = new TextView(this.node, this.viewFactory, {property: "title"});
 
-
-
     this.content.appendChild(labelView.render().el);
 
     // Delete Button
@@ -44,11 +42,6 @@ IssueView.Prototype = function() {
     });
 
     labelView.el.appendChild(deleteButton);
-
-
-    // this.content.appendChild($$('.issue-description', {
-    //   text: "HELLO I AM AN ISSUE"
-    // }));
 
     var descriptionView = this.childViews["description"] = new TextView(this.node, this.viewFactory, {property: "description"});
     this.content.appendChild(descriptionView.render().el);
