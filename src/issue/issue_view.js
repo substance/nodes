@@ -35,7 +35,7 @@ IssueView.Prototype = function() {
     // Delete Button
     // --------
 
-    var deleteButton = $$('a.delete-issue', {
+    var deleteButton = $$('a.delete-resource', {
       href: '#',
       text: "Delete",
       contenteditable: false // Make sure this is not editable!

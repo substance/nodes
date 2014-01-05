@@ -28,6 +28,18 @@ FigureView.Prototype = function() {
     var labelView = this.childViews["label"] = new TextView(this.node, this.viewFactory, {property: "label"});
     this.content.appendChild(labelView.render().el);
 
+
+    // Delete Button
+    // --------
+
+    var deleteButton = $$('a.delete-resource', {
+      href: '#',
+      text: "Delete",
+      contenteditable: false // Make sure this is not editable!
+    });
+
+    labelView.el.appendChild(deleteButton);
+
     // Add graphic (img element)
     var imgEl = $$('.image-wrapper', {
       children: [ $$("img", { src: this.node.url, title: "Edit image URL" }) ]

@@ -33,6 +33,18 @@ CitationView.Prototype = function() {
     var titleView = this.childViews["title"] = new TextView(this.node, this.viewFactory, {property: "title"});
     frag.appendChild(titleView.render().el);
 
+
+    // Delete Button
+    // --------
+
+    var deleteButton = $$('a.delete-resource', {
+      href: '#',
+      text: "Delete",
+      contenteditable: false // Make sure this is not editable!
+    });
+
+    titleView.el.appendChild(deleteButton);
+
     // Add Authors
     // -------
 
