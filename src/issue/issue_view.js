@@ -5,7 +5,7 @@ var NodeView = require("../node/node_view");
 var TextView = require("../text/text_view");
 
 
-// Substance.Figure.View
+// Substance.Issue.View
 // ==========================================================================
 
 var IssueView = function(node, viewFactory) {
@@ -29,7 +29,22 @@ IssueView.Prototype = function() {
     NodeView.prototype.render.call(this);
 
     var labelView = this.childViews["title"] = new TextView(this.node, this.viewFactory, {property: "title"});
+
+
+
     this.content.appendChild(labelView.render().el);
+
+    // Delete Button
+    // --------
+
+    var deleteButton = $$('a.delete-issue', {
+      href: '#',
+      text: "Delete",
+      contenteditable: false // Make sure this is not editable!
+    });
+
+    labelView.el.appendChild(deleteButton);
+
 
     // this.content.appendChild($$('.issue-description', {
     //   text: "HELLO I AM AN ISSUE"
