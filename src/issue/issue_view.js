@@ -43,12 +43,11 @@ IssueView.Prototype = function() {
 
     labelView.el.appendChild(deleteButton);
 
-
     // Creator and date
     // --------
 
     var creator = $$('div.creator', {
-      text: "Michael, two hours ago",
+      text: this.node.creator + ", " + jQuery.timeago(new Date(this.node.created_at)),
       contenteditable: false // Make sure this is not editable!
     });
 
