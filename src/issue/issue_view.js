@@ -43,6 +43,17 @@ IssueView.Prototype = function() {
 
     labelView.el.appendChild(deleteButton);
 
+
+    // Creator and date
+    // --------
+
+    var creator = $$('div.creator', {
+      text: "Michael, two hours ago",
+      contenteditable: false // Make sure this is not editable!
+    });
+
+    labelView.el.appendChild(creator);
+
     var descriptionView = this.childViews["description"] = new TextView(this.node, this.viewFactory, {property: "description"});
     this.content.appendChild(descriptionView.render().el);
 
