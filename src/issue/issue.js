@@ -13,7 +13,9 @@ Issue.type = {
   "id": "issue",
   "properties": {
     "title": "string",
-    "description": "string" // should be a reference to a text node?
+    "description": "string", // should be a reference to a text node?
+    "creator": "string",
+    "created_at": "date" // should be date
   }
 };
 
@@ -29,7 +31,9 @@ Issue.description = {
   ],
   "properties": {
     "title": "Issue Title",
-    "description": "More verbose issue description"
+    "description": "More verbose issue description",
+    "creator": "Issue creator",
+    "created_at": "Date and time of issue creation."
   }
 };
 
