@@ -37,7 +37,10 @@ CoverView.Prototype = function() {
 
     var authorRefs = this.node.getAuthorRefs();
     if (authorRefs) {
-      var authorsEl = $$(".authors", { "data-path": "authors"} );
+      var authorsEl = $$(".authors", {
+        "data-path": "authors",
+        "contenteditable": false
+      });
       var authorRefEl;
       for (var i = 0; i < authorRefs.length; i++) {
         // TODO: use data-* attribute to store the referenced collaborator node
