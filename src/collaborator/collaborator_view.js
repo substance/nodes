@@ -23,8 +23,30 @@ CollaboratorView.Prototype = function() {
   this.render = function() {
     NodeView.prototype.render.call(this);
 
+
+    // Name element (used as a header for the resource card)
+    // -------
+
     var nameView = new TextView(this.node, this.viewFactory, {property: "name"});
     this.content.appendChild(nameView.render().el);
+
+    // Delete Button
+    // --------
+
+    var deleteButton = $$('a.delete-resource', {
+      href: '#',
+      text: "Delete",
+      contenteditable: false // Make sure this is not editable!
+    });
+
+    nameView.el.appendChild(deleteButton);
+
+    // Resource Body
+    // -------
+    // 
+    // Wraps all the contents of the resource card
+
+    var body = $$('.resource-body');
 
     // Image
     // -------
@@ -33,7 +55,7 @@ CollaboratorView.Prototype = function() {
       this.imageEl = $$('.image', {
         children: [$$('img', {src: this.node.image})]
       });
-      this.content.appendChild(this.imageEl);
+      body.appendChild(this.imageEl);
     }
 
     // Organization
@@ -42,7 +64,7 @@ CollaboratorView.Prototype = function() {
     // this.content.appendChild($$('.label', {text: 'Organization'}));
     if (this.node.organization) {
       this.orgEl = $$('.organization.node-property',{text: this.node.organization, "data-path": "organization"});
-      this.content.appendChild(this.orgEl);
+      body.appendChild(this.orgEl);
     }
 
 
@@ -50,9 +72,9 @@ CollaboratorView.Prototype = function() {
     // -------
 
     if (this.node.contribution) {
-      this.content.appendChild($$('.label', {text: 'Contribution'}));
+      body.appendChild($$('.label', {text: 'Contribution'}));
       this.contribEl = $$('.contribution.node-property', {text: this.node.contribution, "data-path": "contribution"});
-      this.content.appendChild(this.contribEl);
+      body.appendChild(this.contribEl);
     }
 
 
@@ -60,13 +82,15 @@ CollaboratorView.Prototype = function() {
     // -------
 
     if (this.node.email) {
-      this.content.appendChild($$('.label', {text: 'Email'}));
+      body.appendChild($$('.label', {text: 'Email'}));
       this.emailEl = $$('.email.node-property', {
         children: [$$('a', {href: "mailto:"+ this.node.email, text: this.node.email})],
         "data-path": "email"
       });
-      this.content.appendChild(this.emailEl);
+      body.appendChild(this.emailEl);
     }
+
+    this.content.appendChild(body);
 
     return this;
   };

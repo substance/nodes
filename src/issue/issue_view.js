@@ -11,6 +11,7 @@ var TextView = require("../text/text_view");
 var IssueView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
 
+  // This class is shared among all issue subtypes (errors, remarks)
   this.$el.addClass('issue');
 
   this.childViews = {
@@ -55,14 +56,6 @@ IssueView.Prototype = function() {
 
     var descriptionView = this.childViews["description"] = new TextView(this.node, this.viewFactory, {property: "description"});
     this.content.appendChild(descriptionView.render().el);
-
-    // var caption = this.node.getCaption();
-    // if (caption) {
-    //   var captionView = this.childViews["caption"] = this.viewFactory.createView(caption);
-    //   var captionEl = captionView.render().el;
-    //   captionEl.classList.add('caption');
-    //   this.content.appendChild(captionEl);
-    // }
 
     return this;
   };

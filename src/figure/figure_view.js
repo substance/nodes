@@ -28,7 +28,6 @@ FigureView.Prototype = function() {
     var labelView = this.childViews["label"] = new TextView(this.node, this.viewFactory, {property: "label"});
     this.content.appendChild(labelView.render().el);
 
-
     // Delete Button
     // --------
 
@@ -40,19 +39,29 @@ FigureView.Prototype = function() {
 
     labelView.el.appendChild(deleteButton);
 
+    // Resource body
+    // --------
+    // 
+    // Wraps all resource details
+
+    var bodyEl = $$('.resource-body');
+
     // Add graphic (img element)
     var imgEl = $$('.image-wrapper', {
       children: [ $$("img", { src: this.node.url, title: "Edit image URL" }) ]
     });
-    this.content.appendChild(imgEl);
+
+    bodyEl.appendChild(imgEl);
 
     var caption = this.node.getCaption();
     if (caption) {
       var captionView = this.childViews["caption"] = this.viewFactory.createView(caption);
       var captionEl = captionView.render().el;
       captionEl.classList.add('caption');
-      this.content.appendChild(captionEl);
+      bodyEl.appendChild(captionEl);
     }
+
+    this.content.appendChild(bodyEl);
 
     return this;
   };

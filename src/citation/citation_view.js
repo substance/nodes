@@ -45,6 +45,14 @@ CitationView.Prototype = function() {
 
     titleView.el.appendChild(deleteButton);
 
+
+    // Resource body
+    // --------
+    // 
+    // Wraps all resource details
+
+    var bodyEl = $$('.resource-body');
+
     // Add Authors
     // -------
 
@@ -59,7 +67,7 @@ CitationView.Prototype = function() {
       authorsEl.appendChild(this.authorEls[i]);
       authorsEl.appendChild(document.createTextNode(" "));
     }
-    frag.appendChild(authorsEl);
+    bodyEl.appendChild(authorsEl);
 
     // Add Source
     // -------
@@ -85,7 +93,7 @@ CitationView.Prototype = function() {
       html: source.join(''),
       // "data-path": "source"
     });
-    frag.appendChild(this.sourceEl);
+    bodyEl.appendChild(this.sourceEl);
 
     // Add DOI (if available)
     // -------
@@ -101,8 +109,10 @@ CitationView.Prototype = function() {
           })
         ]
       });
-      frag.appendChild(this.doiEl);
+      bodyEl.appendChild(this.doiEl);
     }
+
+    frag.appendChild(bodyEl);
 
     this.content.appendChild(frag);
 
