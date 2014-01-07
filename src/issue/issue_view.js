@@ -47,7 +47,7 @@ IssueView.Prototype = function() {
     // --------
 
     var creator = $$('div.creator', {
-      text: this.node.creator + ", " + jQuery.timeago(new Date(this.node.created_at)),
+      text: (this.node.creator || "Anonymous") + ", " + jQuery.timeago(new Date(this.node.created_at)),
       contenteditable: false // Make sure this is not editable!
     });
 
