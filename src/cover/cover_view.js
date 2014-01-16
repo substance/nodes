@@ -76,7 +76,7 @@ CoverView.Prototype = function() {
 
     // Otherwise deal with annotation changes
     // Note: the annotations do not get attached to ["document", "title"],
-    // as it seems strange to annotate property with is used in such an indirect way
+    // as it seems strange to annotate a property which is used in such an indirect way
     if (Annotator.changesAnnotations(this.node.document, op, ["cover", "title"])) {
       //console.log("Rerendering TextView due to annotation update", op);
       this.childViews["title"].renderContent();

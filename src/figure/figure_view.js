@@ -41,7 +41,7 @@ FigureView.Prototype = function() {
 
     // Resource body
     // --------
-    // 
+    //
     // Wraps all resource details
 
     var bodyEl = $$('.resource-body');
@@ -69,7 +69,6 @@ FigureView.Prototype = function() {
   // Updates image src when figure is updated by ImageUrlEditor
   // --------
   //
-  // TODO: what to do if label is updated?
 
   this.onNodeUpdate = function(op) {
     this.$('img').attr({
