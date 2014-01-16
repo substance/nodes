@@ -59,6 +59,13 @@ IssueView.Prototype = function() {
 
     return this;
   };
+
+  this.onNodeUpdate = function(op) {
+    if (op.path[1] === "title") {
+      this.childViews["title"].onNodeUpdate(op);
+    }
+  };
+
 };
 
 
