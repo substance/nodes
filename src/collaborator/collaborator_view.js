@@ -53,6 +53,7 @@ CollaboratorView.Prototype = function() {
 
     if (this.node.image) {
       this.imageEl = $$('.image', {
+        contenteditable: false,
         children: [$$('img', {src: this.node.image})]
       });
       body.appendChild(this.imageEl);

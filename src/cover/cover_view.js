@@ -35,32 +35,31 @@ CoverView.Prototype = function() {
     this.content.appendChild(titleView.render().el);
     titleView.el.classList.add("title");
 
-    var authorRefs = this.node.getAuthorRefs();
-    if (authorRefs) {
-      var authorsEl = $$(".authors", {
-        "data-path": "authors",
-        "contenteditable": false
-      });
-      var authorRefEl;
-      for (var i = 0; i < authorRefs.length; i++) {
-        // TODO: use data-* attribute to store the referenced collaborator node
-        var ref = authorRefs[i];
-        var author = this.node.document.get(ref.target);
-        authorRefEl = $$("span.annotation.person_reference", {
-          id: ref.id,
-          text: author.name,
-          'data-path': ref.id
-        });
-        authorsEl.appendChild(authorRefEl);
-      }
-      this.content.appendChild(authorsEl);
-    }
+    this.authorsEl = $$('.authors', {
+      contenteditable: false
+    });
 
-    if (this.node.image) {
-      this.el.style.backgroundImage = "url('"+this.node.image+"')";
-    }
+    this.renderAuthors();
+    this.content.appendChild(this.authorsEl);
+    
 
     return this;
+  };
+
+  this.renderAuthors = function() {
+    this.authorsEl.innerHTML = "";
+
+    var authors = this.node.document.getAuthors();
+    _.each(authors, function(a) {
+      var authorEl = $$('a.toggle-author', {
+        id: "toggle_"+a.id,
+        href: "#",
+        text: a.name,
+        'data-id': a.id,
+      });
+
+      this.authorsEl.appendChild(authorEl);
+    }, this);
   };
 
   this.onGraphUpdate = function(op) {
@@ -72,6 +71,8 @@ CoverView.Prototype = function() {
     if (_.isEqual(op.path, ["document","title"])) {
       this.childViews["title"].renderContent();
       return true;
+    } else if (_.isEqual(op.path, ["document", "authors"])) {
+      this.renderAuthors();
     }
 
     // Otherwise deal with annotation changes
