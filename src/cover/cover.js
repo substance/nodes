@@ -18,7 +18,6 @@ Cover.type = {
   "parent": "content",
   "properties": {
     "source_id": "string",
-    "authors": ["array", "collaborator_reference"],
     "image": "string"
   }
 };
@@ -34,7 +33,7 @@ Cover.description = {
     "Virtual view on the title and authors of the paper."
   ],
   "properties": {
-    "authors": "An array of references to collaborators"
+
   }
 };
 
@@ -45,17 +44,10 @@ Cover.description = {
 Cover.example = {
   "id": "cover",
   "type": "cover",
-  "authors": ["collaborator_reference_1", "collaborator_reference_2"]
+  "image": "http://example.com/image.png"
 };
 
 Cover.Prototype = function() {
-
-  this.getAuthorRefs = function() {
-    return _.map(this.properties.authors, function(id) {
-      return this.document.get(id);
-    }, this);
-  };
-
 };
 
 Cover.Prototype.prototype = DocumentNode.prototype;

@@ -4,17 +4,17 @@ var NodeView = require("../node").View;
 var $$ = require("substance-application").$$;
 var TextView = require("../text/text_view");
 
-// Substance.Collaborator.View
+// Substance.Contributor.View
 // ==========================================================================
 
-var CollaboratorView = function(node) {
+var ContributorView = function(node) {
   NodeView.call(this, node);
 
   this.$el.attr({id: node.id});
-  this.$el.addClass("content-node collaborator");
+  this.$el.addClass("content-node contributor");
 };
 
-CollaboratorView.Prototype = function() {
+ContributorView.Prototype = function() {
 
   // Render it
   // --------
@@ -105,7 +105,7 @@ CollaboratorView.Prototype = function() {
   };
 };
 
-CollaboratorView.Prototype.prototype = NodeView.prototype;
-CollaboratorView.prototype = new CollaboratorView.Prototype();
+ContributorView.Prototype.prototype = NodeView.prototype;
+ContributorView.prototype = new ContributorView.Prototype();
 
-module.exports = CollaboratorView;
+module.exports = ContributorView;

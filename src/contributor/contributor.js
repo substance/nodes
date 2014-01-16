@@ -1,11 +1,11 @@
 var _ = require('underscore');
 var DocumentNode = require('../node/node');
 
-// Substance.Collaborator
+// Substance.Contributor
 // -----------------
 //
 
-var Collaborator = function(node, doc) {
+var Contributor = function(node, doc) {
   DocumentNode.call(this, node, doc);
 };
 
@@ -14,8 +14,8 @@ var Collaborator = function(node, doc) {
 // -----------------
 //
 
-Collaborator.type = {
-  "id": "collaborator",
+Contributor.type = {
+  "id": "contributor",
   "parent": "content",
   "properties": {
     "source_id": "string",
@@ -32,10 +32,10 @@ Collaborator.type = {
 // -----------------
 //
 
-Collaborator.description = {
-  "name": "Collaborator",
+Contributor.description = {
+  "name": "Contributor",
   "remarks": [
-    "Describes an article collaborator such as an author or editor.",
+    "Describes an article contributor such as an author or editor.",
   ],
   "properties": {
     "name": "Full name.",
@@ -46,9 +46,9 @@ Collaborator.description = {
 // -----------------
 //
 
-Collaborator.example = {
-  "id": "collaborator_1",
-  "type": "collaborator",
+Contributor.example = {
+  "id": "contributor_1",
+  "type": "contributor",
   "role": "author",
   "name": "John Doe",
   "image": "http://john.com/doe.png",
@@ -57,7 +57,7 @@ Collaborator.example = {
 };
 
 
-Collaborator.Prototype = function() {
+Contributor.Prototype = function() {
   this.getAffiliations = function() {
     return _.map(this.properties.affiliations, function(affId) {
       return this.document.get(affId);
@@ -65,20 +65,20 @@ Collaborator.Prototype = function() {
   };
 };
 
-Collaborator.Prototype.prototype = DocumentNode.prototype;
-Collaborator.prototype = new Collaborator.Prototype();
-Collaborator.prototype.constructor = Collaborator;
+Contributor.Prototype.prototype = DocumentNode.prototype;
+Contributor.prototype = new Contributor.Prototype();
+Contributor.prototype.constructor = Contributor;
 
-Collaborator.prototype.defineProperties();
+Contributor.prototype.defineProperties();
 
 // Property aliases
 // ----
 
-Object.defineProperties(Collaborator.prototype, {
+Object.defineProperties(Contributor.prototype, {
   "header": {
     get: function() { return this.properties.name; },
     set: function() { throw new Error("This is a read-only alias property."); }
   }
 });
 
-module.exports = Collaborator;
+module.exports = Contributor;
