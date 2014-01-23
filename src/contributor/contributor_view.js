@@ -28,15 +28,19 @@ ContributorView.Prototype = function() {
     // -------
 
     var nameView = new TextView(this.node, this.viewFactory, {property: "name"});
+    $(nameView.el).addClass('toggle-resource');
     this.content.appendChild(nameView.render().el);
 
     // Delete Button
     // --------
+    // 
+    // This should be attached by the writer, since we don't want to have a
+    // delete button in a reading scenario
 
     var deleteButton = $$('a.delete-resource', {
       href: '#',
       text: "Delete",
-      contenteditable: false // Make sure this is not editable!
+      contenteditable: false
     });
 
     nameView.el.appendChild(deleteButton);

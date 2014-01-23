@@ -26,6 +26,7 @@ FigureView.Prototype = function() {
     NodeView.prototype.render.call(this);
 
     var labelView = this.childViews["label"] = new TextView(this.node, this.viewFactory, {property: "label"});
+    $(labelView.el).addClass('toggle-resource');
     this.content.appendChild(labelView.render().el);
 
     // Delete Button
@@ -48,7 +49,7 @@ FigureView.Prototype = function() {
 
     // Add graphic (img element)
     var imgEl = $$('.image-wrapper', {
-      children: [ $$("img", { src: this.node.url, title: "Edit image URL" }) ]
+      children: [ $$("img", { src: this.node.url}) ]
     });
 
     bodyEl.appendChild(imgEl);
@@ -62,7 +63,6 @@ FigureView.Prototype = function() {
     }
 
     this.content.appendChild(bodyEl);
-
     return this;
   };
 
