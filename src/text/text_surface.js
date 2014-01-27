@@ -12,12 +12,6 @@ var TextSurface = function(node, surfaceProvider, options) {
   if (options.property) {
     this.components.push(this.propertyComponent(options.property, options.propertyPath));
   } else {
-    // NOTE: trying to get rid of the "NodeComponent" as everything is connected to a specific property.
-    // this.components.push(this.nodeComponent()
-    //   .length(function() {
-    //     return self.node[self.property].length;
-    //   })
-    // );
     this.components.push(this.propertyComponent(self.property)
       .length(function() {
         return self.node[self.property].length;
@@ -35,6 +29,13 @@ TextSurface.Prototype = function() {
       throw new Error("No view attached.");
     }
 
+    // Bootstrapping: cases that happened with empty text node.
+    // In these cases we return charPos = 0
+    if (this.view._fragments.length === 0 || el === this.view._fragments[0].el.parentElement) {
+      return 0;
+    }
+
+    // Otherwise find the correct TEXT element
     var frag;
     for (var i = 0; i < this.view._fragments.length; i++) {
       var f = this.view._fragments[i];
@@ -46,8 +47,9 @@ TextSurface.Prototype = function() {
 
     if (!frag) {
       console.error("AAAAArg", el);
-      throw new Error("Could not lookup el.");
+      throw new Error("Could not lookup text element.");
     }
+
     var charPos = frag.charPos + offset;
     return charPos;
   };
