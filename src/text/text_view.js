@@ -125,18 +125,23 @@ TextView.Prototype = function() {
       frag = this._fragments[i];
       l = frag.getLength();
 
-      // TODO: here we need to consider the inclusivity rules for annotations
-      // I.e., current has a lower level, then add
+      // right in the middle of a fragment
       if (pos < l) {
         return [frag, pos];
       }
-      else if (pos > l+1) {
+      // the position is not within this fragment
+      else if (pos > l) {
         pos -= l;
-      } else {
-        var next = frag[i+1];
+      }
+      // ... at the boundary we consider the element's level
+      else {
+        var next = this._fragments[i+1];
+        // if the element level of the next fragment is lower then we put the cursor there
         if (next && next.level < frag.level) {
           return [next, 0];
-        } else {
+        }
+        // otherwise we leave the cursor in the current fragment
+        else {
           return [frag, l];
         }
       }
@@ -213,6 +218,7 @@ TextView.Prototype = function() {
     var _entry = null;
     var _index = 0;
     var _charPos = 0;
+    var _level  = 0;
 
     fragmenter.onText = function(context, text) {
       var el = document.createTextNode(text);
@@ -220,17 +226,21 @@ TextView.Prototype = function() {
       // Note: we create the data structures to allow lookup fragments
       // for coordinate mapping and incremental changes
       // TODO: to override the Fragment behavior we would need to override this
-      var level = _entry ? _entry.level : 0;
-      self._fragments.push(new TextView.DefaultFragment(el, _index++, _charPos, level));
+      self._fragments.push(new TextView.DefaultFragment(el, _index++, _charPos, _level));
       _charPos += text.length;
       context.appendChild(el);
     };
 
     fragmenter.onEnter = function(entry, parentContext) {
       _entry = entry;
+      _level++;
       var el = self.createAnnotationElement(entry);
       parentContext.appendChild(el);
       return el;
+    };
+
+    fragmenter.onExit = function(entry, parentContext) {
+      _level--;
     };
 
     // this calls onText and onEnter in turns...
