@@ -9,23 +9,18 @@ var __authorRefComponent;
 var CoverSurface = function(node, surfaceProvider) {
   NodeSurface.call(this, node, surfaceProvider);
 
-  this.components.push(__titleComponent(this));
+  this.titleComponent = TextSurface.textProperty(this, "title", ["document", "title"]);
+  this.components.push(this.titleComponent);
 };
 
-CoverSurface.prototype = NodeSurface.prototype;
-
-__titleComponent = function(self) {
-  // TODO: it is not very convenient to create a Text sub-surface for a textish property:
-  var titleSurface = new TextSurface(self.node, self.surfaceProvider, { property: "title", propertyPath: ["document", "title"]});
-  var titleComponent = titleSurface.components[0];
-  titleComponent.element(function() {
-    return self.view.childViews["title"].el;
-  });
-  titleComponent.length(function() {
-    // HACK: somehow we need a plus one here... dunno
-    return self.node.title.length + 1;
-  });
-  return titleComponent;
+CoverSurface.Prototype = function() {
+  var __super__ = NodeSurface.prototype;
+  this.attachView = function(view) {
+    __super__.attachView.call(this, view);
+    this.titleComponent.surface.attachView(this.view.childViews["title"]);
+  };
 };
+CoverSurface.Prototype.prototype = NodeSurface.prototype;
+CoverSurface.prototype = new CoverSurface.Prototype();
 
 module.exports = CoverSurface;

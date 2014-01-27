@@ -9,33 +9,27 @@ var __labelComponent;
 var FigureSurface = function(node, surfaceProvider) {
   NodeSurface.call(this, node, surfaceProvider);
 
-  this.components.push(__labelComponent(this));
+  this.labelComponent = TextSurface.textProperty(this, "label");
+  this.components.push(this.labelComponent);
 
   // TODO: it is not clear right now how to create a full-fledged node surface
   // which is registered with appropriate path (e.g., ["figure_1", "caption"])
   // we want to create a full node component, but need to adjust the path property
   if (this.node.caption) {
     var caption = this.node.getCaption();
-    var captionSurface = this.surfaceProvider.getNodeSurface(caption);
-    this.addSubSurface("caption", captionSurface);
+    this.captionComponent = this.surfaceProvider.getNodeSurface(caption);
+    this.addSubSurface("caption", this.captionComponent);
   }
 };
-FigureSurface.prototype = NodeSurface.prototype;
-
-__labelComponent = function(self) {
-  // TODO: it is not very convenient to create a Text sub-surface for a textish property:
-
-  var labelSurface = new TextSurface(self.node, self.surfaceProvider, { property: "label"} );
-  var labelComponent = labelSurface.components[0];
-  labelComponent.element(function() {
-      return self.view.childViews["label"].el;
-    })
-    .length(function() {
-      // HACK: somehow we need a plus one here... dunno
-      return self.node.label.length + 1;
-    });
-
-  return labelComponent;
+FigureSurface.Prototype = function() {
+  var __super__ = NodeSurface.prototype;
+  this.attachView = function(view) {
+    __super__.attachView.call(this, view);
+    this.labelComponent.surface.attachView(this.view.childViews["label"]);
+    this.captionComponent.surface.attachView(this.view.childViews["caption"]);
+  };
 };
+FigureSurface.Prototype.prototype = NodeSurface.prototype;
+FigureSurface.prototype = new FigureSurface.Prototype();
 
 module.exports = FigureSurface;

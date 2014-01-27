@@ -81,16 +81,17 @@ TextSurface.prototype = new TextSurface.Prototype();
 // A helper which turned out to be useful for editable textish properties
 // --------
 // The node view must provide a corresponding view under `childViews[property]`
-TextSurface.textProperty = function(nodeSurface, property) {
+TextSurface.textProperty = function(nodeSurface, property, propertyPath) {
   // TODO: it is not very convenient to create a Text sub-surface for a textish property:
-  var propertySurface = new TextSurface(nodeSurface.node, nodeSurface.surfaceProvider, { property: property });
+  var options = { property: property };
+  if (propertyPath) options[propertyPath] = propertyPath;
+  var propertySurface = new TextSurface(nodeSurface.node, nodeSurface.surfaceProvider, options);
   var propertyComponent = propertySurface.components[0];
   propertyComponent.element(function() {
       return nodeSurface.view.childViews[property].el;
     })
     .length(function() {
       // HACK: somehow we need a plus one here... dunno
-      console.log("Retrieving length of property", property);
       return nodeSurface.node[property].length + 1;
     });
   propertyComponent.name = property;
