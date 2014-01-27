@@ -4,6 +4,8 @@
 var NodeSurface = require("../node/node_surface");
 var TextSurface = require("../text/text_surface");
 
+// NOTE: this is just *experimental* and will change for sure.
+
 var CitationSurface = function(node, surfaceProvider) {
   NodeSurface.call(this, node, surfaceProvider);
 
