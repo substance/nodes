@@ -27,6 +27,7 @@ CoverView.Prototype = function() {
 
     if (this.node.document.published_on) {
       this.content.appendChild($$('.published-on', {
+        contenteditable: false,
         html: new Date(this.node.document.published_on).toDateString()
       }));
     }
