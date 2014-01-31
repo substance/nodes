@@ -49,7 +49,12 @@ FigureView.Prototype = function() {
 
     // Add graphic (img element)
     var imgEl = $$('.image-wrapper', {
-      children: [ $$("img", { src: this.node.url}) ]
+      children: [$$("a", {
+        href: this.node.url,
+        title: "View image in full size",
+        target: "_blank",
+        children: [$$("img", { src: this.node.url})]
+      })]
     });
 
     bodyEl.appendChild(imgEl);
