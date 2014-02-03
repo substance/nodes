@@ -11,6 +11,7 @@ Figure.type = {
   "parent": "content",
   "properties": {
     "url": "string",
+    "image_data": "string",
     "label": "string",
     "caption": "paragraph"
   }
@@ -24,6 +25,7 @@ Figure.description = {
   "properties": {
     "label": "Figure label (e.g. Figure 1)",
     "url": "Image url",
+    "image_data": "Base64 encoded image data",
     "caption": "A reference to a paragraph that describes the figure",
   }
 };
@@ -36,6 +38,7 @@ Figure.example = {
   "id": "figure_1",
   "label": "Figure 1",
   "url": "http://example.com/fig1.png",
+  "image_data": "",
   "caption": "paragraph_1"
 };
 

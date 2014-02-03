@@ -16,6 +16,31 @@ var FigureView = function(node, viewFactory) {
   };
 };
 
+
+function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
+
 FigureView.Prototype = function() {
 
   // Rendering
@@ -46,14 +71,30 @@ FigureView.Prototype = function() {
     // Wraps all resource details
 
     var bodyEl = $$('.resource-body');
+    var url;
+
+
+    
+
+    if (this.node.image_data) {
+      // url = "data:image/png;base64,"+this.node.image_data;
+      // var dat = new Uint8Array(JSZip.base64.decode(this.node.image_data));
+      // var bb = new Blob([dat], {type: "image/png"});
+      var blob = b64toBlob(this.node.image_data);
+      url = window.URL.createObjectURL(blob);
+    } else {
+      url = this.node.url;
+    }
+
+
 
     // Add graphic (img element)
     var imgEl = $$('.image-wrapper', {
       children: [$$("a", {
-        href: this.node.url,
+        href: url,
         title: "View image in full size",
         target: "_blank",
-        children: [$$("img", { src: this.node.url})]
+        children: [$$("img", { src: url})]
       })]
     });
 
