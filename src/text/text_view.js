@@ -72,7 +72,6 @@ TextView.Prototype = function() {
   };
 
   this.renderContent = function() {
-    console.log("Rerendering TextView...");
     this.content.innerHTML = "";
 
     this._annotations = this.node.document.getIndex("annotations").get([this.node.id, this.property]);

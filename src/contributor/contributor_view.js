@@ -12,6 +12,10 @@ var ContributorView = function(node) {
 
   this.$el.attr({id: node.id});
   this.$el.addClass("content-node contributor");
+
+  this.childViews = {
+    "name": null
+  };
 };
 
 ContributorView.Prototype = function() {
@@ -23,18 +27,17 @@ ContributorView.Prototype = function() {
   this.render = function() {
     NodeView.prototype.render.call(this);
 
-
     // Name element (used as a header for the resource card)
     // -------
 
-    var nameView = new TextView(this.node, this.viewFactory, {property: "name"});
+    var nameView = this.childViews["name"] = new TextView(this.node, this.viewFactory, {property: "name"});
     $(nameView.el).addClass('toggle-resource');
     this.content.appendChild(nameView.render().el);
 
     // Delete Button
     // --------
     // 
-    // This should be attached by the writer, since we don't want to have a
+    // TODO: This should be attached by the writer, since we don't want to have a
     // delete button in a reading scenario
 
     var deleteButton = $$('a.delete-resource', {
