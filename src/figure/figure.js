@@ -55,6 +55,19 @@ Figure.Prototype = function() {
   this.getCaption = function() {
     if (this.properties.caption) return this.document.get(this.properties.caption);
   };
+
+  // TODO:
+  // This is necessary since we pullute the figure object with blob data, which
+  // we don't want to be part of the JSON serialization
+  this.toJSON = function() {
+    return {
+      id: this.id,
+      label: this.label,
+      url: this.url,
+      caption: this.caption,
+      type: "figure"
+    };
+  };
 };
 
 Figure.Prototype.prototype = DocumentNode.prototype;

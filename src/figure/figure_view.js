@@ -71,34 +71,29 @@ FigureView.Prototype = function() {
     // Wraps all resource details
 
     var bodyEl = $$('.resource-body');
-    var url;
 
+    this.imgEl = $$("img", {href: "#"});
 
+    // Prepares blobs etc. for the image
     
-
-    if (this.node.image_data) {
-      // url = "data:image/png;base64,"+this.node.image_data;
-      // var dat = new Uint8Array(JSZip.base64.decode(this.node.image_data));
-      // var bb = new Blob([dat], {type: "image/png"});
-      var blob = b64toBlob(this.node.image_data);
-      url = window.URL.createObjectURL(blob);
-    } else {
-      url = this.node.url;
-    }
-
-
-
     // Add graphic (img element)
-    var imgEl = $$('.image-wrapper', {
-      children: [$$("a", {
-        href: url,
-        title: "View image in full size",
-        target: "_blank",
-        children: [$$("img", { src: url})]
-      })]
+    this.imgWrapper = $$('.image-wrapper', {
+      children: [
+        $$("input.figure-image-file", {type: "file", name: "files", "data-id": this.node.id }),
+        $$("a", {
+          // href: url,
+          title: "View image in full size",
+          target: "_blank",
+          children: [this.imgEl]
+        })
+      ]
     });
 
-    bodyEl.appendChild(imgEl);
+    bodyEl.appendChild(this.imgWrapper);
+
+    this.updateImage();
+
+    
 
     var caption = this.node.getCaption();
     if (caption) {
@@ -112,14 +107,31 @@ FigureView.Prototype = function() {
     return this;
   };
 
+  this.updateImage = function() {
+    var url;
+
+    if (this.node.image_data) {
+      // var blob = b64toBlob(this.node.image_data);
+      url = window.URL.createObjectURL(this.node.image_data);
+    } else {
+      url = this.node.url;
+    }
+    console.log('updating', url);
+
+    this.imgEl.setAttribute("src", url);
+
+    this.$(this.imgWrapper).attr({
+      url: url
+    });
+  };
+
   // Updates image src when figure is updated by ImageUrlEditor
   // --------
   //
 
   this.onNodeUpdate = function(op) {
-    this.$('img').attr({
-      src: this.node.url
-    });
+    this.updateImage();
+
     this.childViews["label"].onNodeUpdate(op);
   };
 
