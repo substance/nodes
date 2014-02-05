@@ -11,7 +11,7 @@ Figure.type = {
   "parent": "content",
   "properties": {
     "url": "string",
-    "image_data": "string",
+    "image": "blob",
     "label": "string",
     "caption": "paragraph"
   }
@@ -25,7 +25,7 @@ Figure.description = {
   "properties": {
     "label": "Figure label (e.g. Figure 1)",
     "url": "Image url",
-    "image_data": "Base64 encoded image data",
+    "image": "Blob id that has the image data",
     "caption": "A reference to a paragraph that describes the figure",
   }
 };
@@ -38,7 +38,7 @@ Figure.example = {
   "id": "figure_1",
   "label": "Figure 1",
   "url": "http://example.com/fig1.png",
-  "image_data": "",
+  "image": "",
   "caption": "paragraph_1"
 };
 
@@ -56,17 +56,21 @@ Figure.Prototype = function() {
     if (this.properties.caption) return this.document.get(this.properties.caption);
   };
 
-  // TODO:
-  // This is necessary since we pullute the figure object with blob data, which
-  // we don't want to be part of the JSON serialization
-  this.toJSON = function() {
-    return {
-      id: this.id,
-      label: this.label,
-      url: this.url,
-      caption: this.caption,
-      type: "figure"
-    };
+  this.getBlob = function() {
+    return this.document.getBlob(this.properties.image);
+  };
+
+  // Depending on wheter there is a blob it returns either the blob url or a regular image url
+  // --------
+  // 
+
+  this.getUrl = function() {
+    var blob = this.getBlob();
+    if (blob) {
+      return window.URL.createObjectURL(blob);
+    } else {
+      return this.properties.url;
+    }
   };
 };
 

@@ -93,8 +93,6 @@ FigureView.Prototype = function() {
 
     this.updateImage();
 
-    
-
     var caption = this.node.getCaption();
     if (caption) {
       var captionView = this.childViews["caption"] = this.viewFactory.createView(caption);
@@ -108,19 +106,10 @@ FigureView.Prototype = function() {
   };
 
   this.updateImage = function() {
-    var url;
-
-    if (this.node.image_data) {
-      // var blob = b64toBlob(this.node.image_data);
-      url = window.URL.createObjectURL(this.node.image_data);
-    } else {
-      url = this.node.url;
-    }
-    console.log('updating', url);
-
+    var url = this.node.getUrl();
     this.imgEl.setAttribute("src", url);
 
-    this.$(this.imgWrapper).attr({
+    this.$(this.imgWrapper).find('a').attr({
       url: url
     });
   };
@@ -131,7 +120,6 @@ FigureView.Prototype = function() {
 
   this.onNodeUpdate = function(op) {
     this.updateImage();
-
     this.childViews["label"].onNodeUpdate(op);
   };
 
