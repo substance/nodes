@@ -78,6 +78,7 @@ FigureView.Prototype = function() {
     
     // Add graphic (img element)
     this.imgWrapper = $$('.image-wrapper', {
+      contenteditable: false,
       children: [
         $$("input.figure-image-file", {type: "file", name: "files", "data-id": this.node.id }),
         $$("a", {
