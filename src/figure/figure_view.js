@@ -82,7 +82,7 @@ FigureView.Prototype = function() {
       children: [
         $$("input.figure-image-file", {type: "file", name: "files", "data-id": this.node.id }),
         $$("a", {
-          // href: url,
+          href: "#",
           title: "View image in full size",
           target: "_blank",
           children: [this.imgEl]
@@ -110,8 +110,8 @@ FigureView.Prototype = function() {
     var url = this.node.getUrl();
     this.imgEl.setAttribute("src", url);
 
-    this.$(this.imgWrapper).find('a').attr({
-      url: url
+    $(this.imgWrapper).find('a').attr({
+      href: url
     });
   };
 
