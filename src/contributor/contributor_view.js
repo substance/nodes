@@ -14,7 +14,9 @@ var ContributorView = function(node) {
   this.$el.addClass("content-node contributor");
 
   this.childViews = {
-    "name": null
+    "name": null,
+    "organization": null,
+    "email": null
   };
 };
 
@@ -36,7 +38,7 @@ ContributorView.Prototype = function() {
 
     // Delete Button
     // --------
-    // 
+    //
     // TODO: This should be attached by the writer, since we don't want to have a
     // delete button in a reading scenario
 
@@ -50,7 +52,7 @@ ContributorView.Prototype = function() {
 
     // Resource Body
     // -------
-    // 
+    //
     // Wraps all the contents of the resource card
 
     var body = $$('.resource-body');
@@ -69,11 +71,8 @@ ContributorView.Prototype = function() {
     // Organization
     // -------
 
-    // this.content.appendChild($$('.label', {text: 'Organization'}));
-    if (this.node.organization) {
-      this.orgEl = $$('.organization.node-property',{text: this.node.organization, "data-path": "organization"});
-      body.appendChild(this.orgEl);
-    }
+    var orgView = this.childViews["organization"] = new TextView(this.node, this.viewFactory, {property: "organization"});
+    body.appendChild(orgView.render().el);
 
 
     // Contribution
@@ -89,27 +88,32 @@ ContributorView.Prototype = function() {
     // Email
     // -------
 
-    if (this.node.email) {
-      body.appendChild($$('.label', {text: 'Email'}));
-      this.emailEl = $$('.email.node-property', {
-        children: [$$('a', {href: "mailto:"+ this.node.email, text: this.node.email})],
-        "data-path": "email"
-      });
-      body.appendChild(this.emailEl);
-    }
+    body.appendChild($$('.label', {text: 'Email', contenteditable: false}));
+    var emailView = this.childViews["email"] = new TextView(this.node, this.viewFactory, {property: "email"});
+    body.appendChild(emailView.render().el);
+
 
     this.content.appendChild(body);
 
     return this;
   };
 
-  this.describeStructure = function() {
-    var structure = [];
-    structure.push(this.propertyComponent("organization", this.orgEl));
-    structure.push(this.propertyComponent("contribution", this.contribEl));
-    structure.push(this.propertyComponent("email", this.emailEl));
-    return structure;
+  this.onNodeUpdate = function(op) {
+    if (op.path[1] === "name") {
+      this.childViews["name"].onNodeUpdate(op);
+      return true;
+    } else if (op.path[1] === "organization") {
+      this.childViews["organization"].onNodeUpdate(op);
+      return true;
+    } else if (op.path[1] === "email") {
+      this.childViews["email"].onNodeUpdate(op);
+      return true;
+    } else {
+      return false;
+    }
   };
+
+
 };
 
 ContributorView.Prototype.prototype = NodeView.prototype;
