@@ -56,6 +56,16 @@ Issue.Prototype = function() {
     if (this.properties.description) return this.document.get(this.properties.description);
   };
 
+  this.getReferences = function() {
+    var references = this.document.indexes['references'];
+    if (references) {
+      return references.get(this.properties.id);
+    } else {
+      console.error("No index for references.")
+      return [];
+    }
+  };
+
 };
 
 Issue.Prototype.prototype = DocumentNode.prototype;

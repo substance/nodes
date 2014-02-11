@@ -22,6 +22,18 @@ var IssueView = function(node, viewFactory) {
 
 IssueView.Prototype = function() {
 
+  var __super__ = NodeView.prototype;
+
+  this._updateTitle = function() {
+    // var refs = this.node.getReferences();
+    // this.ref = refs[Object.keys(refs)[0]];
+    if (this.ref) {
+      this.titleTextEl.innerHTML = this.ref.getContent();
+    } else {
+      this.titleTextEl.innerHTML = "";
+    }
+  };
+
   // Rendering
   // =============================
   //
@@ -29,21 +41,32 @@ IssueView.Prototype = function() {
   this.render = function() {
     NodeView.prototype.render.call(this);
 
-    var labelView = this.childViews["title"] = new TextView(this.node, this.viewFactory, {property: "title"});
+    //Note: we decided to render the text of the reference instead of
+    //the title property
+    // this.childViews["title"] = new TextView(this.node, this.viewFactory, {property: "title"});
+    // var titleView = this.childViews["title"];
+    // this.content.appendChild(titleView.render().el);
+    // var deleteButton = $$('a.delete-resource', {
+    //   href: '#',
+    //   text: "Delete",
+    //   contenteditable: false // Make sure this is not editable!
+    // });
+    // titleView.el.appendChild(deleteButton);
+    // titleView.el.setAttribute("contenteditable", "false");
 
-    this.content.appendChild(labelView.render().el);
-
-    // Delete Button
-    // --------
-
+    //Note: we decided to render the text of the reference instead of
+    //the title property
+    var titleViewEl = $$('div')
+    this.titleTextEl = $$('.text.title')
     var deleteButton = $$('a.delete-resource', {
       href: '#',
       text: "Delete",
       contenteditable: false // Make sure this is not editable!
     });
-
-    labelView.el.appendChild(deleteButton);
-    labelView.el.setAttribute("contenteditable", "false");
+    titleViewEl.appendChild(this.titleTextEl);
+    titleViewEl.appendChild(deleteButton);
+    titleViewEl.setAttribute("contenteditable", "false");
+    this.content.appendChild(titleViewEl);
 
     // Creator and date
     // --------
@@ -64,8 +87,33 @@ IssueView.Prototype = function() {
   this.onNodeUpdate = function(op) {
     if (op.path[1] === "title") {
       this.childViews["title"].onNodeUpdate(op);
+      return true;
     } else if (op.path[1] === "description") {
       this.childViews["description"].onNodeUpdate(op);
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  this.onGraphUpdate = function(op) {
+    if (__super__.onGraphUpdate.call(this, op)) {
+      return true;
+    }
+    // Hack: lazily detecting references to this issue
+    // by *only* checking 'create' ops with an object having this node as target
+    else if (op.type === "create" && op.val["target"] === this.node.id) {
+      this.ref = this.node.document.get(op.val.id);
+      this._updateTitle();
+      return true;
+    }
+    // ... the same in inverse direction...
+    else if (op.type === "delete" && op.val["target"] === this.node.id) {
+      this.ref = null;
+      this._updateTitle();
+      return true;
+    } else {
+      return false;
     }
   };
 
