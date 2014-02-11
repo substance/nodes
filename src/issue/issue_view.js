@@ -112,6 +112,10 @@ IssueView.Prototype = function() {
       this.ref = null;
       this._updateTitle();
       return true;
+    }
+    else if (this.ref && op.path[0] === this.ref.id) {
+      this._updateTitle();
+      return true;
     } else {
       return false;
     }
