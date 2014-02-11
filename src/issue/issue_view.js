@@ -56,7 +56,7 @@ IssueView.Prototype = function() {
 
     //Note: we decided to render the text of the reference instead of
     //the title property
-    var titleViewEl = $$('div')
+    var titleViewEl = $$('div.issue-title-wrapper')
     this.titleTextEl = $$('.text.title')
     var deleteButton = $$('a.delete-resource', {
       href: '#',
