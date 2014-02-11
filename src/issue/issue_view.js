@@ -81,6 +81,13 @@ IssueView.Prototype = function() {
     var descriptionView = this.childViews["description"] = new TextView(this.node, this.viewFactory, {property: "description"});
     this.content.appendChild(descriptionView.render().el);
 
+    var refs = this.node.getReferences();
+    var refIds = Object.keys(refs);
+    if (refIds.length > 0) {
+      this.ref = refs[refIds[0]];
+      this._updateTitle()
+    }
+
     return this;
   };
 
