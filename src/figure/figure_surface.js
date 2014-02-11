@@ -1,5 +1,6 @@
 "use strict";
 
+var _ = require("underscore");
 var NodeSurface = require("../node/node_surface");
 var TextSurface = require("../text/text_surface");
 var SurfaceComponents = require("../node/surface_components");
@@ -17,8 +18,8 @@ var FigureSurface = function(node, surfaceProvider) {
   // we want to create a full node component, but need to adjust the path property
   if (this.node.caption) {
     var caption = this.node.getCaption();
-    this.captionComponent = this.surfaceProvider.getNodeSurface(caption);
-    this.addSubSurface("caption", this.captionComponent);
+    var captionSurface = this.surfaceProvider.getNodeSurface(caption);
+    this.addSubSurface("caption", captionSurface);
   }
 };
 FigureSurface.Prototype = function() {
@@ -26,7 +27,7 @@ FigureSurface.Prototype = function() {
   this.attachView = function(view) {
     __super__.attachView.call(this, view);
     this.labelComponent.surface.attachView(this.view.childViews["label"]);
-    this.captionComponent.surface.attachView(this.view.childViews["caption"]);
+    if (this.captionComponent) this.captionComponent.surface.attachView(this.view.childViews["caption"]);
   };
 };
 FigureSurface.Prototype.prototype = NodeSurface.prototype;

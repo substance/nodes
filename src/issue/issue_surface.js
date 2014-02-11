@@ -5,11 +5,7 @@ var TextSurface = require("../text/text_surface");
 
 var IssueSurface = function(node, surfaceProvider) {
   NodeSurface.call(this, node, surfaceProvider);
-
-  this.titleComp = TextSurface.textProperty(this, "title");
   this.descriptionComp = TextSurface.textProperty(this, "description");
-
-  this.components.push(this.titleComp);
   this.components.push(this.descriptionComp);
 };
 
@@ -18,7 +14,6 @@ IssueSurface.Prototype = function() {
 
   this.attachView = function(view) {
     __super__.attachView.call(this, view);
-    this.titleComp.surface.attachView(this.view.childViews["title"]);
     this.descriptionComp.surface.attachView(this.view.childViews["description"]);
   };
 };
