@@ -43,6 +43,7 @@ IssueView.Prototype = function() {
     });
 
     labelView.el.appendChild(deleteButton);
+    labelView.el.setAttribute("contenteditable", "false");
 
     // Creator and date
     // --------
