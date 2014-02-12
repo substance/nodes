@@ -22,7 +22,8 @@ Contributor.type = {
     "name": "string", // full author name
     "role": "string",
     "organization": "string",
-    "image": "string", // optional
+    "image": "blob", // optional
+    "url": "string", // TODO: rename to image_url
     "email": "string",
     "contribution": "string"
   }
@@ -62,6 +63,23 @@ Contributor.Prototype = function() {
     return _.map(this.properties.affiliations, function(affId) {
       return this.document.get(affId);
     }, this);
+  };
+
+  this.getBlob = function() {
+    return this.document.getBlob(this.properties.image);
+  };
+
+  // Depending on wheter there is a blob it returns either the blob url or a regular image url
+  // --------
+  // 
+
+  this.getUrl = function() {
+    var blob = this.getBlob();
+    if (blob) {
+      return window.URL.createObjectURL(blob);
+    } else {
+      return this.properties.url || "styles/contributor-image-placeholder.png";
+    }
   };
 };
 
