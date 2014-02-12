@@ -96,7 +96,7 @@ TextView.Prototype = function() {
   };
 
   this.delete = function(pos, length) {
-    var result = this._lookupPostion(pos);
+    var result = this._lookupPostion(pos, "delete");
     var frag = result[0];
     var textNode = frag.el;
     var offset = result[1];
@@ -118,7 +118,13 @@ TextView.Prototype = function() {
     }
   };
 
-  this._lookupPostion = function(pos) {
+  // Lookup a fragment for the given position.
+  // ----
+  // For insertions, the annotation level is considered on annotation boundaries,
+  // i.e., if the annotation is exclusive, then the outer element/fragment is returned.
+  // For deletions the annotation exclusivity is not important
+  // i.e., the position belongs to the next fragment
+  this._lookupPostion = function(pos, is_delete) {
     var frag, l;
     for (var i = 0; i < this._fragments.length; i++) {
       frag = this._fragments[i];
@@ -136,7 +142,7 @@ TextView.Prototype = function() {
       else {
         var next = this._fragments[i+1];
         // if the element level of the next fragment is lower then we put the cursor there
-        if (next && next.level < frag.level) {
+        if (next && next.level < frag.level || is_delete) {
           return [next, 0];
         }
         // otherwise we leave the cursor in the current fragment
