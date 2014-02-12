@@ -79,7 +79,6 @@ TextView.Prototype = function() {
   };
 
   this.insert = function(pos, str) {
-    console.log("Trying incremental insert....");
     var result = this._lookupPostion(pos);
     var frag = result[0];
     var textNode = frag.el;
