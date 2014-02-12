@@ -12,11 +12,11 @@ var Annotator = require("substance-document").Annotator;
 // This behavior can overriden by the concrete node types
 
 function _getAnnotationBehavior(doc) {
-  if (doc.constructor && doc.constructor.annotationBehavior) {
-    return doc.constructor.annotationBehavior;
-  } else {
+  var annotationBehavior = doc.getAnnotationBehavior();
+  if (!annotationBehavior) {
     throw new Error("Missing AnnotationBehavior.");
   }
+  return annotationBehavior;
 }
 
 var TextView = function(node, renderer, options) {
