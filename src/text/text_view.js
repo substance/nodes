@@ -104,7 +104,7 @@ TextView.Prototype = function() {
     var text = textNode.textContent;
 
     // can not do this incrementally if it is a greater delete
-    if (length >= text.length) {
+    if (offset+length >= text.length) {
       this.renderContent();
       return;
     }
