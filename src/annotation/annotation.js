@@ -55,8 +55,13 @@ Annotation.example = {
 Annotation.Prototype = function() {
   this.getContent = function() {
     var content = this.document.get(this.path);
-    var range = this.range;
-    return content.substring(range[0], range[1]);
+    if (content) {
+      var range = this.range;
+      return content.substring(range[0], range[1]);
+    } else {
+      console.error("FIXME: this annotation references a deleted node", this, this.path);
+      return "N/A"
+    }
   };
 };
 
