@@ -17,30 +17,6 @@ var FigureView = function(node, viewFactory) {
 };
 
 
-function b64toBlob(b64Data, contentType, sliceSize) {
-    contentType = contentType || '';
-    sliceSize = sliceSize || 512;
-
-    var byteCharacters = atob(b64Data);
-    var byteArrays = [];
-
-    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        var byteNumbers = new Array(slice.length);
-        for (var i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        var byteArray = new Uint8Array(byteNumbers);
-
-        byteArrays.push(byteArray);
-    }
-
-    var blob = new Blob(byteArrays, {type: contentType});
-    return blob;
-}
-
 FigureView.Prototype = function() {
 
   // Rendering
@@ -53,17 +29,6 @@ FigureView.Prototype = function() {
     var labelView = this.childViews["label"] = new TextView(this.node, this.viewFactory, {property: "label"});
     $(labelView.el).addClass('toggle-resource');
     this.content.appendChild(labelView.render().el);
-
-    // Delete Button
-    // --------
-
-    var deleteButton = $$('a.delete-resource', {
-      href: '#',
-      text: "Delete",
-      contenteditable: false // Make sure this is not editable!
-    });
-
-    labelView.el.appendChild(deleteButton);
 
     // Resource body
     // --------
@@ -78,9 +43,7 @@ FigureView.Prototype = function() {
     
     // Add graphic (img element)
     this.imgWrapper = $$('.image-wrapper', {
-      contenteditable: false,
       children: [
-        $$("input.figure-image-file", {type: "file", name: "files", "data-id": this.node.id }),
         $$("a", {
           href: "#",
           title: "View image in full size",

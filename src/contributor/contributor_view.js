@@ -36,20 +36,6 @@ ContributorView.Prototype = function() {
     $(nameView.el).addClass('toggle-resource');
     this.content.appendChild(nameView.render().el);
 
-    // Delete Button
-    // --------
-    //
-    // TODO: This should be attached by the writer, since we don't want to have a
-    // delete button in a reading scenario
-
-    var deleteButton = $$('a.delete-resource', {
-      href: '#',
-      text: "Delete",
-      contenteditable: false
-    });
-
-    nameView.el.appendChild(deleteButton);
-
     // Resource Body
     // -------
     //
@@ -62,7 +48,6 @@ ContributorView.Prototype = function() {
 
     if (this.node.image) {
       this.imageEl = $$('.image', {
-        contenteditable: false,
         children: [$$('img', {src: this.node.image})]
       });
       body.appendChild(this.imageEl);
@@ -84,14 +69,12 @@ ContributorView.Prototype = function() {
       body.appendChild(this.contribEl);
     }
 
-
     // Email
     // -------
 
     body.appendChild($$('.label', {text: 'Email', contenteditable: false}));
     var emailView = this.childViews["email"] = new TextView(this.node, this.viewFactory, {property: "email"});
     body.appendChild(emailView.render().el);
-
 
     this.content.appendChild(body);
 
