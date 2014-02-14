@@ -9,11 +9,6 @@ var TextView = require("../text/text_view");
 
 var FigureView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
-
-  this.childViews = {
-    "label": null,
-    "caption": null
-  };
 };
 
 
@@ -26,9 +21,9 @@ FigureView.Prototype = function() {
   this.render = function() {
     NodeView.prototype.render.call(this);
 
-    var labelView = this.childViews["label"] = new TextView(this.node, this.viewFactory, {property: "label"});
-    $(labelView.el).addClass('toggle-resource');
-    this.content.appendChild(labelView.render().el);
+    this.labelView = new TextView(this.node, this.viewFactory, {property: "label"});
+    $(this.labelView.el).addClass('toggle-resource');
+    this.content.appendChild(this.labelView.render().el);
 
     // Resource body
     // --------
@@ -40,7 +35,7 @@ FigureView.Prototype = function() {
     this.imgEl = $$("img", {href: "#"});
 
     // Prepares blobs etc. for the image
-    
+
     // Add graphic (img element)
     this.imgWrapper = $$('.image-wrapper', {
       children: [
@@ -59,14 +54,20 @@ FigureView.Prototype = function() {
 
     var caption = this.node.getCaption();
     if (caption) {
-      var captionView = this.childViews["caption"] = this.viewFactory.createView(caption);
-      var captionEl = captionView.render().el;
+      this.captionView = this.viewFactory.createView(caption);
+      var captionEl = this.captionView.render().el;
       captionEl.classList.add('caption');
       bodyEl.appendChild(captionEl);
     }
 
     this.content.appendChild(bodyEl);
     return this;
+  };
+
+  this.dispose = function() {
+    NodeView.dispose.call(this);
+    this.labelView.dispose();
+    if (this.captionView) this.captionView.dispose();
   };
 
   this.updateImage = function() {
@@ -84,7 +85,7 @@ FigureView.Prototype = function() {
 
   this.onNodeUpdate = function(op) {
     this.updateImage();
-    this.childViews["label"].onNodeUpdate(op);
+    this.labelView.onNodeUpdate(op);
   };
 
 };

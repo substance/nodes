@@ -12,12 +12,6 @@ var ContributorView = function(node) {
 
   this.$el.attr({id: node.id});
   this.$el.addClass("content-node contributor");
-
-  this.childViews = {
-    "name": null,
-    "organization": null,
-    "email": null
-  };
 };
 
 ContributorView.Prototype = function() {
@@ -32,9 +26,9 @@ ContributorView.Prototype = function() {
     // Name element (used as a header for the resource card)
     // -------
 
-    var nameView = this.childViews["name"] = new TextView(this.node, this.viewFactory, {property: "name"});
-    $(nameView.el).addClass('toggle-resource');
-    this.content.appendChild(nameView.render().el);
+    this.nameView = new TextView(this.node, this.viewFactory, {property: "name"});
+    $(this.nameView.el).addClass('toggle-resource');
+    this.content.appendChild(this.nameView.render().el);
 
     // Resource Body
     // -------
@@ -56,8 +50,8 @@ ContributorView.Prototype = function() {
     // Organization
     // -------
 
-    var orgView = this.childViews["organization"] = new TextView(this.node, this.viewFactory, {property: "organization"});
-    body.appendChild(orgView.render().el);
+    this.organizationView = new TextView(this.node, this.viewFactory, {property: "organization"});
+    body.appendChild(this.organizationView.render().el);
 
 
     // Contribution
@@ -73,12 +67,19 @@ ContributorView.Prototype = function() {
     // -------
 
     body.appendChild($$('.label', {text: 'Email', contenteditable: false}));
-    var emailView = this.childViews["email"] = new TextView(this.node, this.viewFactory, {property: "email"});
-    body.appendChild(emailView.render().el);
+    this.emailView = new TextView(this.node, this.viewFactory, {property: "email"});
+    body.appendChild(this.emailView.render().el);
 
     this.content.appendChild(body);
 
     return this;
+  };
+
+  this.dispose = function() {
+    NodeView.dispose.call(this);
+    this.nameView.dispose();
+    this.organization.dispose();
+    this.emailView.dispose();
   };
 
   this.onNodeUpdate = function(op) {
@@ -95,7 +96,6 @@ ContributorView.Prototype = function() {
       return false;
     }
   };
-
 
 };
 

@@ -14,10 +14,6 @@ var CitationView = function(node) {
 
   this.$el.attr({id: node.id});
   this.$el.addClass('citation');
-
-  this.childViews = {
-    "title": null
-  };
 };
 
 
@@ -29,26 +25,13 @@ CitationView.Prototype = function() {
     var frag = document.createDocumentFragment(),
         node = this.node;
 
-    // TODO: rename this to title*
-    var titleView = this.childViews["title"] = new TextView(this.node, this.viewFactory, {property: "title"});
-    frag.appendChild(titleView.render().el);
-
-
-    // Delete Button
-    // --------
-
-    var deleteButton = $$('a.delete-resource', {
-      href: '#',
-      text: "Delete",
-      contenteditable: false // Make sure this is not editable!
-    });
-
-    titleView.el.appendChild(deleteButton);
-
+    // Note: delegating to TextView to inherit annotation support
+    this.titleView = new TextView(this.node, this.viewFactory, {property: "title"});
+    frag.appendChild(this.titleView.render().el);
 
     // Resource body
     // --------
-    // 
+    //
     // Wraps all resource details
 
     var bodyEl = $$('.resource-body');
@@ -61,8 +44,7 @@ CitationView.Prototype = function() {
     for (var i = 0; i < node.authors.length; i++) {
       var author = node.authors[i];
       this.authorEls.push($$('span.author', {
-        text: author,
-        "data-path": "author"+i
+        text: author
       }));
       authorsEl.appendChild(this.authorEls[i]);
       authorsEl.appendChild(document.createTextNode(" "));
@@ -91,7 +73,6 @@ CitationView.Prototype = function() {
 
     this.sourceEl = $$('.source', {
       html: source.join(''),
-      // "data-path": "source"
     });
     bodyEl.appendChild(this.sourceEl);
 
@@ -117,6 +98,11 @@ CitationView.Prototype = function() {
     this.content.appendChild(frag);
 
     return this;
+  };
+
+  this.dispose = function() {
+    NodeView.dispose.call(this);
+    this.titleView.dispose();
   };
 };
 

@@ -2,6 +2,5 @@
 
 module.exports = {
   Model: require("./error"),
-  View: require("./error_view"),
-  Surface: require("../issue/issue_surface")
+  View: require("./error_view")
 };

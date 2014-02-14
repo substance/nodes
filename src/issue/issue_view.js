@@ -13,11 +13,6 @@ var IssueView = function(node, viewFactory) {
 
   // This class is shared among all issue subtypes (errors, remarks)
   this.$el.addClass('issue');
-
-  this.childViews = {
-    "title": null,
-    "description": null
-  };
 };
 
 IssueView.Prototype = function() {
@@ -25,8 +20,6 @@ IssueView.Prototype = function() {
   var __super__ = NodeView.prototype;
 
   this._updateTitle = function() {
-    // var refs = this.node.getReferences();
-    // this.ref = refs[Object.keys(refs)[0]];
     if (this.ref) {
       this.titleTextEl.innerHTML = this.ref.getContent();
     } else {
@@ -43,29 +36,9 @@ IssueView.Prototype = function() {
 
     //Note: we decided to render the text of the reference instead of
     //the title property
-    // this.childViews["title"] = new TextView(this.node, this.viewFactory, {property: "title"});
-    // var titleView = this.childViews["title"];
-    // this.content.appendChild(titleView.render().el);
-    // var deleteButton = $$('a.delete-resource', {
-    //   href: '#',
-    //   text: "Delete",
-    //   contenteditable: false // Make sure this is not editable!
-    // });
-    // titleView.el.appendChild(deleteButton);
-    // titleView.el.setAttribute("contenteditable", "false");
-
-    //Note: we decided to render the text of the reference instead of
-    //the title property
     var titleViewEl = $$('div.issue-title-wrapper')
     this.titleTextEl = $$('.text.title')
-    var deleteButton = $$('a.delete-resource', {
-      href: '#',
-      text: "Delete",
-      contenteditable: false // Make sure this is not editable!
-    });
     titleViewEl.appendChild(this.titleTextEl);
-    titleViewEl.appendChild(deleteButton);
-    titleViewEl.setAttribute("contenteditable", "false");
     this.content.appendChild(titleViewEl);
 
     // Creator and date
@@ -78,8 +51,8 @@ IssueView.Prototype = function() {
 
     // labelView.el.appendChild(creator);
 
-    var descriptionView = this.childViews["description"] = new TextView(this.node, this.viewFactory, {property: "description"});
-    this.content.appendChild(descriptionView.render().el);
+    this.descriptionView = new TextView(this.node, this.viewFactory, {property: "description"});
+    this.content.appendChild(this.descriptionView.render().el);
 
     var refs = this.node.getReferences();
     var refIds = Object.keys(refs);
@@ -91,12 +64,14 @@ IssueView.Prototype = function() {
     return this;
   };
 
+  this.dispose = function() {
+    NodeView.dispose.call(this);
+    this.descriptionView.dispose();
+  };
+
   this.onNodeUpdate = function(op) {
-    if (op.path[1] === "title") {
-      this.childViews["title"].onNodeUpdate(op);
-      return true;
-    } else if (op.path[1] === "description") {
-      this.childViews["description"].onNodeUpdate(op);
+    if (op.path[1] === "description") {
+      this.descriptionView.onNodeUpdate(op);
       return true;
     } else {
       return false;

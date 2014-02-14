@@ -14,10 +14,6 @@ var CoverView = function(node, viewFactory) {
 
   this.$el.attr({id: node.id});
   this.$el.addClass("content-node cover");
-
-  this.childViews = {
-    "title": null
-  };
 };
 
 CoverView.Prototype = function() {
@@ -32,19 +28,21 @@ CoverView.Prototype = function() {
       }));
     }
 
-    var titleView = this.childViews["title"] = new TextView(this.node, this.viewFactory, {property: "title"});
-    this.content.appendChild(titleView.render().el);
+    this.titleView =  new TextView(this.node, this.viewFactory, {property: "title"});
+    this.content.appendChild(this.titleView.render().el);
     titleView.el.classList.add("title");
 
-    this.authorsEl = $$('.authors', {
-      contenteditable: false
-    });
+    this.authorsEl = $$('.authors');
 
     this.renderAuthors();
     this.content.appendChild(this.authorsEl);
-    
 
     return this;
+  };
+
+  this.dispose = function() {
+    NodeView.dispose.call(this);
+    this.titleView.dispose();
   };
 
   this.renderAuthors = function() {
@@ -70,7 +68,7 @@ CoverView.Prototype = function() {
     }
 
     if (_.isEqual(op.path, ["document","title"])) {
-      this.childViews["title"].renderContent();
+      this.titleView.renderContent();
       return true;
     } else if (_.isEqual(op.path, ["document", "authors"])) {
       this.renderAuthors();
@@ -81,7 +79,7 @@ CoverView.Prototype = function() {
     // as it seems strange to annotate a property which is used in such an indirect way
     if (Annotator.changesAnnotations(this.node.document, op, ["cover", "title"])) {
       //console.log("Rerendering TextView due to annotation update", op);
-      this.childViews["title"].renderContent();
+      this.titleView.renderContent();
       return true;
     }
   };

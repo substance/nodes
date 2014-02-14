@@ -31,7 +31,6 @@ NodeView.Prototype = function() {
 
   this.dispose = function() {
     this.stopListening();
-    this.disposeChildViews();
   };
 
   this.disposeChildViews = function() {
