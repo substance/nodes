@@ -69,7 +69,7 @@ Figure.Prototype = function() {
     if (blob) {
       return window.URL.createObjectURL(blob);
     } else {
-      return this.properties.image_url || "styles/image-placeholder.png";
+      return this.properties.image_url;
     }
   };
 };

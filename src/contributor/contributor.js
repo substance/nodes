@@ -77,7 +77,7 @@ Contributor.Prototype = function() {
     if (blob) {
       return window.URL.createObjectURL(blob);
     } else {
-      return this.properties.image_url || "styles/contributor-image-placeholder.png";
+      return this.properties.image_url;
     }
   };
 };

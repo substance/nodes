@@ -32,7 +32,7 @@ FigureView.Prototype = function() {
 
     var bodyEl = $$('.resource-body');
 
-    this.imgEl = $$("img", {href: "#"});
+    this.imgEl = $$("img");
 
     // Prepares blobs etc. for the image
 
