@@ -23,7 +23,7 @@ Contributor.type = {
     "role": "string",
     "organization": "string",
     "image": "blob", // optional
-    "url": "string", // TODO: rename to image_url
+    "image_url": "string",
     "email": "string",
     "contribution": "string"
   }
@@ -52,7 +52,6 @@ Contributor.example = {
   "type": "contributor",
   "role": "author",
   "name": "John Doe",
-  "image": "http://john.com/doe.png",
   "email": "a@b.com",
   "contribution": "Revising the article, data cleanup"
 };
@@ -78,7 +77,7 @@ Contributor.Prototype = function() {
     if (blob) {
       return window.URL.createObjectURL(blob);
     } else {
-      return this.properties.url || "styles/contributor-image-placeholder.png";
+      return this.properties.image_url || "styles/contributor-image-placeholder.png";
     }
   };
 };
