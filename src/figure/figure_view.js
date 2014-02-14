@@ -67,14 +67,6 @@ FigureView.Prototype = function() {
     if (this.captionView) this.captionView.dispose();
   };
 
-  // Updates image src when figure is updated by ImageUrlEditor
-  // --------
-  //
-
-  this.onNodeUpdate = function(op) {
-    this.updateImage();
-    this.labelView.onNodeUpdate(op);
-  };
 
 };
 

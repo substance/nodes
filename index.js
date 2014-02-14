@@ -21,6 +21,7 @@ module.exports = {
   "issue": require("./src/issue"),
   "remark": require("./src/remark"),
   "error": require("./src/error"),
+  "blob_reference": require("./src/blob_reference"),
   "figure_reference": require("./src/figure_reference"),
   "citation_reference": require("./src/citation_reference"),
   "cross_reference": require("./src/cross_reference"),
