@@ -10,8 +10,8 @@ Figure.type = {
   "id": "figure",
   "parent": "content",
   "properties": {
-    "url": "string",
     "image": "blob",
+    "image_url": "string",
     "label": "string",
     "caption": "paragraph"
   }
@@ -24,8 +24,8 @@ Figure.description = {
   ],
   "properties": {
     "label": "Figure label (e.g. Figure 1)",
-    "url": "Image url",
     "image": "Blob id that has the image data",
+    "image_url": "Image url",
     "caption": "A reference to a paragraph that describes the figure",
   }
 };
@@ -69,7 +69,7 @@ Figure.Prototype = function() {
     if (blob) {
       return window.URL.createObjectURL(blob);
     } else {
-      return this.properties.url || "styles/image-placeholder.png";
+      return this.properties.image_url || "styles/image-placeholder.png";
     }
   };
 };
@@ -105,7 +105,7 @@ Figure.create = function(data) {
     id: figId,
     type: "figure",
     label: data.label,
-    url: data.url
+    image_url: data.image_url
   };
 
   if (data.caption) {

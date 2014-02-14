@@ -40,9 +40,9 @@ ContributorView.Prototype = function() {
     // Image
     // -------
 
-    if (this.node.image) {
+    if (this.node.image_url) {
       this.imageEl = $$('.image', {
-        children: [$$('img', {src: this.node.image})]
+        children: [$$('img', {src: this.node.image_url})]
       });
       body.appendChild(this.imageEl);
     }
