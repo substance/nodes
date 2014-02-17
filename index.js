@@ -17,6 +17,8 @@ module.exports = {
   "superscript": require("./src/superscript"),
   "code": require("./src/code"),
   "link": require("./src/link"),
+  "list": require("./src/list"),
+  "list_item": require("./src/list_item"),
   "math": require("./src/math"),
   "issue": require("./src/issue"),
   "remark": require("./src/remark"),
@@ -29,7 +31,6 @@ module.exports = {
 
   // deprecated: these node types will be re-implemented
   "paragraph": require("./src/paragraph"),
-  "list": require("./src/list"),
   "table": require("./src/table"),
   "formula": require("./src/formula"),
 };

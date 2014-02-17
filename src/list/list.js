@@ -12,7 +12,7 @@ List.type = {
   "parent": "content",
   "properties": {
     "source_id": "string",
-    "items": ["array", "paragraph"],
+    "items": ["array", "list_item"],
     "ordered": "boolean"
   }
 };
@@ -29,7 +29,7 @@ List.description = {
   ],
   "properties": {
     "ordered": "Specifies wheter the list is ordered or not",
-    "items": "An array of paragraph references",
+    "items": "An array of listitem references",
   }
 };
 
@@ -42,8 +42,8 @@ List.example = {
   "type": "list",
   "id": "list_1",
   "items ": [
-    "paragraph_listitem_1",
-    "paragraph_listitem_2",
+    "listitem_1",
+    "listitem_2",
   ]
 };
 

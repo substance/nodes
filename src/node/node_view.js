@@ -3,9 +3,13 @@
 var View = require("substance-application").View;
 var _ = require("underscore");
 
+var __node_view_counter__ = 0;
+
 // Substance.Node.View
 // -----------------
 var NodeView = function(node, viewFactory) {
+  this.__id__ = __node_view_counter__++;
+
   View.call(this);
 
   this.node = node;
