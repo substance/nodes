@@ -65,7 +65,9 @@ Contributor.Prototype = function() {
   };
 
   this.getBlob = function() {
-    return this.document.getBlob(this.properties.image);
+    var blobRef = this.document.get(this.properties.image);
+    if (!blobRef) return null;
+    return this.document.getBlob(blobRef.blob);
   };
 
   // Depending on wheter there is a blob it returns either the blob url or a regular image url
@@ -77,7 +79,7 @@ Contributor.Prototype = function() {
     if (blob) {
       return window.URL.createObjectURL(blob);
     } else {
-      return this.properties.image_url || "styles/contributor-image-placeholder.png";
+      return this.properties.image_url;
     }
   };
 };

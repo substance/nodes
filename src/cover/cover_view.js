@@ -30,7 +30,7 @@ CoverView.Prototype = function() {
 
     this.titleView =  new TextView(this.node, this.viewFactory, {property: "title"});
     this.content.appendChild(this.titleView.render().el);
-    titleView.el.classList.add("title");
+    this.titleView.el.classList.add("title");
 
     this.authorsEl = $$('.authors');
 

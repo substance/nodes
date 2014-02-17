@@ -32,25 +32,22 @@ FigureView.Prototype = function() {
 
     var bodyEl = $$('.resource-body');
 
-    this.imgEl = $$("img", {href: "#"});
-
     // Prepares blobs etc. for the image
-
+    var url = this.node.image || this.node.image_url;
+    
     // Add graphic (img element)
     this.imgWrapper = $$('.image-wrapper', {
       children: [
         $$("a", {
-          href: "#",
+          href: url,
           title: "View image in full size",
           target: "_blank",
-          children: [this.imgEl]
+          children: [$$('img', {src: url})]
         })
       ]
     });
 
     bodyEl.appendChild(this.imgWrapper);
-
-    this.updateImage();
 
     var caption = this.node.getCaption();
     if (caption) {
@@ -70,23 +67,6 @@ FigureView.Prototype = function() {
     if (this.captionView) this.captionView.dispose();
   };
 
-  this.updateImage = function() {
-    var url = this.node.getUrl();
-    this.imgEl.setAttribute("src", url);
-
-    $(this.imgWrapper).find('a').attr({
-      href: url
-    });
-  };
-
-  // Updates image src when figure is updated by ImageUrlEditor
-  // --------
-  //
-
-  this.onNodeUpdate = function(op) {
-    this.updateImage();
-    this.labelView.onNodeUpdate(op);
-  };
 
 };
 
