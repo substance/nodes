@@ -141,7 +141,7 @@ TextView.Prototype = function() {
       else {
         var next = this._fragments[i+1];
         // if the element level of the next fragment is lower then we put the cursor there
-        if (next && next.level < frag.level || is_delete) {
+        if (next && (next.level < frag.level || is_delete)) {
           return [next, 0];
         }
         // otherwise we leave the cursor in the current fragment
