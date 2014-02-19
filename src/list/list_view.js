@@ -20,8 +20,10 @@ var ListView = function(node, viewFactory) {
 
 ListView.Prototype = function() {
 
+  var __super__ = NodeView.prototype;
+
   this.render = function() {
-    NodeView.prototype.render.call(this);
+    __super__.render.call(this);
 
     _.each(this.node.getItems(), function(item) {
       var itemView = this.viewFactory.createView(item, "overwrite");
@@ -39,7 +41,7 @@ ListView.Prototype = function() {
   };
 
   this.dispose = function() {
-    NodeView.dispose.call(this);
+    __super__.dispose.call(this);
   };
 };
 
