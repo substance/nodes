@@ -10,6 +10,11 @@ var $$ = require("substance-application").$$;
 var ListView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
 
+  this.el = node.ordered ? $$('ol') : $$('ul');
+  this.$el = $(this.el);
+  this.$el.addClass('content-node').addClass(node.type);
+  this.$el.attr('id', this.node.id);
+
   this.childViews = {};
 };
 

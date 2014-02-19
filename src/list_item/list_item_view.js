@@ -9,12 +9,13 @@ var $$ = require("substance-application").$$;
 
 var ListItemView = function(node, viewFactory) {
   TextView.call(this, node);
-  this.$el.addClass("list-item");
-  // remove the content-node class as this is not a top-level node
-  // and adding a data-path instead.
-  // TODO: it feels like the class 'content-node' is not an appropriate name
-  // maybe we should introduce an extra class for surface traversal (e.g. path lookup)
-  this.$el.removeClass('content-node');
+
+  this.el = $$('li.list-item');
+  this.$el = $(this.el);
+  this.$el.attr('id', this.node.id);
+
+  // Note: this element has no 'content-node' class as it is not a top-level node.
+  // Instead it has a data-path.
   this.$el.attr('data-path', node.id);
 
   this._level = this.node.level;
@@ -23,15 +24,6 @@ var ListItemView = function(node, viewFactory) {
 
 ListItemView.Prototype = function() {
   var __super__ = TextView.prototype;
-
-  this.render = function() {
-    __super__.render.call(this);
-
-    var bulletEl = $$(".bullet", {contenteditable: false});
-    this.el.insertBefore(bulletEl, this.el.firstChild)
-
-    return this;
-  }
 
   this.onNodeUpdate = function(op) {
     __super__.onNodeUpdate.call(this, op);
