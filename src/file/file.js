@@ -12,7 +12,7 @@ File.type = {
   "id": "file",
   "parent": "content",
   "properties": {
-    "data": "string", // either a blob reference or just a string for text files
+    "version": "number",
     "content_type": "string" // content mime type
   }
 };
@@ -24,8 +24,8 @@ File.description = {
     "A file is a file is a file."
   ],
   "properties": {
-    "data": "A data reference",
-    "content_type": "Content MIME type"
+    "content_type": "Content MIME type",
+    "version": "File version, gets incremented every time the file content changes."
   }
 };
 
@@ -35,7 +35,7 @@ File.description = {
 
 File.example = {
   "id": "figure1.png",
-  "data": "figure1.png",
+  "version": 1,
   "content_type": "image/png"
 };
 
@@ -54,14 +54,23 @@ File.Prototype = function() {
     return this.properties.content_type === "application/json";
   };
 
-  this.getData = function() {
-    return this.document.fileData[this.properties.data];
+  this.getData = function(version) {
+    var dataKey = this.properties.id+".v"+(version || this.properties.version);
+    return this.document.fileData[dataKey];
   };
 
   // Assigns a data object from the temporary data store
-  this.setData = function(data, dataKey) {
-    // Data key defaults to File.id (which corresponds to the filename)
-    dataKey = dataKey || this.properties.id;
+  this.updateData = function(data) {
+    var version = this.properties.version;
+
+    // Version is set and no record exists in doc.fileData
+    if (version && !this.getData(version)) {
+      // Initialize = silent data update without triggering a version bump
+    } else {
+      version = version ? version + 1 : 1;
+    }
+
+    var dataKey = this.properties.id+".v"+version;
 
     // First create the data in our temporary data store
     if (this.isJSON()) {
@@ -72,9 +81,9 @@ File.Prototype = function() {
       this.document.fileData[dataKey] = new Blob([data], {type: this.properties.content_type});
     }
 
-    // FigureView / ContributorView is listening to this event
-    if (dataKey !== this.properties.data) {
-      this.document.set([this.properties.id, "data"], dataKey);
+    if (version !== this.properties.version) {
+      // FigureView / ContributorView is listening to this operation
+      this.document.set([this.properties.id, "version"], version);  
     }
   };
 
