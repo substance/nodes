@@ -40,9 +40,11 @@ ContributorView.Prototype = function() {
     // Image
     // -------
 
-    if (this.node.image_url) {
+    var url = this.node.image || this.node.image_url;
+
+    if (url) {
       this.imageEl = $$('.image', {
-        children: [$$('img', {src: this.node.image || this.node.image_url})]
+        children: [$$('img', {src: url})]
       });
       body.appendChild(this.imageEl);
     }
@@ -82,20 +84,6 @@ ContributorView.Prototype = function() {
     this.emailView.dispose();
   };
 
-  this.onNodeUpdate = function(op) {
-    if (op.path[1] === "name") {
-      this.childViews["name"].onNodeUpdate(op);
-      return true;
-    } else if (op.path[1] === "organization") {
-      this.childViews["organization"].onNodeUpdate(op);
-      return true;
-    } else if (op.path[1] === "email") {
-      this.childViews["email"].onNodeUpdate(op);
-      return true;
-    } else {
-      return false;
-    }
-  };
 
 };
 
