@@ -56,7 +56,6 @@ Contributor.example = {
   "contribution": "Revising the article, data cleanup"
 };
 
-
 Contributor.Prototype = function() {
   this.getAffiliations = function() {
     return _.map(this.properties.affiliations, function(affId) {
@@ -65,9 +64,9 @@ Contributor.Prototype = function() {
   };
 
   this.getBlob = function() {
-    var blobRef = this.document.get(this.properties.image);
-    if (!blobRef) return null;
-    return this.document.getBlob(blobRef.blob);
+    var file = this.document.get(this.properties.image);
+    if (!file) return null;
+    return file.getData();
   };
 
   // Depending on wheter there is a blob it returns either the blob url or a regular image url
