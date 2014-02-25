@@ -64,6 +64,7 @@ Contributor.Prototype = function() {
   };
 
   this.getBlob = function() {
+    if (!this.properties.image) return null;
     var file = this.document.get(this.properties.image);
     if (!file) return null;
     return file.getData();
