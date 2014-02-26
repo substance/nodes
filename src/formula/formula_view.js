@@ -1,6 +1,6 @@
 "use strict";
 
-var NodeView = require('../node').View;
+var NodeView = require('../node/node_view');
 
 // FormulaView
 // ===========
@@ -19,8 +19,9 @@ FormulaView.Prototype = function() {
 
   // Render the formula
   // --------
-    
+
   this.render = function() {
+    NodeView.prototype.render.call(this);
 
     var format = this.node.format;
     switch (format) {
@@ -52,7 +53,6 @@ FormulaView.Prototype = function() {
     if (this.node.label) {
       this.$el.append($('<div class="label">').html(this.node.label));
     }
-
 
     return this;
   };

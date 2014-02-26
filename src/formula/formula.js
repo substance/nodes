@@ -1,12 +1,13 @@
-var _ = require('underscore');
-var Node = require('substance-document').Node;
+"use strict";
+
+var DocumentNode = require('../node/node');
 
 // Formula
 // -----------------
 //
 
 var Formula = function(node) {
-  Node.call(this, node);
+  DocumentNode.call(this, node);
 };
 
 // Type definition
@@ -59,24 +60,10 @@ Formula.Prototype = function() {
   this.inline = false;
 };
 
-Formula.Prototype.prototype = Node.prototype;
+Formula.Prototype.prototype = DocumentNode.prototype;
 Formula.prototype = new Formula.Prototype();
-Formula.prototype.constuctor = new Formula;
+Formula.prototype.constructor = Formula;
 
-
-// Generate getters
-// --------
-
-var getters = {};
-
-_.each(Formula.type.properties, function(prop, key) {
-  getters[key] = {
-    get: function() {
-      return this.properties[key];
-    }
-  };
-});
-
-Object.defineProperties(Formula.prototype, getters);
+Formula.prototype.defineProperties();
 
 module.exports = Formula;

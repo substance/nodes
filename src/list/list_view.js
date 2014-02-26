@@ -1,56 +1,36 @@
 "use strict";
 
-var CompositeView = require("../composite/composite_view");
-var List = require("./list");
+var NodeView = require("../node/node_view");
+var _ = require("underscore");
+var $$ = require("substance-application").$$;
 
 // Substance.Image.View
 // ==========================================================================
 
 var ListView = function(node, viewFactory) {
-  CompositeView.call(this, node, viewFactory);
+  NodeView.call(this, node, viewFactory);
+
+  this.el = node.ordered ? $$('ol') : $$('ul');
+  this.$el = $(this.el);
+  this.$el.addClass('content-node').addClass(node.type);
+  this.$el.attr('id', this.node.id);
+
+  this.childViews = {};
 };
-
-ListView.whoami = "SubstanceListView";
-
 
 ListView.Prototype = function() {
 
-  // Rendering
-  // =============================
-  //
+  var __super__ = NodeView.prototype;
 
   this.render = function() {
-    this.el.innerHTML = "";
+    __super__.render.call(this);
 
-    var ltype = (this.node.ordered) ? "OL" : "UL";
-    this.content = document.createElement(ltype);
-    this.content.classList.add("content");
+    _.each(this.node.getItems(), function(item) {
+      var itemView = this.viewFactory.createView(item, "overwrite");
+      this.content.appendChild(itemView.render().el);
+      this.childViews[item.id] = itemView;
+    }, this);
 
-    var i;
-
-    // dispose existing children views if called multiple times
-    for (i = 0; i < this.childrenViews.length; i++) {
-      this.childrenViews[i].dispose();
-    }
-
-    // create children views
-    var children = this.node.getNodes();
-    for (i = 0; i < children.length; i++) {
-      var child = this.node.document.get(children[i]);
-      var childView = this.viewFactory.createView(child);
-
-      var listEl;
-      if (child instanceof List) {
-        listEl = childView.render().el;
-      } else {
-        listEl = document.createElement("LI");
-        listEl.appendChild(childView.render().el);
-      }
-      this.content.appendChild(listEl);
-      this.childrenViews.push(childView);
-    }
-
-    this.el.appendChild(this.content);
     return this;
   };
 
@@ -59,9 +39,13 @@ ListView.Prototype = function() {
       this.render();
     }
   };
+
+  this.dispose = function() {
+    __super__.dispose.call(this);
+  };
 };
 
-ListView.Prototype.prototype = CompositeView.prototype;
+ListView.Prototype.prototype = NodeView.prototype;
 ListView.prototype = new ListView.Prototype();
 
 module.exports = ListView;

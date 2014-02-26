@@ -1,7 +1,9 @@
+"use strict";
+
 var NodeView = require('../node/node_view');
-var Document = require("substance-document");
-var Annotator = Document.Annotator;
 var $$ = require("substance-application").$$;
+var Fragmenter = require("substance-util").Fragmenter;
+var Annotator = require("substance-document").Annotator;
 
 // Substance.Text.View
 // -----------------
@@ -9,16 +11,52 @@ var $$ = require("substance-application").$$;
 // Manipulation interface shared by all textish types (paragraphs, headings)
 // This behavior can overriden by the concrete node types
 
-var LAST_CHAR_HACK = false;
+function _getAnnotationBehavior(doc) {
+  var annotationBehavior = doc.getAnnotationBehavior();
+  if (!annotationBehavior) {
+    throw new Error("Missing AnnotationBehavior.");
+  }
+  return annotationBehavior;
+}
 
-var TextView = function(node) {
+var TextView = function(node, renderer, options) {
   NodeView.call(this, node);
+  options = options || {};
+
+  this.property = options.property || "content";
 
   this.$el.addClass('content-node text');
-  this.$el.attr('id', this.node.id);
+
+  if (node.type === "text") {
+    this.$el.addClass("text-node");
+  }
+
+  // If TextView is used to display a custom property,
+  // we don't have an id. Only full-fledged text nodes
+  // have id's.
+  if (options.property) {
+    // Note: currently NodeView sets the id. In this mode the must not be set
+    // as we are displaying a textish property of a node, not a text node.
+    // IMO it is ok to have the id set by default, as it is the 99% case.
+    this.$el.removeAttr('id');
+    this.$el.removeClass('content-node');
+    this.$el.addClass(options.property);
+  }
+
+  this.$el.attr('data-path', this.property);
 
   this._annotations = {};
+  this.annotationBehavior = _getAnnotationBehavior(node.document);
+
+  // Note: due to (nested) annotations this DOM node is fragmented
+  // into several child nodes which contain a primitive DOM TextNodes.
+  // We wrap each of these nodes into a Fragment object.
+  // A Fragment object offers the chance to override things like the
+  // interpreted length or the manipulation behavior.
+  this._fragments = [];
 };
+
+var _findTextEl;
 
 TextView.Prototype = function() {
 
@@ -33,143 +71,125 @@ TextView.Prototype = function() {
     return this;
   };
 
-
-  this.dispose = function() {
-    NodeView.prototype.dispose.call(this);
-    console.log('disposing paragraph view');
-  };
-
   this.renderContent = function() {
     this.content.innerHTML = "";
 
-    this._annotations = this.node.getAnnotations();
+    this._annotations = this.node.document.getIndex("annotations").get([this.node.id, this.property]);
     this.renderWithAnnotations(this._annotations);
   };
 
   this.insert = function(pos, str) {
-    var range = this.getDOMPosition(pos);
-    var textNode = range.startContainer;
-    var offset = range.startOffset;
+    var result = this._lookupPostion(pos);
+    var frag = result[0];
+    var textNode = frag.el;
+    var offset = result[1];
+
     var text = textNode.textContent;
     text = text.substring(0, offset) + str + text.substring(offset);
     textNode.textContent = text;
+
+    // update the cached fragment positions
+    for (var i = frag.index+1; i < this._fragments.length; i++) {
+      this._fragments[i].charPos += str.length;
+    }
   };
 
   this.delete = function(pos, length) {
-    var range = this.getDOMPosition(pos);
-    var textNode = range.startContainer;
-    var offset = range.startOffset;
+    var result = this._lookupPostion(pos, "delete");
+    var frag = result[0];
+    var textNode = frag.el;
+    var offset = result[1];
+
     var text = textNode.textContent;
+
+    // can not do this incrementally if it is a greater delete
+    if (offset+length >= text.length) {
+      this.renderContent();
+      return;
+    }
+
     text = text.substring(0, offset) + text.substring(offset+length);
     textNode.textContent = text;
+
+    // update the cached fragment positions
+    for (var i = frag.index+1; i < this._fragments.length; i++) {
+      this._fragments[i].charPos -= length;
+    }
+  };
+
+  // Lookup a fragment for the given position.
+  // ----
+  // For insertions, the annotation level is considered on annotation boundaries,
+  // i.e., if the annotation is exclusive, then the outer element/fragment is returned.
+  // For deletions the annotation exclusivity is not important
+  // i.e., the position belongs to the next fragment
+  this._lookupPostion = function(pos, is_delete) {
+    var frag, l;
+    for (var i = 0; i < this._fragments.length; i++) {
+      frag = this._fragments[i];
+      l = frag.getLength();
+
+      // right in the middle of a fragment
+      if (pos < l) {
+        return [frag, pos];
+      }
+      // the position is not within this fragment
+      else if (pos > l) {
+        pos -= l;
+      }
+      // ... at the boundary we consider the element's level
+      else {
+        var next = this._fragments[i+1];
+        // if the element level of the next fragment is lower then we put the cursor there
+        if (next && (next.level < frag.level || is_delete)) {
+          return [next, 0];
+        }
+        // otherwise we leave the cursor in the current fragment
+        else {
+          return [frag, l];
+        }
+      }
+    }
+    return [frag, l];
   };
 
   this.onNodeUpdate = function(op) {
-    if (op.path[1] === "content") {
-      console.log("Updating text view: ", op);
+    if (op.path[1] === this.property) {
+      // console.log("Updating text view: ", op);
       if (op.type === "update") {
         var update = op.diff;
         if (update.isInsert()) {
           this.insert(update.pos, update.str);
+          return true;
         } else if (update.isDelete()) {
           this.delete(update.pos, update.str.length);
+          return true;
         }
       } else if (op.type === "set") {
         this.renderContent();
+        return true;
       }
     }
+    return false;
   };
 
   this.onGraphUpdate = function(op) {
-    NodeView.prototype.onGraphUpdate.call(this, op);
-
-    var doc = this.node.document;
-    var schema = doc.getSchema();
-
-    var node;
-    if (op.type !== "delete") {
-      node = doc.get(op.path[0]);
-    } else {
-      node = op.val;
+    // Call super handler and return if that has processed the operation already
+    if (NodeView.prototype.onGraphUpdate.call(this, op)) {
+      return true;
     }
-    if (schema.isInstanceOf(node.type, "annotation")) {
-      var rerender = false;
-      if (node.path[0] === this.node.id) {
-        rerender = true;
-      } else if (op.type === "set" && op.path[1] === "path" && op.original[0] === this.node.id) {
-        rerender = true;
-      }
 
-      if (rerender) {
+
+    // Otherwise deal with annotation changes
+    if (Annotator.changesAnnotations(this.node.document, op, [this.node.id, this.property])) {
+      if (op.type === "create" || op.type === "delete") {
         console.log("Rerendering TextView due to annotation update", op);
         this.renderContent();
-      }
-    }
-  };
-
-  this.getCharPosition = function(el, offset) {
-    // TODO: this is maybe too naive
-    // lookup the given element and compute a
-    // the corresponding char position in the plain document
-    var range = document.createRange();
-    range.setStart(this.content.childNodes[0], 0);
-    range.setEnd(el, offset);
-    var str = range.toString();
-    var charPos = Math.min(this.node.content.length, str.length);
-
-    // console.log("Requested char pos: ", charPos, this.node.content[charPos]);
-
-    return charPos;
-  };
-
-  // Returns the corresponding DOM element position for the given character
-  // --------
-  //
-  // A DOM position is specified by a tuple of element and offset.
-  // In the case of text nodes it is a TEXT element.
-
-  this.getDOMPosition = function(charPos) {
-    if (this.content === undefined) {
-      throw new Error("Not rendered yet.");
-    }
-
-    var range = document.createRange();
-
-    if (this.node.content.length === 0) {
-      range.setStart(this.content.childNodes[0], 0);
-      return range;
-    }
-
-    // otherwise look for the containing node in DFS order
-    // TODO: this could be optimized using some indexing or caching?
-    var stack = [this.content];
-    while(stack.length > 0) {
-      var el = stack.pop();
-      if (el.nodeType === Node.TEXT_NODE) {
-        var text = el;
-        if (text.length >= charPos) {
-          range.setStart(el, charPos);
-          return range;
-        } else {
-          charPos -= text.length;
-        }
-      } else if (el.childNodes.length > 0) {
-        // push in reverse order to have a left bound DFS
-        for (var i = el.childNodes.length - 1; i >= 0; i--) {
-          stack.push(el.childNodes[i]);
-        }
+        return true;
       }
     }
 
-    console.log("Bug-Alarm: the model and the view are out of sync.");
-    console.log("The model as "+charPos+" more characters");
-    console.log("Returning the last available position... but please fix me. Anyone?");
-
-    var children = this.content.childNodes;
-    var last = children[children.length-1];
-    range.setStart(last, last.length);
-
-    return range;
+    return false;
   };
 
   this.createAnnotationElement = function(entry) {
@@ -189,33 +209,47 @@ TextView.Prototype = function() {
   };
 
   this.renderWithAnnotations = function(annotations) {
-    var that = this;
-    var text = this.node.content;
+    var self = this;
+    var text = this.node[this.property];
     var fragment = document.createDocumentFragment();
 
     // this splits the text and annotations into smaller pieces
     // which is necessary to generate proper HTML.
-    var fragmenter = new Annotator.Fragmenter({});
+
+    var fragmenter = new Fragmenter(this.annotationBehavior.levels);
+
+    this._fragments = [];
+
+    var _entry = null;
+    var _index = 0;
+    var _charPos = 0;
+    var _level  = 0;
 
     fragmenter.onText = function(context, text) {
-      context.appendChild(document.createTextNode(text));
+      var el = document.createTextNode(text);
+
+      // Note: we create the data structures to allow lookup fragments
+      // for coordinate mapping and incremental changes
+      // TODO: to override the Fragment behavior we would need to override this
+      self._fragments.push(new TextView.DefaultFragment(el, _index++, _charPos, _level));
+      _charPos += text.length;
+      context.appendChild(el);
     };
 
     fragmenter.onEnter = function(entry, parentContext) {
-      var el = that.createAnnotationElement(entry);
+      _entry = entry;
+      _level++;
+      var el = self.createAnnotationElement(entry);
       parentContext.appendChild(el);
       return el;
     };
 
+    fragmenter.onExit = function(entry, parentContext) {
+      _level--;
+    };
+
     // this calls onText and onEnter in turns...
     fragmenter.start(fragment, text, annotations);
-
-    // EXPERIMENTAL HACK:
-    // append a trailing white-space to improve the browser's behaviour with softbreaks at the end
-    // of a node.
-    if (LAST_CHAR_HACK) {
-      fragment.appendChild(document.createTextNode(" "));
-    }
 
     // set the content
     this.content.innerHTML = "";
@@ -232,5 +266,63 @@ TextView.Prototype = function() {
 
 TextView.Prototype.prototype = NodeView.prototype;
 TextView.prototype = new TextView.Prototype();
+
+var _unshiftAll = function(arr, other) {
+  for (var i = 0; i < other.length; i++) {
+    arr.unshift(other[i]);
+  }
+};
+
+_findTextEl = function(el, pos) {
+  var childNodes = [];
+  _unshiftAll(childNodes, el.childNodes);
+
+  while(childNodes.length) {
+    var next = childNodes.shift();
+    if (next.nodeType === Node.TEXT_NODE) {
+      var t = next.textContent;
+      if (t.length >= pos) {
+        return [next, pos];
+      } else {
+        pos -= t.length;
+      }
+    } else {
+      _unshiftAll(childNodes, next.childNodes);
+    }
+  }
+};
+
+TextView.Fragment = function(el, index, charPos, level) {
+  this.el = el;
+
+  // the position in the fragments array
+  this.index = index;
+
+  this.charPos = charPos;
+
+  // Note: the level is used to determine the behavior at element boundaries.
+  // Basiscally, for character positions at the boundaries, a manipulation is done
+  // in the node with lower level.
+  this.level = level;
+
+};
+
+TextView.Fragment.Prototype = function() {
+  this.getLength = function() {
+    throw new Error("This method is abstract");
+  };
+};
+TextView.Fragment.prototype = new TextView.Fragment.Prototype();
+
+TextView.DefaultFragment = function() {
+  TextView.Fragment.apply(this, arguments);
+};
+TextView.DefaultFragment.Prototype = function() {
+  this.getLength = function() {
+    return this.el.length;
+  };
+};
+TextView.DefaultFragment.Prototype.prototype = TextView.Fragment.prototype;
+TextView.DefaultFragment.prototype = new TextView.DefaultFragment.Prototype();
 
 module.exports = TextView;

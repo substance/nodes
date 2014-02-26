@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var DocumentNode = require('../node/node');
 
-// Lens.Cover
+// Cover
 // -----------------
 //
 
@@ -18,7 +18,6 @@ Cover.type = {
   "parent": "content",
   "properties": {
     "source_id": "string",
-    "authors": ["array", "person_reference"],
     "image": "string"
   }
 };
@@ -34,7 +33,7 @@ Cover.description = {
     "Virtual view on the title and authors of the paper."
   ],
   "properties": {
-    "authors": "An array of references to collaborators"
+
   }
 };
 
@@ -45,39 +44,28 @@ Cover.description = {
 Cover.example = {
   "id": "cover",
   "type": "cover",
-  "authors": ["collaborator_reference_1", "collaborator_reference_2"]
+  "image": "http://example.com/image.png"
 };
 
 Cover.Prototype = function() {
-  this.getAuthorRefs = function() {
-    return _.map(this.properties.authors, function(id) {
-      return this.document.get(id);
-    }, this);
-  };
 };
 
 Cover.Prototype.prototype = DocumentNode.prototype;
 Cover.prototype = new Cover.Prototype();
 Cover.prototype.constructor = Cover;
 
-// Generate getters
+Cover.prototype.defineProperties();
+
+// Property aliases
 // --------
 
 Object.defineProperties(Cover.prototype, {
   title: {
     get: function() {
       return this.document.title;
-    }
-  },
-  authors: {
-    // Expand author id's to corresponding person nodes
-    get: function() {
-      return this.properties.authors;
-    }
-  },
-  image: {
-    get: function() {
-      return this.properties.image;
+    },
+    set: function() {
+      throw new Error("This is a read-only property alias.");
     }
   }
 });

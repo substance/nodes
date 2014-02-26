@@ -11,10 +11,15 @@
   },
   "dependencies":{
     "underscore":"",
-    "substance-document":"",
     "substance-util":"",
     "substance-application":"",
-    "substance-operator":""
+    "substance-operator":"",
+    "substance-document":"",
+    "substance-regexp":""
+  },
+  "devDependencies": {
+    "mocha": "",
+    "substance-test": ""
   },
   "version":"0.3.0"
 }

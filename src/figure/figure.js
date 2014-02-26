@@ -1,16 +1,17 @@
 "use strict";
 
-var Document = require("substance-document");
+var DocumentNode = require("../node/node");
 
 var Figure = function(node, document) {
-  Document.Composite.call(this, node, document);
+  DocumentNode.call(this, node, document);
 };
 
 Figure.type = {
   "id": "figure",
   "parent": "content",
   "properties": {
-    "url": "string",
+    "image": "blob_reference",
+    "image_url": "string",
     "label": "string",
     "caption": "paragraph"
   }
@@ -23,7 +24,8 @@ Figure.description = {
   ],
   "properties": {
     "label": "Figure label (e.g. Figure 1)",
-    "url": "Image url",
+    "image": "BlobReference id that has the image blob",
+    "image_url": "Image url",
     "caption": "A reference to a paragraph that describes the figure",
   }
 };
@@ -36,6 +38,7 @@ Figure.example = {
   "id": "figure_1",
   "label": "Figure 1",
   "url": "http://example.com/fig1.png",
+  "image": "",
   "caption": "paragraph_1"
 };
 
@@ -45,32 +48,51 @@ Figure.config = {
 
 Figure.Prototype = function() {
 
-  this.insertOperation = function(startChar, text) {
-    return null;
-  };
-
-  this.deleteOperation = function(startChar, endChar) {
-    return null;
-  };
-
   this.hasCaption = function() {
     return (!!this.properties.caption);
-  };
-
-  this.getNodes = function() {
-    var nodes = [];
-    if (this.properties.caption) nodes.push(this.properties.caption);
-    return nodes;
   };
 
   this.getCaption = function() {
     if (this.properties.caption) return this.document.get(this.properties.caption);
   };
+
+  this.getBlob = function() {
+    if (!this.properties.image) return null;
+    var file = this.document.get(this.properties.image);
+    if (!file) return null;
+    return file.getData();
+  };
+
+  // Depending on wheter there is a blob it returns either the blob url or a regular image url
+  // --------
+  // 
+
+  this.getUrl = function() {
+    var blob = this.getBlob();
+    if (blob) {
+      return window.URL.createObjectURL(blob);
+    } else {
+      return this.properties.image_url;
+    }
+  };
 };
 
-Figure.Prototype.prototype = Document.Composite.prototype;
+Figure.Prototype.prototype = DocumentNode.prototype;
 Figure.prototype = new Figure.Prototype();
 Figure.prototype.constructor = Figure;
+
+Figure.prototype.defineProperties();
+
+// Property aliases:
+// ----
+
+Object.defineProperties(Figure.prototype, {
+  // Used as a resource header
+  header: {
+    get: function() { return this.properties.label; },
+    set: function() { throw new Error("This is a read-only alias property."); }
+  }
+});
 
 // a factory method to create nodes more conveniently
 // Supported
@@ -86,7 +108,7 @@ Figure.create = function(data) {
     id: figId,
     type: "figure",
     label: data.label,
-    url: data.url
+    image_url: data.image_url
   };
 
   if (data.caption) {
@@ -103,14 +125,5 @@ Figure.create = function(data) {
   result[figId] = figure;
   return result;
 };
-
-Document.Node.defineProperties(Figure.prototype, ["url", "caption"]);
-
-Object.defineProperties(Figure.prototype, {
-  // Used as a resource header
-  header: {
-    get: function() { return this.properties.label; }
-  }
-});
 
 module.exports = Figure;

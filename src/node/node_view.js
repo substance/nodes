@@ -1,15 +1,21 @@
+"use strict";
+
 var View = require("substance-application").View;
+var _ = require("underscore");
+
+var __node_view_counter__ = 0;
 
 // Substance.Node.View
 // -----------------
-
 var NodeView = function(node, viewFactory) {
+  this.__id__ = __node_view_counter__++;
+
   View.call(this);
 
   this.node = node;
   this.viewFactory = viewFactory;
 
-  this.$el.addClass('content-node');
+  this.$el.addClass('content-node').addClass(node.type);
   this.$el.attr('id', this.node.id);
 };
 
@@ -18,8 +24,9 @@ NodeView.Prototype = function() {
   // Rendering
   // --------
   //
-
   this.render = function() {
+    this.disposeChildViews();
+    this.el.innerHTML = "";
     this.content = document.createElement("DIV");
     this.content.classList.add("content");
     this.el.appendChild(this.content);
@@ -30,20 +37,12 @@ NodeView.Prototype = function() {
     this.stopListening();
   };
 
-  // Retrieves the corresponding character position for the given DOM position.
-  // --------
-  //
-
-  this.getCharPosition = function(/*el, offset*/) {
-    throw new Error("NodeView.getCharPosition() is abstract.");
-  };
-
-  // Retrieves the corresponding DOM position for a given character.
-  // --------
-  //
-
-  this.getDOMPosition = function(/*charPos*/) {
-    throw new Error("NodeView.getDOMPosition() is abstract.");
+  this.disposeChildViews = function() {
+    if (this.childViews) {
+      _.each(this.childViews, function(view) {
+        if (view) view.dispose();
+      });
+    }
   };
 
   // A general graph update listener that dispatches
@@ -54,6 +53,9 @@ NodeView.Prototype = function() {
   this.onGraphUpdate = function(op) {
     if(op.path[0] === this.node.id && (op.type === "update" || op.type === "set") ) {
       this.onNodeUpdate(op);
+      return true;
+    } else {
+      return false;
     }
   };
 

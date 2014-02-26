@@ -1,10 +1,11 @@
 "use strict";
 
-var DocumentNode = require("substance-document").Node;
-var WebResource = require("../web_resource/web_resource");
+var DocumentNode = require('../node/node');
+
+// var WebResource = require("../web_resource/web_resource");
 
 var ImageNode = function(node, document) {
-  WebResource.call(this, node, document);
+  DocumentNode.call(this, node, document);
 };
 
 // Type definition
@@ -13,11 +14,28 @@ var ImageNode = function(node, document) {
 
 ImageNode.type = {
   "id": "image",
-  "parent": "webresource",
+  "parent": "content",
   "properties": {
-    "source_id": "string"
+    "source_id": "string",
+    "url": "string"
   }
 };
+
+// This is used for the auto-generated docs
+// -----------------
+//
+
+
+ImageNode.description = {
+  "name": "Image",
+  "remarks": [
+    "Represents an image web resource."
+  ],
+  "properties": {
+    "url": "URL to a resource",
+  }
+};
+
 
 // Example Image
 // -----------------
@@ -29,23 +47,12 @@ ImageNode.example = {
   "url": "http://substance.io/image_1.png"
 };
 
-// This is used for the auto-generated docs
-// -----------------
-//
-
-
-ImageNode.description = {
-  "name": "Image",
-  "remarks": [
-    "Represents a web-resource for an image."
-  ],
-  "properties": {}
-};
-
 ImageNode.Prototype = function() {};
 
-ImageNode.Prototype.prototype = WebResource.prototype;
+ImageNode.Prototype.prototype = DocumentNode.prototype;
 ImageNode.prototype = new ImageNode.Prototype();
 ImageNode.prototype.constructor = ImageNode;
+
+ImageNode.prototype.defineProperties();
 
 module.exports = ImageNode;
