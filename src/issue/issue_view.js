@@ -37,9 +37,11 @@ IssueView.Prototype = function() {
     //Note: we decided to render the text of the reference instead of
     //the title property
     var titleViewEl = $$('div.issue-title-wrapper')
-    this.titleTextEl = $$('.text.title')
+    this.titleTextEl = $$('.text.title', {
+      children: [$$('span.title-annotation', {text: "meeh"})]
+    })
     titleViewEl.appendChild(this.titleTextEl);
-    this.content.appendChild(titleViewEl);
+    // this.content.appendChild(titleViewEl);
 
     // Creator and date
     // --------
