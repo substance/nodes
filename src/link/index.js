@@ -1,5 +1,6 @@
 "use strict";
 
 module.exports = {
-  Model: require("./link")
+  Model: require("./link"),
+  View: require("./link_view")
 };

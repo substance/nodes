@@ -194,7 +194,7 @@ TextView.Prototype = function() {
 
   this.createAnnotationElement = function(entry) {
     var el;
-    if (entry.type === "link") {
+    if (entry.type === "link_reference") {
       el = $$('a.annotation.'+entry.type, {
         id: entry.id,
         href: this.node.document.get(entry.id).url // "http://zive.at"
@@ -304,7 +304,6 @@ TextView.Fragment = function(el, index, charPos, level) {
   // Basiscally, for character positions at the boundaries, a manipulation is done
   // in the node with lower level.
   this.level = level;
-
 };
 
 TextView.Fragment.Prototype = function() {

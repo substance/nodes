@@ -1,18 +1,19 @@
 "use strict";
 
-var Annotation = require('../annotation/annotation');
+var DocumentNode = require('../node/node');
 
 var Link = function(node, document) {
-  Annotation.call(this, node, document);
+  DocumentNode.call(this, node, document);
 };
 
 // Type definition
 // --------
 
 Link.type = {
-  "id": "link",
-  "parent": "annotation",
+  "id": "issue",
   "properties": {
+    // "title": "string",
+    "description": "string", // should be a reference to a text node?
     "url": "string"
   }
 };
@@ -25,9 +26,12 @@ Link.type = {
 Link.description = {
   "name": "Link",
   "remarks": [
-    "References a range in a text-ish node and tags it as subscript"
+    "A hyperlink"
   ],
   "properties": {
+    // "title": "Link Title",
+    "description": "More verbose link description, if available",
+    "url": "Link URL"
   }
 };
 
@@ -37,21 +41,31 @@ Link.description = {
 //
 
 Link.example = {
-  "type": "link_1",
-  "id": "link_1",
-  "path": [
-    "text_54",
-    "content"
-  ],
-  "range": [
-    85,
-    95
-  ]
+  "abstract": "type"
 };
 
-Link.Prototype = function() {};
+Link.Prototype = function() {
 
-Link.Prototype.prototype = Annotation.prototype;
+  this.hasDescription = function() {
+    return (!!this.properties.caption);
+  };
+
+  this.getDescription = function() {
+    if (this.properties.description) return this.document.get(this.properties.description);
+  };
+
+  this.getReferences = function() {
+    var references = this.document.indexes['references'];
+    if (references) {
+      return references.get(this.properties.id);
+    } else {
+      console.error("No index for references.")
+      return [];
+    }
+  };
+};
+
+Link.Prototype.prototype = DocumentNode.prototype;
 Link.prototype = new Link.Prototype();
 Link.prototype.constructor = Link;
 

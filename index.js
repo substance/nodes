@@ -25,6 +25,7 @@ module.exports = {
   "error": require("./src/error"),
   "file": require("./src/file"),
   "blob_reference": require("./src/blob_reference"),
+  "link_reference": require("./src/link_reference"),
   "figure_reference": require("./src/figure_reference"),
   "citation_reference": require("./src/citation_reference"),
   "cross_reference": require("./src/cross_reference"),
@@ -34,5 +35,5 @@ module.exports = {
   // deprecated: these node types will be re-implemented
   "paragraph": require("./src/paragraph"),
   "table": require("./src/table"),
-  "formula": require("./src/formula"),
+  "formula": require("./src/formula")
 };
