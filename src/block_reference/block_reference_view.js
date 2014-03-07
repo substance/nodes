@@ -20,7 +20,7 @@ BlockReference.Prototype = function() {
   this.render = function() {
     NodeView.prototype.render.call(this);
 
-    this.imgEl = $$('img', {src: "styles/image-placeholder.png"});
+    this.imgEl = $$('img', {src: "styles/image-placholder-line.png"});
     this.updateImage();
 
     // Add graphic (img element)
@@ -37,7 +37,7 @@ BlockReference.Prototype = function() {
 
   this.updateImage = function() {
     var figure = this.node.getResource();
-    var url = figure.getUrl() || "styles/image-placeholder.png";
+    var url = figure.getUrl() || "styles/image-placholder-line.png";
     this.imgEl.setAttribute("src", url);
   };
 
