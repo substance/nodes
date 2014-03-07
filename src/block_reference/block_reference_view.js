@@ -47,13 +47,16 @@ BlockReference.Prototype = function() {
   //
 
   this.onNodeUpdate = function(op) {
-    // this.updateImage();
+    this.updateImage();
   };
 
   this.onGraphUpdate = function(op) {
     if (NodeView.prototype.onGraphUpdate.call(this, op)) return;
-    var fileId = this.node.getResource().image;    
-    if (op.path[0] === fileId) {
+    var resource = this.node.getResource();
+    var fileId = resource.image;
+
+    // When the image file is assigned the first time.. or when the corresponding file changed
+    if (op.path[0] === resource.id || op.path[0] === fileId) {
       this.updateImage();
     }
   };
