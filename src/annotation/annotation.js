@@ -53,6 +53,7 @@ Annotation.example = {
 };
 
 Annotation.Prototype = function() {
+
   this.getContent = function() {
     var content = this.document.get(this.path);
     if (content) {

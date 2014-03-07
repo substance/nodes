@@ -62,7 +62,7 @@ FigureView.Prototype = function() {
   };
 
   this.dispose = function() {
-    NodeView.dispose.call(this);
+    NodeView.prototype.dispose.call(this);
     this.labelView.dispose();
     if (this.captionView) this.captionView.dispose();
   };
