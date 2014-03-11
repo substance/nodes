@@ -2,6 +2,7 @@
 
 var NodeView = require("../node/node_view");
 var _ = require("underscore");
+var $ = window.$;
 var $$ = require("substance-application").$$;
 
 // Substance.Image.View

@@ -22,7 +22,7 @@ CitationView.Prototype = function() {
   this.render = function() {
     NodeView.prototype.render.call(this);
 
-    var frag = document.createDocumentFragment(),
+    var frag = window.document.createDocumentFragment(),
         node = this.node;
 
     // Note: delegating to TextView to inherit annotation support
@@ -47,7 +47,7 @@ CitationView.Prototype = function() {
         text: author
       }));
       authorsEl.appendChild(this.authorEls[i]);
-      authorsEl.appendChild(document.createTextNode(" "));
+      authorsEl.appendChild(window.document.createTextNode(" "));
     }
     bodyEl.appendChild(authorsEl);
 

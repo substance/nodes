@@ -211,7 +211,7 @@ TextView.Prototype = function() {
   this.renderWithAnnotations = function(annotations) {
     var self = this;
     var text = this.node[this.property];
-    var fragment = document.createDocumentFragment();
+    var fragment = window.document.createDocumentFragment();
 
     // this splits the text and annotations into smaller pieces
     // which is necessary to generate proper HTML.
@@ -226,7 +226,7 @@ TextView.Prototype = function() {
     var _level  = 0;
 
     fragmenter.onText = function(context, text) {
-      var el = document.createTextNode(text);
+      var el = window.document.createTextNode(text);
 
       // Note: we create the data structures to allow lookup fragments
       // for coordinate mapping and incremental changes
@@ -244,7 +244,7 @@ TextView.Prototype = function() {
       return el;
     };
 
-    fragmenter.onExit = function(entry, parentContext) {
+    fragmenter.onExit = function(/*entry, parentContext*/) {
       _level--;
     };
 
@@ -279,7 +279,7 @@ _findTextEl = function(el, pos) {
 
   while(childNodes.length) {
     var next = childNodes.shift();
-    if (next.nodeType === Node.TEXT_NODE) {
+    if (next.nodeType === window.Node.TEXT_NODE) {
       var t = next.textContent;
       if (t.length >= pos) {
         return [next, pos];

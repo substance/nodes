@@ -1,13 +1,13 @@
 "use strict";
 
 var TextView = require("../text/text_view");
-var _ = require("underscore");
+var $ = window.$;
 var $$ = require("substance-application").$$;
 
 // Substance.Image.View
 // ==========================================================================
 
-var ListItemView = function(node, viewFactory) {
+var ListItemView = function(node) {
   TextView.call(this, node);
 
   this.el = $$('li.list-item');

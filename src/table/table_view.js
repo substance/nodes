@@ -1,7 +1,6 @@
 "use strict";
 
 var NodeView = require("../node/node_view");
-var _ = require("underscore");
 
 // TableView
 // =========
@@ -15,18 +14,18 @@ TableView.Prototype = function() {
   this.render = function() {
     NodeView.prototype.render.call(this);
 
-    // var tableEl = document.createElement("table");
+    // var tableEl = window.document.createElement("table");
 
     // // table header
     // var cellNode, cellView;
     // var tableHeaders = this.node.getHeaders();
-    // var thead = document.createElement("thead");
+    // var thead = window.document.createElement("thead");
     // if (tableHeaders.length > 0) {
-    //   var rowEl = document.createElement("tr");
+    //   var rowEl = window.document.createElement("tr");
     //   for (var i = 0; i < tableHeaders.length; i++) {
     //     cellNode = tableHeaders[i];
     //     cellView = this.viewFactory.createView(cellNode);
-    //     var cellEl = document.createElement("th");
+    //     var cellEl = window.document.createElement("th");
     //     cellEl.appendChild(cellView.render().el);
     //     rowEl.appendChild(cellEl);
 
@@ -38,15 +37,15 @@ TableView.Prototype = function() {
 
     // // table rows
     // var tableCells = this.node.getCells();
-    // var tbody = document.createElement("tbody");
+    // var tbody = window.document.createElement("tbody");
     // for (var row = 0; row < tableCells.length; row++) {
     //   var tableRow = tableCells[row];
 
-    //   var rowEl = document.createElement("tr");
+    //   var rowEl = window.document.createElement("tr");
     //   for (var col = 0; col < tableRow.length; col++) {
     //     cellNode = tableRow[col];
     //     cellView = this.viewFactory.createView(cellNode);
-    //     var cellEl = document.createElement("td");
+    //     var cellEl = window.document.createElement("td");
     //     cellEl.appendChild(cellView.render().el);
     //     rowEl.appendChild(cellEl);
 

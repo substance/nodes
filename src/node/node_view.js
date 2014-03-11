@@ -27,7 +27,7 @@ NodeView.Prototype = function() {
   this.render = function() {
     this.disposeChildViews();
     this.el.innerHTML = "";
-    this.content = document.createElement("DIV");
+    this.content = window.document.createElement("DIV");
     this.content.classList.add("content");
     this.el.appendChild(this.content);
     return this;
