@@ -2,7 +2,6 @@
 
 var DocumentNode = require("../node/node");
 var _ = require("underscore");
-var Blob = window.Blob;
 
 var File = function(node, document) {
   DocumentNode.call(this, node, document);
@@ -79,6 +78,7 @@ File.Prototype = function() {
     } else if (this.isText()) { // Text data
       this.document.fileData[dataKey] = data;
     } else { // Binary data
+      var Blob = window.Blob;
       this.document.fileData[dataKey] = new Blob([data], {type: this.properties.content_type});
     }
 
