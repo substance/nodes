@@ -1,6 +1,6 @@
 "use strict";
 
-var $ = window.$;
+var $ = require("jquery");
 var $$ = require ("substance-application").$$;
 var NodeView = require("../node/node_view");
 var TextView = require("../text/text_view");

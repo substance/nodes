@@ -1,7 +1,7 @@
 "use strict";
 
 var TextView = require("../text/text_view");
-var $ = window.$;
+var $ = require("jquery");
 var $$ = require("substance-application").$$;
 
 // Substance.Image.View

@@ -1,6 +1,6 @@
 "use strict";
 
-var $ = window.$;
+var $ = require("jquery");
 var NodeView = require('../node/node_view');
 
 // FormulaView
