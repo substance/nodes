@@ -1,5 +1,6 @@
 "use strict";
 
+// var jQuery = window.jQuery;
 var $$ = require ("substance-application").$$;
 var NodeView = require("../node/node_view");
 var TextView = require("../text/text_view");
@@ -36,20 +37,20 @@ IssueView.Prototype = function() {
 
     //Note: we decided to render the text of the reference instead of
     //the title property
-    var titleViewEl = $$('div.issue-title-wrapper')
+    var titleViewEl = $$('div.issue-title-wrapper');
     this.titleTextEl = $$('.text.title', {
       children: [$$('span.title-annotation', {text: "meeh"})]
-    })
+    });
     titleViewEl.appendChild(this.titleTextEl);
     // this.content.appendChild(titleViewEl);
 
     // Creator and date
     // --------
 
-    var creator = $$('div.creator', {
-      text: (this.node.creator || "Anonymous") + ", " + jQuery.timeago(new Date(this.node.created_at)),
-      contenteditable: false // Make sure this is not editable!
-    });
+    // var creator = $$('div.creator', {
+    //   text: (this.node.creator || "Anonymous") + ", " + jQuery.timeago(new Date(this.node.created_at)),
+    //   contenteditable: false // Make sure this is not editable!
+    // });
 
     // labelView.el.appendChild(creator);
 
@@ -60,7 +61,7 @@ IssueView.Prototype = function() {
     var refIds = Object.keys(refs);
     if (refIds.length > 0) {
       this.ref = refs[refIds[0]];
-      this._updateTitle()
+      this._updateTitle();
     }
 
     return this;

@@ -2,6 +2,7 @@
 
 var DocumentNode = require("../node/node");
 var _ = require("underscore");
+var Blob = window.Blob;
 
 var File = function(node, document) {
   DocumentNode.call(this, node, document);
@@ -83,7 +84,7 @@ File.Prototype = function() {
 
     if (version !== this.properties.version) {
       // FigureView / ContributorView is listening to this operation
-      this.document.set([this.properties.id, "version"], version);  
+      this.document.set([this.properties.id, "version"], version);
     }
   };
 

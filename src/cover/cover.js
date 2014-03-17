@@ -1,4 +1,5 @@
-var _ = require('underscore');
+"use strict";
+
 var DocumentNode = require('../node/node');
 
 // Cover

@@ -61,7 +61,7 @@ Issue.Prototype = function() {
     if (references) {
       return references.get(this.properties.id);
     } else {
-      console.error("No index for references.")
+      console.error("No index for references.");
       return [];
     }
   };

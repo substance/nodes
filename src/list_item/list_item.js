@@ -1,6 +1,5 @@
 "use strict";
 
-var _ = require("underscore");
 var TextNode = require('../text/text_node');
 
 var ListItem = function(node, document) {
@@ -47,7 +46,7 @@ ListItem.example = {
 ListItem.Prototype = function() {
 };
 
-ListItem.Prototype.prototype = TextNode.prototype;;
+ListItem.Prototype.prototype = TextNode.prototype;
 ListItem.prototype = new ListItem.Prototype();
 ListItem.prototype.constructor = ListItem;
 

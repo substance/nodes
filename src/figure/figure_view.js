@@ -1,5 +1,6 @@
 "use strict";
 
+var $ = window.$;
 var $$ = require ("substance-application").$$;
 var NodeView = require("../node/node_view");
 var TextView = require("../text/text_view");
@@ -34,7 +35,7 @@ FigureView.Prototype = function() {
 
     // Prepares blobs etc. for the image
     var url = this.node.image || this.node.image_url;
-    
+
     // Add graphic (img element)
     this.imgWrapper = $$('.image-wrapper', {
       children: [

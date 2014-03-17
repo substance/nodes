@@ -1,7 +1,6 @@
 "use strict";
 
 var DocumentNode = require('../node/node');
-var _ = require('underscore');
 
 var Annotation = function(node, document) {
   DocumentNode.call(this, node, document);
@@ -60,7 +59,7 @@ Annotation.Prototype = function() {
       return content.substring(range[0], range[1]);
     } else {
       console.error("FIXME: this annotation references a deleted node", this, this.path);
-      return "N/A"
+      return "N/A";
     }
   };
 };

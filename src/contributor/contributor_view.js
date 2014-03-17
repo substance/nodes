@@ -1,6 +1,7 @@
 "use strict";
 
 var NodeView = require("../node").View;
+var $ = window.$;
 var $$ = require("substance-application").$$;
 var TextView = require("../text/text_view");
 
