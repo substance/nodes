@@ -3,6 +3,7 @@
 var DocumentNode = require("../node/node");
 var _ = require("underscore");
 
+
 var File = function(node, document) {
   DocumentNode.call(this, node, document);
 };
@@ -61,7 +62,7 @@ File.Prototype = function() {
 
   this.getBlob = function(version) {
     var data = this.getData(version);
-    return new Blob([data], {type: this.properties.content_type});
+    return new window.Blob([data], {type: this.properties.content_type});
   };
 
   // Assigns a data object from the temporary data store
