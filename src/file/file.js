@@ -59,6 +59,11 @@ File.Prototype = function() {
     return this.document.fileData[dataKey];
   };
 
+  this.getBlob = function(version) {
+    var data = this.getData(version);
+    return new Blob([data], {type: this.properties.content_type});
+  };
+
   // Assigns a data object from the temporary data store
   this.updateData = function(data) {
     var version = this.properties.version;
@@ -75,10 +80,8 @@ File.Prototype = function() {
     // First create the data in our temporary data store
     if (this.isJSON()) {
       this.document.fileData[dataKey] = JSON.parse(data);
-    } else if (this.isText()) { // Text data
-      this.document.fileData[dataKey] = data;
     } else { // Binary data
-      this.document.fileData[dataKey] = new Blob([data], {type: this.properties.content_type});
+      this.document.fileData[dataKey] = data; // new Blob([data], {type: this.properties.content_type});
     }
 
     if (version !== this.properties.version) {
