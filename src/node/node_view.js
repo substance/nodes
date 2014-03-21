@@ -5,6 +5,7 @@ var _ = require("underscore");
 
 var __node_view_counter__ = 0;
 
+
 // Substance.Node.View
 // -----------------
 var NodeView = function(node, viewFactory) {
@@ -24,10 +25,11 @@ NodeView.Prototype = function() {
   // Rendering
   // --------
   //
+  
   this.render = function() {
     this.disposeChildViews();
     this.el.innerHTML = "";
-    this.content = document.createElement("DIV");
+    this.content = window.document.createElement("DIV");
     this.content.classList.add("content");
     this.el.appendChild(this.content);
     return this;
