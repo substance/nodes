@@ -211,7 +211,7 @@ TextView.Prototype = function() {
   this.renderWithAnnotations = function(annotations) {
     var self = this;
     var text = this.node[this.property];
-    var fragment = document.createDocumentFragment();
+    var fragment = window.document.createDocumentFragment();
 
     // this splits the text and annotations into smaller pieces
     // which is necessary to generate proper HTML.
@@ -226,7 +226,7 @@ TextView.Prototype = function() {
     var _level  = 0;
 
     fragmenter.onText = function(context, text) {
-      var el = document.createTextNode(text);
+      var el = window.document.createTextNode(text);
 
       // Note: we create the data structures to allow lookup fragments
       // for coordinate mapping and incremental changes
