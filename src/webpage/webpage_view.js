@@ -5,17 +5,17 @@ var NodeView = require("../node/node_view");
 var TextView = require("../text/text_view");
 
 
-// Substance.Link.View
+// Substance.Webpage.View
 // ==========================================================================
 
-var LinkView = function(node, viewFactory) {
+var WebpageView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
 
   // This class is shared among all link subtypes
-  this.$el.addClass('link');
+  this.$el.addClass('webpage');
 };
 
-LinkView.Prototype = function() {
+WebpageView.Prototype = function() {
 
   var __super__ = NodeView.prototype;
 
@@ -106,11 +106,10 @@ LinkView.Prototype = function() {
       return false;
     }
   };
-
 };
 
 
-LinkView.Prototype.prototype = NodeView.prototype;
-LinkView.prototype = new LinkView.Prototype();
+WebpageView.Prototype.prototype = NodeView.prototype;
+WebpageView.prototype = new WebpageView.Prototype();
 
-module.exports = LinkView;
+module.exports = WebpageView;

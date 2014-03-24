@@ -2,14 +2,14 @@
 
 var DocumentNode = require('../node/node');
 
-var Link = function(node, document) {
+var Webpage = function(node, document) {
   DocumentNode.call(this, node, document);
 };
 
 // Type definition
 // --------
 
-Link.type = {
+Webpage.type = {
   "id": "issue",
   "properties": {
     // "title": "string",
@@ -23,28 +23,28 @@ Link.type = {
 // -----------------
 //
 
-Link.description = {
-  "name": "Link",
+Webpage.description = {
+  "name": "Webpage",
   "remarks": [
-    "A hyperlink"
+    "A webpage"
   ],
   "properties": {
-    // "title": "Link Title",
-    "description": "More verbose link description, if available",
-    "url": "Link URL"
+    // "title": "Webpage Title",
+    "description": "More verbose webpage description, if available",
+    "url": "Webpage URL"
   }
 };
 
 
-// Example Link annotation
+// Example Webpage annotation
 // -----------------
 //
 
-Link.example = {
+Webpage.example = {
   "abstract": "type"
 };
 
-Link.Prototype = function() {
+Webpage.Prototype = function() {
 
   this.hasDescription = function() {
     return (!!this.properties.caption);
@@ -65,10 +65,10 @@ Link.Prototype = function() {
   };
 };
 
-Link.Prototype.prototype = DocumentNode.prototype;
-Link.prototype = new Link.Prototype();
-Link.prototype.constructor = Link;
+Webpage.Prototype.prototype = DocumentNode.prototype;
+Webpage.prototype = new Webpage.Prototype();
+Webpage.prototype.constructor = Webpage;
 
-Link.prototype.defineProperties();
+Webpage.prototype.defineProperties();
 
-module.exports = Link;
+module.exports = Webpage;
