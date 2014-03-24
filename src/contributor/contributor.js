@@ -21,7 +21,7 @@ Contributor.type = {
     "source_id": "string",
     "name": "string", // full author name
     "role": "string",
-    "organization": "string",
+    "description": "string",
     "image": "blob", // optional
     "image_url": "string",
     "email": "string",
@@ -53,7 +53,7 @@ Contributor.example = {
   "role": "author",
   "name": "John Doe",
   "email": "a@b.com",
-  "contribution": "Revising the article, data cleanup"
+  "description": "Revising the article, data cleanup"
 };
 
 Contributor.Prototype = function() {

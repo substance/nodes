@@ -49,11 +49,11 @@ ContributorView.Prototype = function() {
       body.appendChild(this.imageEl);
     }
 
-    // Organization
+    // Description
     // -------
 
-    this.organizationView = new TextView(this.node, this.viewFactory, {property: "organization"});
-    body.appendChild(this.organizationView.render().el);
+    this.descriptionView = new TextView(this.node, this.viewFactory, {property: "description"});
+    body.appendChild(this.descriptionView.render().el);
 
 
     // Contribution
