@@ -10,7 +10,7 @@ Figure.type = {
   "id": "figure",
   "parent": "content",
   "properties": {
-    "image": "blob_reference",
+    "image": "file",
     "image_url": "string",
     "label": "string",
     "caption": "paragraph"
@@ -20,11 +20,11 @@ Figure.type = {
 Figure.description = {
   "name": "Figure",
   "remarks": [
-    "A figure is a figure is figure."
+    "A figure holding an image, a label and a caption."
   ],
   "properties": {
     "label": "Figure label (e.g. Figure 1)",
-    "image": "BlobReference id that has the image blob",
+    "image": "File id that has the image data",
     "image_url": "Image url",
     "caption": "A reference to a paragraph that describes the figure",
   }
@@ -37,8 +37,7 @@ Figure.description = {
 Figure.example = {
   "id": "figure_1",
   "label": "Figure 1",
-  "url": "http://example.com/fig1.png",
-  "image": "",
+  "image": "figure_1.png",
   "caption": "paragraph_1"
 };
 
