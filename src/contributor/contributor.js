@@ -67,7 +67,7 @@ Contributor.Prototype = function() {
     if (!this.properties.image) return null;
     var file = this.document.get(this.properties.image);
     if (!file) return null;
-    return file.getData();
+    return file.getBlob();
   };
 
   // Depending on wheter there is a blob it returns either the blob url or a regular image url
