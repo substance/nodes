@@ -3,6 +3,7 @@
 module.exports = {
   "node": require("./src/node"),
   "text": require("./src/text"),
+  "document": require("./src/document"),
   "heading": require("./src/heading"),
   "codeblock": require("./src/codeblock"),
   "image": require("./src/image"),
