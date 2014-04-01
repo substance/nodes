@@ -95,6 +95,11 @@ TextView.Prototype = function() {
   };
 
   this.delete = function(pos, length) {
+    if (length === 0) {
+      console.log("FIXME: received empty deletion which could be avoided.")
+      return;
+    }
+
     var result = this._lookupPostion(pos, "delete");
     var frag = result[0];
     var textNode = frag.el;
