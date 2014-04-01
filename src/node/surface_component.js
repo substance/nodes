@@ -9,8 +9,8 @@ var __createRange__ = function(el) {
   return range;
 };
 
-function SurfaceComponent(name, node, path, nodeSurface, options) {
-  Component.call(this, name, node, path, options);
+function SurfaceComponent(nodeSurface, root, path, options) {
+  Component.call(this, root, path, options);
 
   this.surface = nodeSurface;
   this.__range__ = null;

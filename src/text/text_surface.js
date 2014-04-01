@@ -6,18 +6,23 @@ var SurfaceComponent = require("../node/surface_component");
 var TextSurface = function(node, surfaceProvider, options) {
   NodeSurface.call(this, node, surfaceProvider);
   options = options || {};
-  this.property = options.property || "content";
-
   var self = this;
 
-  var component = new SurfaceComponent(this.property, node, [this.node.id, this.property], this,
-    {
-      length: function() {
-        return self.node[self.property].length + 1;
-    }
-  });
+  this.property = options.property || "content";
+
+  if (self.node[self.property] === undefined) {
+    throw new Error("Illegal property", self.node, self.property);
+  }
+
+  // default implementation for component.length
+  options.length = options.length || function() {
+    return self.node[self.property].length + 1;
+  };
+
+  var component = new SurfaceComponent(this, options.root || node, [node.id, self.property], options);
 
   if (options.property) {
+    // HACK: this does not work for arbitrarily nested views
     component.__getElement__ = function() {
       return self.view.childViews[self.property].el;
     };
@@ -26,8 +31,6 @@ var TextSurface = function(node, surfaceProvider, options) {
       return self.view.el;
     };
   }
-
-  component.alias = options.propertyPath;
 
   this.components.push(component);
 };
@@ -95,11 +98,23 @@ TextSurface.prototype = new TextSurface.Prototype();
 // A helper which turned out to be useful for editable textish properties
 // --------
 // The node view must provide a corresponding view under `childViews[property]`
-TextSurface.textProperty = function(nodeSurface, property, propertyPath) {
-   var options = { property: property, propertyPath: propertyPath };
-   var propertySurface = new TextSurface(nodeSurface.node, nodeSurface.surfaceProvider, options);
-   var propertyComponent = propertySurface.components[0];
-   return propertyComponent;
+
+TextSurface.textProperty = function(nodeSurface, property, options) {
+  options = options || {};
+
+  // propagate the root node
+  options.root = options.root || nodeSurface.node;
+  options.name = property;
+
+  var node = nodeSurface.node;
+  if (options.path) {
+    node = nodeSurface.node.document.get(options.path[0]);
+    options.alias = [nodeSurface.node.id, property];
+  }
+
+  var propertySurface = new TextSurface(node, nodeSurface.surfaceProvider, options);
+  var propertyComponent = propertySurface.components[0];
+  return propertyComponent;
 };
 
 module.exports = TextSurface;
