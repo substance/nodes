@@ -86,7 +86,7 @@ TextSurface.prototype = new TextSurface.Prototype();
 TextSurface.textProperty = function(nodeSurface, property, propertyPath) {
   // TODO: it is not very convenient to create a Text sub-surface for a textish property:
   var options = { property: property };
-  if (propertyPath) options[propertyPath] = propertyPath;
+  if (propertyPath) options['propertyPath'] = propertyPath;
   var propertySurface = new TextSurface(nodeSurface.node, nodeSurface.surfaceProvider, options);
   var propertyComponent = propertySurface.components[0];
   propertyComponent.element(function() {
