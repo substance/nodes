@@ -1,15 +1,11 @@
 "use strict";
 
-var NodeView = require('../node/node_view');
+var _ = require("underscore");
 var $$ = require("substance-application").$$;
 var Fragmenter = require("substance-util").Fragmenter;
 var Annotator = require("substance-document").Annotator;
 
-// Substance.Text.View
-// -----------------
-//
-// Manipulation interface shared by all textish types (paragraphs, headings)
-// This behavior can overriden by the concrete node types
+var NodeView = require("../node").View;
 
 function _getAnnotationBehavior(doc) {
   var annotationBehavior = doc.getAnnotationBehavior();
@@ -19,11 +15,14 @@ function _getAnnotationBehavior(doc) {
   return annotationBehavior;
 }
 
+// TODO: this should derive from TextView and share as much code as possible
+
 var TextView = function(node, renderer, options) {
   NodeView.call(this, node);
   options = options || {};
 
   this.property = options.property || "content";
+  this.propertyPath = options.propertyPath || [this.node.id, this.property];
 
   this.$el.addClass('content-node text');
 
@@ -60,21 +59,22 @@ var _findTextEl;
 
 TextView.Prototype = function() {
 
+  var __super__ = NodeView.prototype;
   // Rendering
   // =============================
   //
 
   this.render = function(enhancer) {
-    NodeView.prototype.render.call(this, enhancer);
+    __super__.render.call(this, enhancer);
 
     this.renderContent();
     return this;
   };
 
   this.renderContent = function() {
+    // console.error("TextView.renderContent", this);
     this.content.innerHTML = "";
-
-    this._annotations = this.node.document.getIndex("annotations").get([this.node.id, this.property]);
+    this._annotations = this.node.document.getIndex("annotations").get(this.propertyPath);
     this.renderWithAnnotations(this._annotations);
   };
 
@@ -141,7 +141,7 @@ TextView.Prototype = function() {
       else {
         var next = this._fragments[i+1];
         // if the element level of the next fragment is lower then we put the cursor there
-        if (next && (next.level < frag.level || is_delete)) {
+        if (next && next.level < frag.level || is_delete) {
           return [next, 0];
         }
         // otherwise we leave the cursor in the current fragment
@@ -154,7 +154,7 @@ TextView.Prototype = function() {
   };
 
   this.onNodeUpdate = function(op) {
-    if (op.path[1] === this.property) {
+    if (_.isEqual(op.path, this.propertyPath)) {
       // console.log("Updating text view: ", op);
       if (op.type === "update") {
         var update = op.diff;
@@ -175,13 +175,13 @@ TextView.Prototype = function() {
 
   this.onGraphUpdate = function(op) {
     // Call super handler and return if that has processed the operation already
-    if (NodeView.prototype.onGraphUpdate.call(this, op)) {
+    if (__super__.onGraphUpdate.call(this, op)) {
       return true;
     }
 
 
     // Otherwise deal with annotation changes
-    if (Annotator.changesAnnotations(this.node.document, op, [this.node.id, this.property])) {
+    if (Annotator.changesAnnotations(this.node.document, op, this.propertyPath)) {
       if (op.type === "create" || op.type === "delete") {
         console.log("Rerendering TextView due to annotation update", op);
         this.renderContent();
@@ -194,7 +194,7 @@ TextView.Prototype = function() {
 
   this.createAnnotationElement = function(entry) {
     var el;
-    if (entry.type === "link_reference") {
+    if (entry.type === "link") {
       el = $$('a.annotation.'+entry.type, {
         id: entry.id,
         href: this.node.document.get(entry.id).url // "http://zive.at"
@@ -210,12 +210,11 @@ TextView.Prototype = function() {
 
   this.renderWithAnnotations = function(annotations) {
     var self = this;
-    var text = this.node[this.property];
+    var text = this.node.document.get(this.propertyPath);
     var fragment = window.document.createDocumentFragment();
 
     // this splits the text and annotations into smaller pieces
     // which is necessary to generate proper HTML.
-
     var fragmenter = new Fragmenter(this.annotationBehavior.levels);
 
     this._fragments = [];
@@ -244,7 +243,7 @@ TextView.Prototype = function() {
       return el;
     };
 
-    fragmenter.onExit = function(entry, parentContext) {
+    fragmenter.onExit = function() {
       _level--;
     };
 
@@ -279,7 +278,7 @@ _findTextEl = function(el, pos) {
 
   while(childNodes.length) {
     var next = childNodes.shift();
-    if (next.nodeType === Node.TEXT_NODE) {
+    if (next.nodeType === window.Node.TEXT_NODE) {
       var t = next.textContent;
       if (t.length >= pos) {
         return [next, pos];
@@ -304,6 +303,7 @@ TextView.Fragment = function(el, index, charPos, level) {
   // Basiscally, for character positions at the boundaries, a manipulation is done
   // in the node with lower level.
   this.level = level;
+
 };
 
 TextView.Fragment.Prototype = function() {

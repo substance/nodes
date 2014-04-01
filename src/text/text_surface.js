@@ -1,6 +1,7 @@
 "use strict";
 
 var NodeSurface = require("../node/node_surface");
+var SurfaceComponent = require("../node/surface_component");
 
 var TextSurface = function(node, surfaceProvider, options) {
   NodeSurface.call(this, node, surfaceProvider);
@@ -9,15 +10,26 @@ var TextSurface = function(node, surfaceProvider, options) {
 
   var self = this;
 
+  var component = new SurfaceComponent(this.property, node, [this.node.id, this.property], this,
+    {
+      length: function() {
+        return self.node[self.property].length + 1;
+    }
+  });
+
   if (options.property) {
-    this.components.push(this.propertyComponent(options.property, options.propertyPath));
+    component.__getElement__ = function() {
+      return self.view.childViews[self.property].el;
+    };
   } else {
-    this.components.push(this.propertyComponent(self.property)
-      .length(function() {
-        return self.node[self.property].length;
-      })
-    );
+    component.__getElement__ = function() {
+      return self.view.el;
+    };
   }
+
+  component.alias = options.propertyPath;
+
+  this.components.push(component);
 };
 
 // This surface has not been refactored. We simply override the default implementation
@@ -84,20 +96,10 @@ TextSurface.prototype = new TextSurface.Prototype();
 // --------
 // The node view must provide a corresponding view under `childViews[property]`
 TextSurface.textProperty = function(nodeSurface, property, propertyPath) {
-  // TODO: it is not very convenient to create a Text sub-surface for a textish property:
-  var options = { property: property };
-  if (propertyPath) options['propertyPath'] = propertyPath;
-  var propertySurface = new TextSurface(nodeSurface.node, nodeSurface.surfaceProvider, options);
-  var propertyComponent = propertySurface.components[0];
-  propertyComponent.element(function() {
-      return nodeSurface.view.childViews[property].el;
-    })
-    .length(function() {
-      // HACK: somehow we need a plus one here... dunno
-      return nodeSurface.node[property].length + 1;
-    });
-  propertyComponent.name = property;
-  return propertyComponent;
+   var options = { property: property, propertyPath: propertyPath };
+   var propertySurface = new TextSurface(nodeSurface.node, nodeSurface.surfaceProvider, options);
+   var propertyComponent = propertySurface.components[0];
+   return propertyComponent;
 };
 
 module.exports = TextSurface;

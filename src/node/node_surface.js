@@ -1,13 +1,11 @@
 "use strict";
 
-var SurfaceComponents = require("./surface_components");
-
 // Node.Surface
 // ========
 //
 // A NodeSurface describes the structure of a node view and takes care of
 // selection mapping.
-// It is an adapter to Substance.Surface. Particularly, Substance.Surface.Container needs
+// It is an adapter to Substance.Surface. Particularly, Substance.Document.Container needs
 // this to establish the Model coordinate system.
 //
 // A Model coordinate is a tuple `(nodePos, charPos)` which describes a position in
@@ -82,14 +80,6 @@ NodeSurface.Prototype = function() {
     return range;
   };
 
-  this.propertyComponent = function(name, propertyPath) {
-    return new SurfaceComponents.PropertyComponent(this, name, propertyPath);
-  };
-
-  this.customComponent = function(path, data) {
-    return new SurfaceComponents.CustomComponent(this, path, data);
-  };
-
   this.__getCharPosition__ = function(el, offset) {
     var range = window.document.createRange();
     range.setStart(el, offset);
@@ -113,7 +103,7 @@ NodeSurface.Prototype = function() {
       if (cmpEnd < 0) {
         charPos = offset;
       } else {
-        charPos = component.getLength();
+        charPos = component.length;
       }
     }
 
@@ -125,14 +115,7 @@ NodeSurface.Prototype = function() {
     for (var i = 0; i < this.components.length; i++) {
       component = this.components[i];
 
-      if (!component.getLength) {
-        throw new Error("The provided component can not be used with the generic mapper implementation. getLength() missing.");
-      }
-      if (!component.mapCharPos) {
-        throw new Error("The provided component can not be used with the generic mapper implementation. getRange() missing.");
-      }
-
-      l = component.getLength();
+      l = component.length();
 
       if (charPos<l) {
         return component.mapCharPos(charPos);
@@ -149,13 +132,6 @@ NodeSurface.Prototype = function() {
     return range;
   };
 
-  this.addSubSurface = function(name, childSurface) {
-    for (var i = 0; i < childSurface.components.length; i++) {
-      var c = childSurface.components[i];
-      c.name = name;
-      this.components.push(c);
-    }
-  };
 };
 NodeSurface.prototype = new NodeSurface.Prototype();
 

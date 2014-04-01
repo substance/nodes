@@ -5,9 +5,6 @@ var _ = require("underscore");
 
 var __node_view_counter__ = 0;
 
-
-// Substance.Node.View
-// -----------------
 var NodeView = function(node, viewFactory) {
   this.__id__ = __node_view_counter__++;
 
@@ -25,9 +22,12 @@ NodeView.Prototype = function() {
   // Rendering
   // --------
   //
-  
   this.render = function() {
+    // TODO: if we have a problem here currently
+    // In ListView, it seems that the item views are disposed when rerendered,
+    // but the new views are not connected properly
     this.disposeChildViews();
+
     this.el.innerHTML = "";
     this.content = window.document.createElement("DIV");
     this.content.classList.add("content");
@@ -37,6 +37,7 @@ NodeView.Prototype = function() {
 
   this.dispose = function() {
     this.stopListening();
+    this.disposeChildViews();
   };
 
   this.disposeChildViews = function() {
