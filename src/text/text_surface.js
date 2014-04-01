@@ -107,9 +107,12 @@ TextSurface.textProperty = function(nodeSurface, property, options) {
   options.name = property;
 
   var node = nodeSurface.node;
+
   if (options.path) {
     node = nodeSurface.node.document.get(options.path[0]);
     options.alias = [nodeSurface.node.id, property];
+  } else {
+    options.property = property;
   }
 
   var propertySurface = new TextSurface(node, nodeSurface.surfaceProvider, options);
