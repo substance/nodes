@@ -28,6 +28,7 @@ CoverView.Prototype = function() {
       }));
     }
 
+    // TODO: this could be more convenient e.g., by passing a list of classes to be set
     this.titleView =  new TextView(this.node, this.viewFactory, {property: "title"});
     this.content.appendChild(this.titleView.render().el);
     this.titleView.el.classList.add("title");
