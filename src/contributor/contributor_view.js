@@ -78,7 +78,7 @@ ContributorView.Prototype = function() {
   };
 
   this.dispose = function() {
-    NodeView.dispose.call(this);
+    NodeView.prototype.dispose.call(this);
     this.nameView.dispose();
     this.organization.dispose();
     this.emailView.dispose();

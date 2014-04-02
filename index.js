@@ -24,6 +24,10 @@ module.exports = {
   "remark": require("./src/remark"),
   "error": require("./src/error"),
   "file": require("./src/file"),
+  "license": require("./src/license"),
+
+  "publication_info": require("./src/publication_info"),
+
   // "block_reference": require("./src/block_reference"),
   "figure_reference": require("./src/figure_reference"),
   "citation_reference": require("./src/citation_reference"),
