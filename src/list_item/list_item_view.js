@@ -28,7 +28,6 @@ ListItemView.Prototype = function() {
   };
 
   this.dispose = function() {
-    console.log("Disposing ListItemView...");
     __super__.dispose.call(this);
   };
 
