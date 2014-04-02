@@ -10,14 +10,6 @@ var $$ = require("substance-application").$$;
 var ListItemView = function(node, viewFactory) {
   TextView.call(this, node);
 
-  this.el = $$('li.list-item');
-  this.$el = $(this.el);
-  this.$el.attr('id', this.node.id);
-
-  // Note: this element has no 'content-node' class as it is not a top-level node.
-  // Instead it has a data-path.
-  this.$el.attr('data-path', node.id);
-
   this._level = this.node.level;
   this.$el.addClass('level-'+this._level);
 };
