@@ -47,34 +47,34 @@ PublicationInfoView.Prototype = function() {
     var body = $$('.resource-body', {contenteditable: false});
 
     var formattedDates = {
-      "created_at": new Date(this.node.document.created_at).toUTCString(),
-      "updated_at": new Date(this.node.document.updated_at).toUTCString(),
+      "created_at": new Date(this.node.document.created_at).toString(),
+      "updated_at": new Date(this.node.document.updated_at).toString(),
       "published_on": new Date(this.node.document.published_on).toDateString()
     };
 
     var createdAt = $$('.created-at', {
       children: [
         $$('.label', {text: "Created at"}),
-        $$('.pub-date', {text: formattedDates["created_at"]})
+        $$('.created-at', {text: formattedDates["created_at"]})
       ]
     });
 
     body.appendChild(createdAt);
 
-    var createdAt = $$('.updated-at', {
+    this.updatedAtEl = $$('.updated-at', {text: formattedDates["updated_at"]})
+    var updatedAt = $$('.updated-at', {
       children: [
         $$('.label', {text: "Modified at"}),
-        $$('.pub-date', {text: formattedDates["updated_at"]})
+        this.updatedAtEl
       ]
     });
 
-    body.appendChild(createdAt);
+    body.appendChild(updatedAt);
 
     var pubDate = $$('.publication-date', {
       children: [
         $$('.label', {text: "Publication Date"}),
         $$('.pub-date', {text: formattedDates["published_on"]})
-        // $$('input#published_on', {value: "2014-02-04"})
       ]
     });
 
@@ -94,10 +94,31 @@ PublicationInfoView.Prototype = function() {
     });
 
     body.appendChild(license);
-
     this.content.appendChild(body);
-
     return this;
+  };
+
+
+  this.updateModificationDate = function() {
+    var dat = new Date(this.node.document.updated_at).toString();
+    this.updatedAtEl.innerHTML = dat;
+  };
+
+  this.onGraphUpdate = function(op) {
+    // Call super handler and return if that has processed the operation already
+    if (NodeView.prototype.onGraphUpdate.call(this, op)) {
+      return true;
+    }
+
+    this.render();
+    // When published date has changed, rerender
+    if (_.isEqual(op.path, ["document","published_on"])) {
+      this.render();
+      return true;
+    } else {
+      this.updateModificationDate();
+      return true;
+    }
   };
 
   this.dispose = function() {
