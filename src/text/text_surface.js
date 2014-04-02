@@ -16,7 +16,7 @@ var TextSurface = function(node, surfaceProvider, options) {
 
   // default implementation for component.length
   options.length = options.length || function() {
-    return self.node[self.property].length + 1;
+    return self.node[self.property].length;
   };
 
   var component = new SurfaceComponent(this, options.root || node, [node.id, self.property], options);
