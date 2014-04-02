@@ -42,7 +42,6 @@ License.description = {
 
 License.Prototype = function() {
 
-
 };
 
 License.available_licenses = {
@@ -51,18 +50,36 @@ License.available_licenses = {
     "type": "license",
     "name": "None",
     "code": "none",
-    "description": "No license",
+    "description": "No license is attached to this article.",
     "version": "1.0",
     "url": ""
+  },
+  "public-domain": {
+    "id": "license",
+    "type": "license",
+    "name": "Public Domain",
+    "code": "public-domain",
+    "description": "This work has been identified as being free of known restrictions under copyright law, including all related and neighboring rights. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.",
+    "version": "1.0",
+    "url": "http://creativecommons.org/publicdomain/mark/1.0/"
   },
   "cc-by": {
     "id": "license",
     "type": "license",
-    "name": "Creative Commons Attribution License",
+    "name": "Creative Commons Attribution",
     "code": "cc-by",
     "version": "3.0",
     "description": "This article is distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use and redistribution provided that the original author and source are credited.",
     "url": "http://creativecommons.org/licenses/by/3.0/us/"
+  },
+  "gutenberg": {
+    "id": "license",
+    "type": "license",
+    "name": "Project Gutenberg",
+    "code": "gutenberg",
+    "version": "1.0",
+    "description": "This article is distributed under the terms of the Project Gutenberg License.",
+    "url": "http://www.gutenberg.org/wiki/Gutenberg:The_Project_Gutenberg_License"
   }
 };
 
