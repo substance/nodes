@@ -28,17 +28,10 @@ module.exports = {
 
   "publication_info": require("./src/publication_info"),
 
-  // "block_reference": require("./src/block_reference"),
   "figure_reference": require("./src/figure_reference"),
   "citation_reference": require("./src/citation_reference"),
   "cross_reference": require("./src/cross_reference"),
   "remark_reference": require("./src/remark_reference"),
   "error_reference": require("./src/error_reference"),
 
-  // deprecated: these node types will be re-implemented
-  // "math": require("./src/math"),
-  // "image": require("./src/image"),
-  "paragraph": require("./src/paragraph"),
-  "table": require("./src/table"),
-  "formula": require("./src/formula")
 };
