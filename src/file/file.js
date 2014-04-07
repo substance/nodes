@@ -44,7 +44,7 @@ File.example = {
 File.Prototype = function() {
 
   this.isText = function() {
-    return _.include(["application/json", "text/css", "text/plain"], this.properties.content_type);
+    return _.include(["application/json", "text/css", "text/plain", "text/html"], this.properties.content_type);
   };
 
   this.isBinary = function() {
@@ -81,6 +81,8 @@ File.Prototype = function() {
     // First create the data in our temporary data store
     if (this.isJSON()) {
       this.document.fileData[dataKey] = JSON.parse(data);
+    } if(this.isText()) {
+      this.document.fileData[dataKey] = data;
     } else { // Binary data
       this.document.fileData[dataKey] = data; // new Blob([data], {type: this.properties.content_type});
     }

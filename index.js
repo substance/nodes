@@ -18,6 +18,7 @@ module.exports = {
   "superscript": require("./src/superscript"),
   "code": require("./src/code"),
   "web_resource": require("./src/web_resource"),
+  "web_page": require("./src/web_page"),
   "list_item": require("./src/list_item"),
   
   "issue": require("./src/issue"),
@@ -32,6 +33,5 @@ module.exports = {
   "citation_reference": require("./src/citation_reference"),
   "cross_reference": require("./src/cross_reference"),
   "remark_reference": require("./src/remark_reference"),
-  "error_reference": require("./src/error_reference"),
-
+  "error_reference": require("./src/error_reference")
 };
