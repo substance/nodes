@@ -13,7 +13,7 @@ var NodeView = function(node, viewFactory) {
   this.node = node;
   this.viewFactory = viewFactory;
 
-  this.$el.addClass('content-node').addClass(node.type);
+  this.$el.addClass('content-node').addClass(node.type.replace("_", "-"));
   this.$el.attr('id', this.node.id);
 };
 
