@@ -2,8 +2,6 @@
 
 var DocumentNode = require('../node/node');
 
-// var WebResource = require("../web_resource/web_resource");
-
 var ImageNode = function(node, document) {
   DocumentNode.call(this, node, document);
 };

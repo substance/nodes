@@ -5,7 +5,7 @@ module.exports = {
   "text": require("./src/text"),
   "document": require("./src/document"),
   "heading": require("./src/heading"),
-  "codeblock": require("./src/codeblock"),
+  "code_block": require("./src/code_block"),
   
   "figure": require("./src/figure"),
   "contributor": require("./src/contributor"),
@@ -17,7 +17,7 @@ module.exports = {
   "subscript": require("./src/subscript"),
   "superscript": require("./src/superscript"),
   "code": require("./src/code"),
-  "webresource": require("./src/webresource"),
+  "web_resource": require("./src/web_resource"),
   "list_item": require("./src/list_item"),
   
   "issue": require("./src/issue"),

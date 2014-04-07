@@ -2,14 +2,14 @@
 
 var DocumentNode = require('../node/node');
 
-var Webresource = function(node, document) {
+var WebResource = function(node, document) {
   DocumentNode.call(this, node, document);
 };
 
 // Type definition
 // --------
 
-Webresource.type = {
+WebResource.type = {
   "id": "webresource",
   "properties": {
     "description": "string", // should be a reference to a text node?
@@ -21,27 +21,27 @@ Webresource.type = {
 // -----------------
 //
 
-Webresource.description = {
-  "name": "Webresource",
+WebResource.description = {
+  "name": "WebResource",
   "remarks": [
-    "A Webresource"
+    "A WebResource"
   ],
   "properties": {
-    "description": "More verbose Webresource description, if available",
-    "url": "Webresource URL"
+    "description": "More verbose WebResource description, if available",
+    "url": "WebResource URL"
   }
 };
 
 
-// Example Webresource annotation
+// Example WebResource annotation
 // -----------------
 //
 
-Webresource.example = {
+WebResource.example = {
   "abstract": "type"
 };
 
-Webresource.Prototype = function() {
+WebResource.Prototype = function() {
 
   this.hasDescription = function() {
     return (!!this.properties.caption);
@@ -62,10 +62,10 @@ Webresource.Prototype = function() {
   };
 };
 
-Webresource.Prototype.prototype = DocumentNode.prototype;
-Webresource.prototype = new Webresource.Prototype();
-Webresource.prototype.constructor = Webresource;
+WebResource.Prototype.prototype = DocumentNode.prototype;
+WebResource.prototype = new WebResource.Prototype();
+WebResource.prototype.constructor = WebResource;
 
-Webresource.prototype.defineProperties();
+WebResource.prototype.defineProperties();
 
-module.exports = Webresource;
+module.exports = WebResource;

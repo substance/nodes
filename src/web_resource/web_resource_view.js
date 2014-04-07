@@ -8,14 +8,14 @@ var TextView = require("../text/text_view");
 // Substance.Webresource.View
 // ==========================================================================
 
-var WebresourceView = function(node, viewFactory) {
+var WebResourceView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
 
   // This class is shared among all link subtypes
-  this.$el.addClass('webresource');
+  this.$el.addClass('web-resource');
 };
 
-WebresourceView.Prototype = function() {
+WebResourceView.Prototype = function() {
 
   var __super__ = NodeView.prototype;
 
@@ -109,7 +109,7 @@ WebresourceView.Prototype = function() {
 };
 
 
-WebresourceView.Prototype.prototype = NodeView.prototype;
-WebresourceView.prototype = new WebresourceView.Prototype();
+WebResourceView.Prototype.prototype = NodeView.prototype;
+WebResourceView.prototype = new WebResourceView.Prototype();
 
-module.exports = WebresourceView;
+module.exports = WebResourceView;

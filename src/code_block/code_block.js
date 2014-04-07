@@ -2,15 +2,15 @@
 
 var Text = require("../text/text_node");
 
-var Codeblock = function(node, document) {
+var CodeBlock = function(node, document) {
   Text.call(this, node, document);
 };
 
 // Type definition
 // --------
 
-Codeblock.type = {
-  "id": "codeblock",
+CodeBlock.type = {
+  "id": "code_block",
   "parent": "content",
   "properties": {
     "source_id": "string",
@@ -18,7 +18,7 @@ Codeblock.type = {
   }
 };
 
-Codeblock.config = {
+CodeBlock.config = {
   "zoomable": true
 };
 
@@ -26,8 +26,8 @@ Codeblock.config = {
 // -----------------
 //
 
-Codeblock.description = {
-  "name": "Codeblock",
+CodeBlock.description = {
+  "name": "CodeBlock",
   "remarks": [
     "Text in a codeblock is displayed in a fixed-width font, and it preserves both spaces and line breaks"
   ],
@@ -41,19 +41,19 @@ Codeblock.description = {
 // -----------------
 //
 
-Codeblock.example = {
-  "type": "codeblock",
-  "id": "codeblock_1",
+CodeBlock.example = {
+  "type": "code_block",
+  "id": "code_block_1",
   "content": "var text = \"Sun\";\nvar op1 = Operator.TextOperation.Delete(2, \"n\");\ntext = op2.apply(op1.apply(text));\nconsole.log(text);",
 };
 
-Codeblock.Prototype = function() {};
+CodeBlock.Prototype = function() {};
 
-Codeblock.Prototype.prototype = Text.prototype;
-Codeblock.prototype = new Codeblock.Prototype();
-Codeblock.prototype.constructor = Codeblock;
+CodeBlock.Prototype.prototype = Text.prototype;
+CodeBlock.prototype = new CodeBlock.Prototype();
+CodeBlock.prototype.constructor = CodeBlock;
 
-Codeblock.prototype.defineProperties();
+CodeBlock.prototype.defineProperties();
 
-module.exports = Codeblock;
+module.exports = CodeBlock;
 
