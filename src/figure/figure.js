@@ -11,8 +11,6 @@ Figure.type = {
   "parent": "content",
   "properties": {
     "image": "file",
-    "image_url": "string",
-    "label": "string",
     "caption": "paragraph"
   }
 };
@@ -23,9 +21,7 @@ Figure.description = {
     "A figure holding an image, a label and a caption."
   ],
   "properties": {
-    "label": "Figure label (e.g. Figure 1)",
     "image": "File id that has the image data",
-    "image_url": "Image url",
     "caption": "A reference to a paragraph that describes the figure",
   }
 };
@@ -36,14 +32,10 @@ Figure.description = {
 
 Figure.example = {
   "id": "figure_1",
-  "label": "Figure 1",
   "image": "figure_1.png",
   "caption": "paragraph_1"
 };
 
-Figure.config = {
-  "zoomable": true
-};
 
 Figure.Prototype = function() {
 
@@ -105,9 +97,7 @@ Figure.create = function(data) {
   var figId = data.id;
   var figure = {
     id: figId,
-    type: "figure",
-    label: data.label,
-    image_url: data.image_url
+    type: "figure"
   };
 
   if (data.caption) {
