@@ -18,6 +18,8 @@ var PublicationInfoView = function(node) {
 
   this.$el.on('change', "#license", _.bind(this.updateLicense, this));
   this.$el.on('change', "#published_on", _.bind(this.updatePublicationDate, this));
+
+  // this.$el.on('mouseup', function(e) { e.stopPropagation(); });
 };
 
 PublicationInfoView.Prototype = function() {
