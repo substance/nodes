@@ -66,7 +66,7 @@ License.available_licenses = {
   "cc-by": {
     "id": "license",
     "type": "license",
-    "name": "Creative Commons Attribution",
+    "name": "Creative Commons Attribution License",
     "code": "cc-by",
     "version": "3.0",
     "description": "This article is distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use and redistribution provided that the original author and source are credited.",
@@ -75,7 +75,7 @@ License.available_licenses = {
   "gutenberg": {
     "id": "license",
     "type": "license",
-    "name": "Project Gutenberg",
+    "name": "Project Gutenberg License",
     "code": "gutenberg",
     "version": "1.0",
     "description": "This article is distributed under the terms of the Project Gutenberg License.",
