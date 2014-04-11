@@ -186,7 +186,7 @@ TextView.Prototype = function() {
 
     // Otherwise deal with annotation changes
     if (Annotator.changesAnnotations(this.node.document, op, this.propertyPath)) {
-      if (op.type === "create" || op.type === "delete" || op.path[1] === "path") {
+      if (op.type === "create" || op.type === "delete" || op.path[1] === "path" || op.path[1] === "range") {
         // console.log("Rerendering TextView due to annotation update", op);
         this.renderContent();
         return true;
