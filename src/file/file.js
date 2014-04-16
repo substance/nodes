@@ -77,11 +77,10 @@ File.Prototype = function() {
     }
 
     var dataKey = this.properties.id+".v"+version;
-
     // First create the data in our temporary data store
     if (this.isJSON()) {
       this.document.fileData[dataKey] = JSON.parse(data);
-    } if(this.isText()) {
+    } else if (this.isText()) {
       this.document.fileData[dataKey] = data;
     } else { // Binary data
       this.document.fileData[dataKey] = data; // new Blob([data], {type: this.properties.content_type});
