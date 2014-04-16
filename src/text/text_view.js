@@ -192,7 +192,18 @@ TextView.Prototype = function() {
 
     // Otherwise deal with annotation changes
     if (Annotator.changesAnnotations(this.node.document, op, this.propertyPath)) {
-      if (op.type === "create" || op.type === "delete" || op.path[1] === "path" || op.path[1] === "range") {
+      if (op.type === "create" || op.type === "delete" ||
+          op.path[1] === "path" || op.path[1] === "range") {
+
+        // NOTE: the last condition applies to all annotation range updates
+        // However, due to the incremental nature of this implementation
+        // it is not necessary to trigger a full rerender when content has been
+        // changed incrementally.
+        if (op.data && op.data["incremental"]) {
+          // console.log("... change is incremental");
+          return false;
+        }
+
         // console.log("Rerendering TextView due to annotation update", op);
         this.renderContent();
         return true;
