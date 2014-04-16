@@ -52,6 +52,10 @@ NodeSurface.Prototype = function() {
     this.view = view;
   };
 
+  this.detachView = function() {
+    this.view = null;
+  };
+
   // Retrieves the corresponding character position for the given DOM position.
   // --------
   //
