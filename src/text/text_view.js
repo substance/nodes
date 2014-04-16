@@ -15,11 +15,15 @@ function _getAnnotationBehavior(doc) {
   return annotationBehavior;
 }
 
-// TODO: this should derive from TextView and share as much code as possible
+var __id__ = 0;
 
 var TextView = function(node, renderer, options) {
   NodeView.call(this, node);
   options = options || {};
+
+  // NOTE: left for debugging purposes
+  this.__id__ = __id__++;
+  // console.log("Creating text view...", this.__id__);
 
   this.property = options.property || "content";
   this.propertyPath = options.propertyPath || [this.node.id, this.property];
@@ -72,13 +76,14 @@ TextView.Prototype = function() {
   };
 
   this.renderContent = function() {
-    // console.error("TextView.renderContent", this);
+    // console.log("TextView.renderContent", this.__id__);
     this.content.innerHTML = "";
     this._annotations = this.node.document.getIndex("annotations").get(this.propertyPath);
     this.renderWithAnnotations(this._annotations);
   };
 
   this.insert = function(pos, str) {
+    // console.log("TextView.insert",pos, str, this.__id__);
     var result = this._lookupPostion(pos);
     var frag = result[0];
     var textNode = frag.el;
@@ -95,6 +100,7 @@ TextView.Prototype = function() {
   };
 
   this.delete = function(pos, length) {
+    // console.log("TextView.delete", pos, length, this.__id__);
     if (length === 0) {
       console.log("FIXME: received empty deletion which could be avoided.")
       return;
