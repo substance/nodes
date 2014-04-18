@@ -184,7 +184,15 @@ TextView.Prototype = function() {
     return false;
   };
 
-  this.onGraphUpdate = function(op) {
+  this.onGraphUpdate = function(op, graph, options) {
+
+    // HACK: chronicled operations need to be rendered non-incrementally
+    if(options && options["chronicle"]) {
+      console.log("non incremental update as it is a chronicled op");
+      this.renderContent();
+      return true;
+    }
+
     // Call super handler and return if that has processed the operation already
     if (__super__.onGraphUpdate.call(this, op)) {
       return true;
