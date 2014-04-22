@@ -72,6 +72,7 @@ TextView.Prototype = function() {
     __super__.render.call(this, enhancer);
 
     this.renderContent();
+
     return this;
   };
 
@@ -80,6 +81,12 @@ TextView.Prototype = function() {
     this.content.innerHTML = "";
     this._annotations = this.node.document.getIndex("annotations").get(this.propertyPath);
     this.renderWithAnnotations(this._annotations);
+
+    // EXPERIMENTAL: trying to fix some issues that we think other implementations handle
+    // with a trailing <br>
+    var br = window.document.createElement("BR");
+    this.content.appendChild(br);
+
   };
 
   this.insert = function(pos, str) {
