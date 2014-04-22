@@ -193,9 +193,9 @@ TextView.Prototype = function() {
 
   this.onGraphUpdate = function(op, graph, options) {
 
-    // HACK: chronicled operations need to be rendered non-incrementally
+    // chronicled operations need to be rendered non-incrementally
     if(options && options["chronicle"]) {
-      console.log("non incremental update as it is a chronicled op");
+      // console.log("non incremental update as it is a chronicled op");
       this.renderContent();
       return true;
     }
