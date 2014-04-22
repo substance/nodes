@@ -46,8 +46,20 @@ TextSurface.Prototype = function() {
 
     // Bootstrapping: cases that happened with empty text node.
     // In these cases we return charPos = 0
-    if (this.view._fragments.length === 0 || el === this.view._fragments[0].el.parentElement) {
+    if (this.view._fragments.length === 0) {
       return 0;
+    }
+
+    // This one occurs with empty nodes and after softbreaks in otherwise empty nodes
+    // i.e., the selection anchor is the the parentElement
+    if (el === this.view._fragments[0].el.parentElement) {
+      if (offset === 0) {
+        // console.log("TextSurface.getCharPosition() HACK2: 0");
+        return 0;
+      } else {
+        // console.log("TextSurface.getCharPosition() HACK2: ", this.components[0].length);
+        return this.components[0].length;
+      }
     }
 
     // Otherwise find the correct TEXT element
@@ -61,11 +73,13 @@ TextSurface.Prototype = function() {
     }
 
     if (!frag) {
-      console.error("AAAAArg", el);
+      console.error("TextSurface.getCharPosition(): Could not lookup text element.", el);
       throw new Error("Could not lookup text element.");
     }
 
     var charPos = frag.charPos + offset;
+
+    // console.log("TextSurface.getCharPosition(): ", charPos);
     return charPos;
   };
 
