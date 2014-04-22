@@ -59,7 +59,7 @@ Text.Prototype = function() {
     if (op.path[1] === "content") {
       var lastChange = Operator.Helpers.last(op.diff);
       if (lastChange.isInsert()) {
-        return lastChange.pos+lastChange.length();
+        return lastChange.pos+lastChange.getLength();
       } else if (lastChange.isDelete()) {
         return lastChange.pos;
       }

@@ -119,7 +119,7 @@ NodeSurface.Prototype = function() {
     for (var i = 0; i < this.components.length; i++) {
       component = this.components[i];
 
-      l = component.length();
+      l = component.getLength();
 
       if (charPos<l) {
         return component.mapCharPos(charPos);
