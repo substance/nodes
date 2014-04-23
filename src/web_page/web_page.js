@@ -11,6 +11,8 @@ WebPage.type = {
   "parent": "content",
   "properties": {
     "file": "file",
+    "width": "string",
+    "height": "string",
     "caption": "paragraph"
   }
 };

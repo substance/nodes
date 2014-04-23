@@ -22,8 +22,7 @@ Contributor.type = {
     "name": "string", // full author name
     "role": "string",
     "description": "string",
-    "image": "blob", // optional
-    "image_url": "string",
+    "image": "file", // optional
     "email": "string",
     "contribution": "string"
   }
