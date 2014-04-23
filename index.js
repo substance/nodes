@@ -18,6 +18,8 @@ module.exports = {
   "superscript": require("./src/superscript"),
   "code": require("./src/code"),
   "web_resource": require("./src/web_resource"),
+  "video": require("./src/video"),
+  "audio": require("./src/audio"),
   "web_page": require("./src/web_page"),
   "list_item": require("./src/list_item"),
   

@@ -91,8 +91,9 @@ File.Prototype = function() {
       this.document.set([this.properties.id, "version"], version);  
     }
   };
-
 };
+
+
 
 File.Prototype.prototype = DocumentNode.prototype;
 File.prototype = new File.Prototype();
