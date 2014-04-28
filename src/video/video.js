@@ -11,6 +11,7 @@ Video.type = {
   "id": "video",
   "parent": "content",
   "properties": {
+    "poster": ["file"],
     "files": ["array", "file"],
     "caption": "paragraph"
   }
@@ -22,6 +23,7 @@ Video.description = {
     "A web video."
   ],
   "properties": {
+    "poster": "Video placeholder",
     "files": "An array of different video files (MP4, OGV)",
     "caption": "A reference to a paragraph that describes the video",
   }

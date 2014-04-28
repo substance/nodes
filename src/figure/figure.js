@@ -36,8 +36,13 @@ Figure.example = {
   "caption": "paragraph_1"
 };
 
-
 Figure.Prototype = function() {
+
+  this.deleteImage = function() {
+    // Delete image file
+    this.document.delete(this.properties.image);
+    this.document.set([this.id, "image"], "");
+  };
 
   this.hasCaption = function() {
     return (!!this.properties.caption);
