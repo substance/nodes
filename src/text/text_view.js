@@ -89,13 +89,14 @@ TextView.Prototype = function() {
 
     var text = this.getText();
     // console.log("TextView.renderContent() add empty?", this.__id__, this.propertyPath, text.length);
-    if (text.length === 0) {
+    if (text.length === 0 && !this.__hasFocus) {
       this.content.classList.add('empty');
     }
   };
 
   this.onBlur = function() {
     var text = this.getText();
+    this.__hasFocus = false;
     if (!text || text.length === 0) {
       this.content.classList.add('empty');
     } else {
@@ -105,6 +106,7 @@ TextView.Prototype = function() {
 
   this.onFocus = function() {
     // console.log("TextView.onFocus", this.__id__, this.propertyPath);
+    this.__hasFocus = true;
     this.content.classList.remove('empty');
   };
 
