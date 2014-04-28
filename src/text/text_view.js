@@ -87,6 +87,25 @@ TextView.Prototype = function() {
     var br = window.document.createElement("BR");
     this.content.appendChild(br);
 
+    var text = this.getText();
+    // console.log("TextView.renderContent() add empty?", this.__id__, this.propertyPath, text.length);
+    if (text.length === 0) {
+      this.content.classList.add('empty');
+    }
+  };
+
+  this.onBlur = function() {
+    var text = this.getText();
+    if (!text || text.length === 0) {
+      this.content.classList.add('empty');
+    } else {
+      this.content.classList.remove('empty');
+    }
+  };
+
+  this.onFocus = function() {
+    // console.log("TextView.onFocus", this.__id__, this.propertyPath);
+    this.content.classList.remove('empty');
   };
 
   this.insert = function(pos, str) {
@@ -244,9 +263,13 @@ TextView.Prototype = function() {
     return el;
   };
 
+  this.getText = function() {
+    return this.node.document.get(this.propertyPath);
+  };
+
   this.renderWithAnnotations = function(annotations) {
     var self = this;
-    var text = this.node.document.get(this.propertyPath);
+    var text = this.getText();
     var fragment = window.document.createDocumentFragment();
 
     // this splits the text and annotations into smaller pieces
