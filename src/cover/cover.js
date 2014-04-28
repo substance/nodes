@@ -48,6 +48,35 @@ Cover.example = {
 };
 
 Cover.Prototype = function() {
+
+  this.deleteImage = function() {
+    // Delete image file
+    this.document.delete(this.properties.image);
+    this.document.set([this.id, "image"], "");
+  };
+
+  // TODO: Use File.getBlob() instead
+
+  this.getBlob = function() {
+    if (!this.properties.image) return null;
+    var file = this.document.get(this.properties.image);
+    if (!file) return null;
+    return file.getBlob();
+  };
+
+  // Depending on wheter there is a blob it returns either the blob url or a regular image url
+  // --------
+  // 
+
+  this.getUrl = function() {
+    var blob = this.getBlob();
+    if (blob) {
+      return window.URL.createObjectURL(blob);
+    } else {
+      return this.properties.image_url;
+    }
+  };
+
 };
 
 Cover.Prototype.prototype = DocumentNode.prototype;
