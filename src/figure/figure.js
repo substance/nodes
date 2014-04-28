@@ -56,12 +56,15 @@ Figure.Prototype = function() {
 
   // Depending on wheter there is a blob it returns either the blob url or a regular image url
   // --------
-  // 
+  //
 
   this.getUrl = function() {
     var blob = this.getBlob();
     if (blob) {
-      return window.URL.createObjectURL(blob);
+      // FIXME: fix Safari support. First we must use window.webkitURL instead
+      // Secondly, the Blob does not work the same as in Chrom.
+      var URL = window.URL;
+      return URL.createObjectURL(blob);
     } else {
       return this.properties.image_url;
     }
