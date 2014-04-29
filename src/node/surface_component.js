@@ -39,6 +39,14 @@ SurfaceComponent.Prototype = function() {
     throw new Error("This method is abstract and must be overridden");
   };
 
+  this.getElement = function() {
+    return this.el;
+  };
+
+  this.getRange = function() {
+    return this.range;
+  };
+
 };
 
 SurfaceComponent.Prototype.prototype = Component.prototype;
@@ -48,7 +56,7 @@ Object.defineProperties(SurfaceComponent.prototype, {
   "range": {
     get: function() {
       if (!this.__range__) {
-        this.__range__ = __createRange__(this.getElement());
+        this.__range__ = __createRange__(this.el);
       }
       return this.__range__;
     }
