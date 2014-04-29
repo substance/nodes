@@ -1,5 +1,7 @@
 "use strict";
 
+var SurfaceComponent = require("./surface_component");
+
 // Node.Surface
 // ========
 //
@@ -138,5 +140,7 @@ NodeSurface.Prototype = function() {
 
 };
 NodeSurface.prototype = new NodeSurface.Prototype();
+
+NodeSurface.SurfaceComponent = SurfaceComponent;
 
 module.exports = NodeSurface;
