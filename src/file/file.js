@@ -60,6 +60,18 @@ File.Prototype = function() {
     return this.document.fileData[dataKey];
   };
 
+  this.getSize = function() {
+    var data = this.getData();
+    if (this.isJSON()) {
+      return JSON.stringify(data).length;
+    } else if (this.isBinary()) {
+      // Just making sure we don't run into a NaN scenario
+      return data.byteLength || data.length || 0;
+    } else {
+      return data.length;
+    }
+  };
+
   this.getBlob = function(version) {
     var data = this.getData(version);
     return new window.Blob([data], {type: this.properties.content_type});
