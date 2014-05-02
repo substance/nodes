@@ -66,7 +66,7 @@ Cover.Prototype = function() {
 
   // Depending on wheter there is a blob it returns either the blob url or a regular image url
   // --------
-  // 
+  //
 
   this.getUrl = function() {
     var blob = this.getBlob();
@@ -89,12 +89,20 @@ Cover.prototype.defineProperties();
 // --------
 
 Object.defineProperties(Cover.prototype, {
-  title: {
+  "title": {
     get: function() {
       return this.document.title;
     },
-    set: function() {
-      throw new Error("This is a read-only property alias.");
+    set: function(title) {
+      this.document.title = title;
+    }
+  },
+  "abstract": {
+    get: function() {
+      return this.document.abstract;
+    },
+    set: function(abstract) {
+      this.document.abstract = abstract;
     }
   }
 });
