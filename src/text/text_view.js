@@ -226,6 +226,11 @@ TextView.Prototype = function() {
       return true;
     }
 
+    if (_.isEqual(op.path, this.propertyPath)) {
+      this.onNodeUpdate(op);
+      return true;
+    }
+
     // Otherwise deal with annotation changes
     if (Annotator.changesAnnotations(this.node.document, op, this.propertyPath)) {
       if (op.type === "create" || op.type === "delete" ||
