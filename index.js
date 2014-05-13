@@ -4,9 +4,10 @@ module.exports = {
   "node": require("./src/node"),
   "text": require("./src/text"),
   "document": require("./src/document"),
+  "container": require("./src/container"),
   "heading": require("./src/heading"),
   "code_block": require("./src/code_block"),
-  
+
   "figure": require("./src/figure"),
   "contributor": require("./src/contributor"),
   "cover": require("./src/cover"),
@@ -22,7 +23,7 @@ module.exports = {
   "audio": require("./src/audio"),
   "web_page": require("./src/web_page"),
   "list_item": require("./src/list_item"),
-  
+
   "issue": require("./src/issue"),
   "remark": require("./src/remark"),
   "error": require("./src/error"),
