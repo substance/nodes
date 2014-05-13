@@ -6,10 +6,8 @@ var ContainerNode = function(node, document) {
   DocumentNode.call(this, node, document);
 };
 
-// TODO: we should switch to 'container' soon
-// as 'view' is too confusing in presence of Application.View
 ContainerNode.type = {
-  "id": "view",
+  "id": "container",
   "properties": {
     "nodes": ["array", "content"]
   }
