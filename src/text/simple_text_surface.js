@@ -54,6 +54,10 @@ SimpleTextSurface.Prototype = function() {
         return "break";
       } else {
         pos += text.length;
+        // set the offset to the end of the current el
+        // which is will only be used, if no other element
+        // comes after
+        offset = text.length;
       }
     });
 
