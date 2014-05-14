@@ -37,15 +37,6 @@ SimpleTextView.Prototype = function() {
     el = $$('span.annotation.'+entry.type, {
       id: entry.id
     });
-
-    var doc = this.node.document;
-
-    if (entry.type === "product_reference") {
-      var productRef = doc.get(entry.id);
-      var category_code = doc.external.getProductCategoryCode(productRef.product_id);
-      el.classList.add("category-"+category_code);
-    }
-
     return el;
   };
 
