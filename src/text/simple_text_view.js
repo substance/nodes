@@ -27,6 +27,9 @@ SimpleTextView.Prototype = function() {
   this.renderContent = function() {
     var annotations = this.node.document.getIndex("annotations").get([this.node.id, "content"]);
     this.renderWithAnnotations(annotations);
+
+    var br = window.document.createElement("BR");
+    this.content.appendChild(br);
   };
 
   this.createAnnotationElement = function(entry) {
