@@ -16,37 +16,58 @@ function SurfaceComponent(nodeSurface, root, path, options) {
   this.__range__ = null;
   this.__el__ = null;
 
-  if (options.element) {
-    this.__getElement__ = options.element;
-  }
+  if (options) {
+    if (options.element) {
+      this.__getElement__ = options.element;
+    }
 
-  if (options.mapCharPos) {
-    this.__mapCharPos__ = options.mapCharPos;
+    if (options.mapCharPos) {
+      this.__mapCharPos__ = options.mapCharPos;
+    }
   }
 };
 
 SurfaceComponent.Prototype = function() {
 
+  /**
+   * Returns the DOM element associated with this component.
+   *
+   * A sub-class must provide an implementation.
+   */
   this.__getElement__ = function() {
     throw new Error("This method is abstract and must be overridden");
   };
 
+  /**
+   * Implementation of the character position mapper.
+   *
+   * Returns an array [el, offset].
+   */
+  this.__mapCharPos__ = function(/*charPos*/) {
+    throw new Error("This method is abstract and must be overridden");
+  };
+
+  /**
+   * Maps a character position to a pair of (DOM element, offset).
+   */
   this.mapCharPos = function(charPos) {
     return this.__mapCharPos__.call(this, charPos);
   };
 
-  this.__mapCharPos__ = function() {
-    throw new Error("This method is abstract and must be overridden");
-  };
 
+  /**
+   * Legacy method for accessing the length property.
+   */
   this.getElement = function() {
     return this.el;
   };
 
+  /**
+   * Legacy method for accessing the range property.
+   */
   this.getRange = function() {
     return this.range;
   };
-
 };
 
 SurfaceComponent.Prototype.prototype = Component.prototype;
