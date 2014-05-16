@@ -212,7 +212,7 @@ TextView.Prototype = function() {
     return false;
   };
 
-  this.onGraphUpdate = function(op, graph, options) {
+  this.onGraphUpdate = function(op, graph, target, options) {
 
     // chronicled operations need to be rendered non-incrementally
     if(options && options["chronicle"]) {

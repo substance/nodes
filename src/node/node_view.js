@@ -53,7 +53,8 @@ NodeView.Prototype = function() {
   // --------
   //
 
-  this.onGraphUpdate = function(op) {
+  this.onGraphUpdate = function(op, target, options) {
+    /* jshint unused:false */
     if(op.path[0] === this.node.id && (op.type === "update" || op.type === "set") ) {
       this.onNodeUpdate(op);
       return true;
