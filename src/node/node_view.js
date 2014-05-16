@@ -72,11 +72,11 @@ NodeView.Prototype = function() {
   };
 
   this.onFocus = function() {
-    console.log("focussed node view", this.__id__);
+    // console.log("focussed node view", this.__id__);
   };
 
   this.onBlur = function() {
-    console.log("blurred node view", this.__id__);
+    // console.log("blurred node view", this.__id__);
   };
 };
 
