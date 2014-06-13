@@ -6,6 +6,7 @@ module.exports = {
   "document": require("./src/document"),
   "container": require("./src/container"),
   "heading": require("./src/heading"),
+  "blockquote": require("./src/blockquote"),
   "code_block": require("./src/code_block"),
 
   "figure": require("./src/figure"),
