@@ -12,6 +12,7 @@ var WebResource = function(node, document) {
 WebResource.type = {
   "id": "webresource",
   "properties": {
+    "title": "string",
     "description": "string", // should be a reference to a text node?
     "url": "string"
   }
@@ -27,6 +28,7 @@ WebResource.description = {
     "A WebResource"
   ],
   "properties": {
+    "title": "Webpage title",
     "description": "More verbose WebResource description, if available",
     "url": "WebResource URL"
   }
