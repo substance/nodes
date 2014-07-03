@@ -78,6 +78,14 @@ NodeView.Prototype = function() {
   this.onBlur = function() {
     // console.log("blurred node view", this.__id__);
   };
+
+  this.later = function(f) {
+    var self = this;
+    window.setTimeout(function() {
+      f.call(self);
+    }, 0);
+  };
+
 };
 
 NodeView.Prototype.prototype = View.prototype;
