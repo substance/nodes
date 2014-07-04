@@ -77,16 +77,13 @@ File.Prototype = function() {
     return new window.Blob([data], {type: this.properties.content_type});
   };
 
-  // Assigns a data object from the temporary data store
-  this.updateData = function(data) {
-    var version = this.properties.version;
-
-    // Version is set and no record exists in doc.fileData
-    if (version && !this.getData(version)) {
-      // Initialize = silent data update without triggering a version bump
-    } else {
-      version = version ? version + 1 : 1;
-    }
+  // Set the data for a given version
+  // ------------
+  // This is used to attach data to the file node for a specific version
+  // If version is not given, the 'version' property is used
+  //
+  this.setData = function(data, version) {
+    version = version || this.properties.version;
 
     var dataKey = this.properties.id+".v"+version;
     // First create the data in our temporary data store
@@ -97,11 +94,16 @@ File.Prototype = function() {
     } else { // Binary data
       this.document.fileData[dataKey] = data; // new Blob([data], {type: this.properties.content_type});
     }
+  };
 
-    if (version !== this.properties.version) {
-      // FigureView / ContributorView is listening to this operation
-      this.document.set([this.properties.id, "version"], version);  
-    }
+  // Assigns a data object from the temporary data store
+  this.updateData = function(data) {
+    var version = this.properties.version;
+    version = version ? version + 1 : 1;
+    this.setData(data, version);
+    // Note: a node view displaying the file (e.g. figure) should listen to
+    // this change
+    this.document.set([this.properties.id, "version"], version);
   };
 };
 
