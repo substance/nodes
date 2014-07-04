@@ -3,7 +3,6 @@
 var _ = require("underscore");
 var NodeView = require("../node").View;
 var $$ = require("substance-application").$$;
-var TextView = require("../text/text_view");
 var License = require("../license").Model;
 
 
@@ -18,8 +17,6 @@ var PublicationInfoView = function(node) {
 
   this.$el.on('change', "#license", _.bind(this.updateLicense, this));
   this.$el.on('change', "#published_on", _.bind(this.updatePublicationDate, this));
-
-  // this.$el.on('mouseup', function(e) { e.stopPropagation(); });
 };
 
 PublicationInfoView.Prototype = function() {
@@ -49,38 +46,19 @@ PublicationInfoView.Prototype = function() {
     var body = $$('.resource-body', {contenteditable: false});
 
     var formattedDates = {
-      "created_at": new Date(this.node.document.created_at).toString(),
-      "updated_at": new Date(this.node.document.updated_at).toString(),
+      "created_at": new Date(this.node.document.created_at).toDateString(),
+      "updated_at": jQuery.timeago(new Date(this.node.document.updated_at)),
       "published_on": new Date(this.node.document.published_on).toDateString()
     };
 
-    var createdAt = $$('.created-at', {
+    var keywordsEl = $$('.keywords', {
       children: [
-        $$('.label', {text: "Created at"}),
-        $$('.created-at', {text: formattedDates["created_at"]})
+        $$('.label', {text: "Keywords"}),
+        $$('.keywords', {html: "Arctic, Greenpeace, Mannes Ubels"})
       ]
     });
 
-    body.appendChild(createdAt);
-
-    this.updatedAtEl = $$('.updated-at', {text: formattedDates["updated_at"]})
-    var updatedAt = $$('.updated-at', {
-      children: [
-        $$('.label', {text: "Modified at"}),
-        this.updatedAtEl
-      ]
-    });
-
-    body.appendChild(updatedAt);
-
-    var pubDate = $$('.publication-date', {
-      children: [
-        $$('.label', {text: "Publication Date"}),
-        $$('.pub-date', {text: formattedDates["published_on"]})
-      ]
-    });
-
-    body.appendChild(pubDate);
+    body.appendChild(keywordsEl);
 
     var license = $$('.license', {
       children: [
@@ -96,14 +74,37 @@ PublicationInfoView.Prototype = function() {
     });
 
     body.appendChild(license);
+
+    var creditsEl = $$('.credits', {
+      children: [
+        $$('.label', {text: "Credits"}),
+        $$('.credits', {html: "Interview by Daniel Beilinson Cover photo by John Foo"})
+      ]
+    });
+
+    body.appendChild(creditsEl);
+
+    var dates = $$('.dates', {
+      html: [
+        'This article was created on <b>',
+        formattedDates["created_at"],
+        '</b> and published on ',
+        'and published on <b>',
+        formattedDates["published_on"],
+        '</b>. Last update was made ',
+        '<span class="updated-at"><b>'+formattedDates["updated_at"]+'</b></span>.'
+      ].join('')
+    });
+
+    body.appendChild(dates);
+
     this.content.appendChild(body);
     return this;
   };
 
-
   this.updateModificationDate = function() {
-    var dat = new Date(this.node.document.updated_at).toString();
-    this.updatedAtEl.innerHTML = dat;
+    var dat = jQuery.timeago(new Date(this.node.document.updated_at));
+    this.$('.updated-at').html(dat);
   };
 
   this.onGraphUpdate = function(op) {
@@ -111,14 +112,14 @@ PublicationInfoView.Prototype = function() {
     if (NodeView.prototype.onGraphUpdate.call(this, op)) {
       return true;
     }
-
-    this.render();
     // When published date has changed, rerender
     if (_.isEqual(op.path, ["document","published_on"])) {
       this.render();
+      console.log('rerender');
       return true;
     } else {
       this.updateModificationDate();
+      console.log('update mod date');
       return true;
     }
   };
@@ -126,7 +127,6 @@ PublicationInfoView.Prototype = function() {
   this.dispose = function() {
     NodeView.prototype.dispose.call(this);
   };
-
 };
 
 PublicationInfoView.Prototype.prototype = NodeView.prototype;
