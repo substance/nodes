@@ -60,6 +60,16 @@ PublicationInfoView.Prototype = function() {
 
     body.appendChild(keywordsEl);
 
+    var creditsEl = $$('.credits', {
+      children: [
+        $$('.label', {text: "Credits"}),
+        $$('.credits', {html: "Interview by Daniel Beilinson Cover photo by John Foo"})
+      ]
+    });
+
+    body.appendChild(creditsEl);
+
+
     var license = $$('.license', {
       children: [
         $$('.label', {text: "Choose License"}),
@@ -75,21 +85,12 @@ PublicationInfoView.Prototype = function() {
 
     body.appendChild(license);
 
-    var creditsEl = $$('.credits', {
-      children: [
-        $$('.label', {text: "Credits"}),
-        $$('.credits', {html: "Interview by Daniel Beilinson Cover photo by John Foo"})
-      ]
-    });
-
-    body.appendChild(creditsEl);
 
     var dates = $$('.dates', {
       html: [
         'This article was created on <b>',
         formattedDates["created_at"],
-        '</b> and published on ',
-        'and published on <b>',
+        '</b> and published on <b>',
         formattedDates["published_on"],
         '</b>. Last update was made ',
         '<span class="updated-at"><b>'+formattedDates["updated_at"]+'</b></span>.'
@@ -115,11 +116,9 @@ PublicationInfoView.Prototype = function() {
     // When published date has changed, rerender
     if (_.isEqual(op.path, ["document","published_on"])) {
       this.render();
-      console.log('rerender');
       return true;
     } else {
       this.updateModificationDate();
-      console.log('update mod date');
       return true;
     }
   };
