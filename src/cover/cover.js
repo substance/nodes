@@ -49,6 +49,9 @@ Cover.example = {
 
 Cover.Prototype = function() {
 
+  // TODO: We should discuss if it is really desirable to have document manipulation
+  // in a model class
+  // TODO: this should be transactional
   this.deleteImage = function() {
     // Delete image file
     this.document.delete(this.properties.image);
