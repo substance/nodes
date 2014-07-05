@@ -88,8 +88,7 @@ PublicationInfoView.Prototype = function() {
       html: [
         'This article was created on <b>',
         formattedDates["created_at"],
-        '</b> and published on ',
-        'and published on <b>',
+        '</b> and published on <b>',
         formattedDates["published_on"],
         '</b>. Last update was made ',
         '<span class="updated-at"><b>'+formattedDates["updated_at"]+'</b></span>.'
