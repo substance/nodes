@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var NodeView = require('../node/node_view');
 var Document = require("substance-document");
 var Annotator = Document.Annotator;
@@ -11,11 +12,24 @@ var $$ = require("substance-application").$$;
 
 var LAST_CHAR_HACK = false;
 
-var TextView = function(node) {
+var TextView = function(node, options) {
   NodeView.call(this, node);
 
-  this.$el.addClass('content-node text');
-  this.$el.attr('id', this.node.id);
+  options = options || {};
+
+  // HACK: this is messy and will be cleaner after updating lens to a more current Substance version
+
+  this.path = options.path || [ node.id, 'content' ];
+  this.property = node.document.resolve(this.path)
+
+  if (options.classes) {
+    this.$el.addClass(options.classes);
+  } else {
+    this.$el.addClass('content-node text');
+  }
+  if (!options.path) {
+    this.$el.attr('id', this.node.id);
+  }
 
   this._annotations = {};
 };
@@ -42,7 +56,7 @@ TextView.Prototype = function() {
   this.renderContent = function() {
     this.content.innerHTML = "";
 
-    this._annotations = this.node.getAnnotations();
+    this._annotations = this.node.document.getIndex("annotations").get(this.path);
     this.renderWithAnnotations(this._annotations);
   };
 
@@ -65,23 +79,22 @@ TextView.Prototype = function() {
   };
 
   this.onNodeUpdate = function(op) {
-    if (op.path[1] === "content") {
-      console.log("Updating text view: ", op);
-      if (op.type === "update") {
-        var update = op.diff;
-        if (update.isInsert()) {
-          this.insert(update.pos, update.str);
-        } else if (update.isDelete()) {
-          this.delete(update.pos, update.str.length);
-        }
-      } else if (op.type === "set") {
-        this.renderContent();
+    if (op.type === "update") {
+      var update = op.diff;
+      if (update.isInsert()) {
+        this.insert(update.pos, update.str);
+      } else if (update.isDelete()) {
+        this.delete(update.pos, update.str.length);
       }
+    } else if (op.type === "set") {
+      this.renderContent();
     }
   };
 
   this.onGraphUpdate = function(op) {
-    NodeView.prototype.onGraphUpdate.call(this, op);
+    if(_.isEqual(op.path, this.path) && (op.type === "update" || op.type === "set") ) {
+      this.onNodeUpdate(op);
+    }
 
     var doc = this.node.document;
     var schema = doc.getSchema();
@@ -115,7 +128,7 @@ TextView.Prototype = function() {
     range.setStart(this.content.childNodes[0], 0);
     range.setEnd(el, offset);
     var str = range.toString();
-    var charPos = Math.min(this.node.content.length, str.length);
+    var charPos = Math.min(this.property.get().length, str.length);
 
     // console.log("Requested char pos: ", charPos, this.node.content[charPos]);
 
@@ -135,7 +148,7 @@ TextView.Prototype = function() {
 
     var range = document.createRange();
 
-    if (this.node.content.length === 0) {
+    if (this.property.get().length === 0) {
       range.setStart(this.content.childNodes[0], 0);
       return range;
     }
@@ -190,7 +203,7 @@ TextView.Prototype = function() {
 
   this.renderWithAnnotations = function(annotations) {
     var that = this;
-    var text = this.node.content;
+    var text = this.property.get();
     var fragment = document.createDocumentFragment();
 
     // this splits the text and annotations into smaller pieces
