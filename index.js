@@ -37,5 +37,9 @@ module.exports = {
   "citation_reference": require("./src/citation_reference"),
   "cross_reference": require("./src/cross_reference"),
   "remark_reference": require("./src/remark_reference"),
-  "error_reference": require("./src/error_reference")
+  "error_reference": require("./src/error_reference"),
+
+  // Archivist nodes
+  "location": require("./src/location"),
+  "location_reference": require("./src/location_reference")
 };
