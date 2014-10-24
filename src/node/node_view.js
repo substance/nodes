@@ -5,12 +5,13 @@ var View = require("substance-application").View;
 
 var NodeView = function(node, viewFactory) {
   View.call(this);
-
   this.node = node;
   this.viewFactory = viewFactory;
-
-  this.$el.addClass('content-node');
-  this.$el.attr('id', this.node.id);
+  if (!viewFactory) {
+    throw new Error('Illegal argument. Argument "viewFactory" is mandatory.');
+  }
+  this.$el.addClass('content-node').addClass(node.type.replace('_', '-'));
+  this.el.dataset.id = this.node.id;
 };
 
 NodeView.Prototype = function() {
@@ -28,6 +29,18 @@ NodeView.Prototype = function() {
 
   this.dispose = function() {
     this.stopListening();
+  };
+
+  this.createView = function(nodeId) {
+    var childNode = this.node.document.get(nodeId);
+    var view = this.viewFactory.createView(childNode);
+    return view;
+  };
+
+
+  this.createTextView = function(options) {
+    var view = this.viewFactory.createView(this.node, options, 'text');
+    return view;
   };
 
   // Retrieves the corresponding character position for the given DOM position.
@@ -64,6 +77,7 @@ NodeView.Prototype = function() {
   this.onNodeUpdate = function(/*op*/) {
     // do nothing by default
   };
+
 };
 
 NodeView.Prototype.prototype = View.prototype;

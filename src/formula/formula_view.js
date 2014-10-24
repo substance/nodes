@@ -8,8 +8,6 @@ var NodeView = require('../node').View;
 var FormulaView = function(node) {
   NodeView.call(this, node);
 
-  this.$el.attr({id: node.id});
-  this.$el.addClass('content-node formula');
   if (this.node.inline) {
     this.$el.addClass('inline');
   }
@@ -19,7 +17,7 @@ FormulaView.Prototype = function() {
 
   // Render the formula
   // --------
-    
+
   this.render = function() {
 
     var format = this.node.format;

@@ -7,10 +7,6 @@ var NodeView = require("../node").View;
 
 var CompositeView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
-
-  this.$el.addClass(node.type);
-  this.$el.attr('id', this.node.id);
-
   this.childrenViews = [];
 };
 
@@ -28,24 +24,21 @@ CompositeView.Prototype = function() {
     this.content = document.createElement("DIV");
     this.content.classList.add("content");
 
-    var i;
-
-    // dispose existing children views if called multiple times
-    for (i = 0; i < this.childrenViews.length; i++) {
-      this.childrenViews[i].dispose();
-    }
-
-    // create children views
-    var children = this.node.getNodes();
-    for (i = 0; i < children.length; i++) {
-      var child = this.node.document.get(children[i]);
-      var childView = this.viewFactory.createView(child);
-      this.content.appendChild(childView.render().el);
-      this.childrenViews.push(childView);
-    }
+    this.renderChildren();
 
     this.el.appendChild(this.content);
+
     return this;
+  };
+
+  this.renderChildren = function() {
+    var children = this.node.getChildrenIds();
+    // create children views
+    for (var i = 0; i < children.length; i++) {
+      var childView = this.createChildView(children[i]);
+      var childViewEl = childView.render().el;
+      this.content.appendChild(childViewEl);
+    }
   };
 
   this.dispose = function() {
@@ -69,6 +62,13 @@ CompositeView.Prototype = function() {
     range.setStartBefore(content.childNodes[0]);
     return range;
   };
+
+  this.createChildView = function(nodeId) {
+    var view = this.createView(nodeId);
+    this.childrenViews.push(view);
+    return view;
+  };
+
 };
 
 CompositeView.Prototype.prototype = NodeView.prototype;

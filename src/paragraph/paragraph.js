@@ -52,7 +52,7 @@ Paragraph.Prototype = function() {
     return this.properties.children.length;
   };
 
-  this.getNodes = function() {
+  this.getChildrenIds = function() {
     return _.clone(this.properties.children);
   };
 

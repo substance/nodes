@@ -55,7 +55,7 @@ List.Prototype = function() {
     return this.properties.items.length;
   };
 
-  this.getNodes = function() {
+  this.getChildrenIds = function() {
     return _.clone(this.items);
   };
 

@@ -4,9 +4,6 @@ var NodeView = require("../node").View;
 
 var DescriptionView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
-
-  this.$el.addClass('description');
-  this.$el.attr('id', this.node.id);
 };
 
 DescriptionView.Prototype = function() {

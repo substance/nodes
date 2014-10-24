@@ -10,9 +10,6 @@ var $$ = require("substance-application").$$;
 
 var CoverView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
-
-  this.$el.attr({id: node.id});
-  this.$el.addClass("content-node cover");
 };
 
 CoverView.Prototype = function() {
@@ -24,11 +21,11 @@ CoverView.Prototype = function() {
     if (this.node.document.published_on) {
       this.content.appendChild($$('.published-on', {
         html: new Date(this.node.document.published_on).toDateString()
-      }));      
+      }));
     }
 
 
-    this.content.appendChild($$('.title', {text: node.title }));
+    this.content.appendChild($$('.title', {text: node.getTitle() }));
 
 
     var authorRefs = this.node.getAuthorRefs();

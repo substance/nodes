@@ -7,9 +7,6 @@ var NodeView = require("../node").View;
 
 var ImageView = function(node, viewFactory) {
   NodeView.call(this, node, viewFactory);
-
-  this.$el.addClass('image');
-  this.$el.attr('id', this.node.id);
 };
 
 ImageView.Prototype = function() {

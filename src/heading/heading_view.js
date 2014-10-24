@@ -5,12 +5,10 @@ var TextView = require('../text/text_view');
 // Substance.Heading.View
 // ==========================================================================
 
-var HeadingView = function(node) {
-  TextView.call(this, node);
+var HeadingView = function() {
+  TextView.apply(this, arguments);
 
-  this.$el.addClass('heading');
   this.$el.addClass('level-'+this.node.level);
-  this.$el.attr('title', "Click to set anchor. Great for sharing!");
 };
 
 HeadingView.Prototype = function() {};

@@ -7,8 +7,6 @@ var TextView = require('../text/text_view');
 
 var CodeblockView = function(node) {
   TextView.call(this, node);
-
-  this.$el.addClass('content-node codeblock');
 };
 
 CodeblockView.Prototype = function() {};

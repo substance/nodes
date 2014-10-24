@@ -65,7 +65,7 @@ Table.Prototype = function() {
     return l;
   };
 
-  this.getNodes = function() {
+  this.getChildrenIds = function() {
     var ids = [];
     for (var col = 0; col < this.properties.headers.length; col++) {
       ids.push(this.properties.headers[col]);
