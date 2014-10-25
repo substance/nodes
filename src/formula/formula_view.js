@@ -5,8 +5,8 @@ var NodeView = require('../node').View;
 // FormulaView
 // ===========
 
-var FormulaView = function(node) {
-  NodeView.call(this, node);
+var FormulaView = function(node, viewFactory) {
+  NodeView.call(this, node, viewFactory);
 
   if (this.node.inline) {
     this.$el.addClass('inline');
