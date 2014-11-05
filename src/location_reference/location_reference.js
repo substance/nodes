@@ -13,7 +13,7 @@ LocationReference.type = {
   "id": "location_reference",
   "parent": "annotation",
   "properties": {
-    "target": "location"
+    "target": "string"
   }
 };
 
