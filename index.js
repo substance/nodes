@@ -40,6 +40,6 @@ module.exports = {
   "error_reference": require("./src/error_reference"),
 
   // Archivist nodes
-  "location": require("./src/location"),
-  "location_reference": require("./src/location_reference")
+  "location_reference": require("./src/location_reference"),
+  "person_reference": require("./src/person_reference")
 };

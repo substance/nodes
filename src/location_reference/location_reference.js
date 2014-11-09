@@ -36,8 +36,8 @@ LocationReference.description = {
 //
 
 LocationReference.example = {
-  "type": "location_reference_1",
   "id": "location_reference_1",
+  "type": "location_reference",
   "path": [
     "text_54",
     "content"
