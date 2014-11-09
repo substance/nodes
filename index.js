@@ -41,5 +41,6 @@ module.exports = {
 
   // Archivist nodes
   "location_reference": require("./src/location_reference"),
-  "person_reference": require("./src/person_reference")
+  "person_reference": require("./src/person_reference"),
+  "definition_reference": require("./src/definition_reference")
 };
