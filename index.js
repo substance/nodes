@@ -40,6 +40,7 @@ module.exports = {
   "error_reference": require("./src/error_reference"),
 
   // Archivist nodes
+  "multi_node_annotation": require('./src/multi_node_annotation'),
   "location": require("./src/location"),
   "location_reference": require("./src/location_reference")
 };

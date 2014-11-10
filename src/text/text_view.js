@@ -17,9 +17,11 @@ function _getAnnotationBehavior(doc) {
 
 var __id__ = 0;
 
-var TextView = function(node, renderer, options) {
-  NodeView.call(this, node);
+var TextView = function(node, surface, options) {
+  NodeView.call(this, node, surface);
   options = options || {};
+
+  this.surface = surface;
 
   // NOTE: left for debugging purposes
   this.__id__ = __id__++;
@@ -79,7 +81,12 @@ TextView.Prototype = function() {
   this.renderContent = function() {
     // console.log("TextView.renderContent", this.__id__);
     this.content.innerHTML = "";
-    this._annotations = this.node.document.getIndex("annotations").get(this.propertyPath);
+
+    // HACK: accessing the surface directly for now.
+    // We need a proper way to retrieve annotbla ations.
+    // Using this.node.doc is not enough as it does not know about multi-node-annotations.
+    // this._annotations = doc.getAnnotations(this.propertyPath);
+    this._annotations = this.surface.getDocumentSession().getAnnotations(this.propertyPath, {'all': true});
     this.renderWithAnnotations(this._annotations);
 
     // EXPERIMENTAL: trying to fix some issues that we think other implementations handle
@@ -130,7 +137,7 @@ TextView.Prototype = function() {
   this.delete = function(pos, length) {
     // console.log("TextView.delete", pos, length, this.__id__);
     if (length === 0) {
-      console.log("FIXME: received empty deletion which could be avoided.")
+      console.log("FIXME: received empty deletion which could be avoided.");
       return;
     }
 
@@ -260,6 +267,11 @@ TextView.Prototype = function() {
       el = $$('a.annotation.'+entry.type, {
         id: entry.id,
         href: this.node.document.get(entry.id).url // "http://zive.at"
+      });
+    } else if (entry.type === "annotation_fragment") {
+      var anno = this.node.document.get(entry.node.annotation);
+      el = $$('span.annotation_fragment.'+anno.type, {
+        id: entry.id
       });
     } else {
       el = $$('span.annotation.'+entry.type, {

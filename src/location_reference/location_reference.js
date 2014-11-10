@@ -11,7 +11,7 @@ var LocationReference = function(node, document) {
 
 LocationReference.type = {
   "id": "location_reference",
-  "parent": "annotation",
+  "parent": "multi_node_annotation",
   "properties": {
     "target": "string"
   }
