@@ -11,6 +11,7 @@ module.exports = {
 
   "figure": require("./src/figure"),
   "contributor": require("./src/contributor"),
+  "interview_subject": require("./src/interview_subject"),
   "cover": require("./src/cover"),
   "citation": require("./src/citation"),
   "annotation": require("./src/annotation"),

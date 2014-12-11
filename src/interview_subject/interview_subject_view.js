@@ -4,17 +4,17 @@ var NodeView = require("../node").View;
 var $$ = require("substance-application").$$;
 var TextView = require("../text/text_view");
 
-// Substance.Contributor.View
+// Substance.InterviewSubject.View
 // ==========================================================================
 
-var ContributorView = function(node) {
+var InterviewSubjectView = function(node) {
   NodeView.call(this, node);
 
   this.$el.attr({id: node.id});
-  this.$el.addClass("content-node contributor");
+  this.$el.addClass("content-node contributor interview-subject");
 };
 
-ContributorView.Prototype = function() {
+InterviewSubjectView.Prototype = function() {
 
   // Render it
   // --------
@@ -22,7 +22,6 @@ ContributorView.Prototype = function() {
 
   this.render = function() {
     NodeView.prototype.render.call(this);
-
 
     // Contributor role
     // -------
@@ -57,23 +56,43 @@ ContributorView.Prototype = function() {
       'data-path': this.node.id+'.image'
     });
 
-    body.appendChild(this.imageEl);
+
+    // body.appendChild(this.imageEl);
 
     // Description
     // -------
 
+    body.appendChild($$('.label', {text: 'Biography'}));
     this.descriptionView = new TextView(this.node, this.viewFactory, {property: "description"});
     body.appendChild(this.descriptionView.render().el);
 
-
-    // Contribution
+    // Forced Labor
     // -------
 
-    // if (this.node.contribution) {
-    //   body.appendChild($$('.label', {text: 'Contribution'}));
-    //   this.contribEl = $$('.contribution.node-property', {text: this.node.contribution, "data-path": "contribution"});
-    //   body.appendChild(this.contribEl);
-    // }
+    body.appendChild($$('.label', {text: 'Forced labor'}));
+    this.forcedLaborEl = $$('.forced-labor.node-property', {text: this.node.forced_labor});
+    body.appendChild(this.forcedLaborEl);
+
+    // Categories
+    // -------
+
+    body.appendChild($$('.label', {text: 'Categories'}));
+    this.categoriesEl = $$('.categories.node-property', {text: this.node.categories.join(', ')});
+    body.appendChild(this.categoriesEl);
+
+    // Prisons
+    // -------
+
+    body.appendChild($$('.label', {text: 'Prisons'}));
+    this.prisonsEl = $$('.prisons.node-property', {text: this.node.prisons.join(', ')});
+    body.appendChild(this.prisonsEl);
+
+    // Prisons
+    // -------
+
+    body.appendChild($$('.label', {text: 'Movement'}));
+    this.movementEl = $$('.movement.node-property', {text: this.node.movement.join(', ')});
+    body.appendChild(this.movementEl);
 
     this.content.appendChild(body);
 
@@ -92,7 +111,7 @@ ContributorView.Prototype = function() {
   };
 };
 
-ContributorView.Prototype.prototype = NodeView.prototype;
-ContributorView.prototype = new ContributorView.Prototype();
+InterviewSubjectView.Prototype.prototype = NodeView.prototype;
+InterviewSubjectView.prototype = new InterviewSubjectView.Prototype();
 
-module.exports = ContributorView;
+module.exports = InterviewSubjectView;
