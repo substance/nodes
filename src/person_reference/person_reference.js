@@ -24,7 +24,7 @@ PersonReference.type = {
 PersonReference.description = {
   "name": "PersonReference",
   "remarks": [
-    "References a range in a text-ish node and references a location node."
+    "References a range in a text-ish node and references a person node."
   ],
   "properties": {
   }
