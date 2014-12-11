@@ -51,39 +51,117 @@ PublicationInfoView.Prototype = function() {
       "published_on": new Date(this.node.document.published_on).toDateString()
     };
 
+    // Project
+    // -------
+
+    var projectEl = $$('.project', {
+      children: [
+        $$('.label', {text: "Project"}),
+        $$('.value', {html: this.node.document.project})
+      ]
+    });
+
+    body.appendChild(projectEl);
+
+
+    // Location
+    // -------
+
+    var locationEl = $$('.location', {
+      children: [
+        $$('.label', {text: "Location"}),
+        $$('.value', {html: this.node.document.location})
+      ]
+    });
+
+    body.appendChild(locationEl);
+
+    // Place
+    // -------
+
+    var placeEl = $$('.place', {
+      children: [
+        $$('.label', {text: "Place"}),
+        $$('.value', {html: this.node.document.place})
+      ]
+    });
+
+    body.appendChild(placeEl);
+
+    // Interview type
+    // -------
+
+    var interviewTypeEl = $$('.place', {
+      children: [
+        $$('.label', {text: "Interview type"}),
+        $$('.value', {html: "Video"})
+      ]
+    });
+
+    body.appendChild(interviewTypeEl);
+
+    // Interview duration
+    // -------
+
+    var interviewDurationEl = $$('.place', {
+      children: [
+        $$('.label', {text: "Duration"}),
+        $$('.value', {html: this.node.interview_duration})
+      ]
+    });
+
+    body.appendChild(interviewDurationEl);
+
+    // Keywords
+    // ------- 
+
+    var keyWordSelector = $$('input#interview_keywords', {
+      style: "width: 300px",
+      children: [
+      ]
+    });
+
     var keywordsEl = $$('.keywords', {
       children: [
         $$('.label', {text: "Keywords"}),
-        $$('.keywords', {html: "Arctic, Greenpeace, Mannes Ubels"})
+        keyWordSelector
       ]
     });
 
     body.appendChild(keywordsEl);
 
-    var creditsEl = $$('.credits', {
-      children: [
-        $$('.label', {text: "Credits"}),
-        $$('.credits', {html: "Interview by Daniel Beilinson Cover photo by John Foo"})
-      ]
+    // Activate select box
+    $(keyWordSelector).select2({
+      tags:["Cat", "Dog", "Rhinozeros"],
+      placeholder: "Enter keywords"
     });
 
-    body.appendChild(creditsEl);
+    // Credits
+    // -------
 
+    // var creditsEl = $$('.credits', {
+    //   children: [
+    //     $$('.label', {text: "Credits"}),
+    //     $$('.credits', {html: "Interview by Daniel Beilinson Cover photo by John Foo"})
+    //   ]
+    // });
 
-    var license = $$('.license', {
-      children: [
-        $$('.label', {text: "Choose License"}),
-        $$('select#license', {
-          children: _.map(License.available_licenses, function(l) {
-            var attrs = {value: l.code, text: l.name};
-            if (this.node.getLicense() === l.code) attrs["selected"] = "selected";
-            return $$('option', attrs);
-          }, this)
-        })
-      ]
-    });
+    // body.appendChild(creditsEl);
 
-    body.appendChild(license);
+    // var license = $$('.license', {
+    //   children: [
+    //     $$('.label', {text: "Choose License"}),
+    //     $$('select#license', {
+    //       children: _.map(License.available_licenses, function(l) {
+    //         var attrs = {value: l.code, text: l.name};
+    //         if (this.node.getLicense() === l.code) attrs["selected"] = "selected";
+    //         return $$('option', attrs);
+    //       }, this)
+    //     })
+    //   ]
+    // });
+
+    // body.appendChild(license);
 
 
     var dates = $$('.dates', {
@@ -100,6 +178,9 @@ PublicationInfoView.Prototype = function() {
     body.appendChild(dates);
 
     this.content.appendChild(body);
+
+
+
     return this;
   };
 

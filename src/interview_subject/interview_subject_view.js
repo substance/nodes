@@ -3,6 +3,8 @@
 var NodeView = require("../node").View;
 var $$ = require("substance-application").$$;
 var TextView = require("../text/text_view");
+var ArrayOperation = require("substance-operator").ArrayOperation;
+var _ = require("underscore");
 
 // Substance.InterviewSubject.View
 // ==========================================================================
@@ -87,16 +89,43 @@ InterviewSubjectView.Prototype = function() {
     this.prisonsEl = $$('.prisons.node-property', {text: this.node.prisons.join(', ')});
     body.appendChild(this.prisonsEl);
 
-    // Prisons
+    // Movement
     // -------
 
     body.appendChild($$('.label', {text: 'Movement'}));
-    this.movementEl = $$('.movement.node-property', {text: this.node.movement.join(', ')});
-    body.appendChild(this.movementEl);
+    this.movementEl = $$('.movement-entries');
+    
+    // Add entries
+    _.each(this.node.movement, function(movementEntry) {
+      console.log('movement', movementEntry);
+      var movementEntry = $$('.movement-entry', {
+        children: [
+          $$('.location-name', {text: movementEntry.location}),
+          $$('input.density', {value: movementEntry.density}),
+          $$('.remove', {html: '<i class="icon-remove-sign"/>' })
+        ]
+      });
+      this.movementEl.appendChild(movementEntry);
 
+    }, this);
+
+    body.appendChild(this.movementEl);
+    
+    // manipulate movement data
     this.content.appendChild(body);
 
     return this;
+  };
+
+  this.addMovementEntry = function() {
+    // Alternatively rewrite whole array
+    // this.node.document.set([this.node.id, "movement"], [{"location": "foo", "density": 2}]);
+
+    // var arrayOp = ["+", 2, {"location": "foo", "density": 2}];
+    var arrayOp = ArrayOperation.Push(this.node.movement, {"location": "foo", "density": 2});
+    this.node.document.update([this.node.id, "movement"], arrayOp);
+
+    console.log('le movement AFTER:', this.node.movement);
   };
 
   this.updateImage = function() {

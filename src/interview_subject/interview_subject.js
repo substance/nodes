@@ -26,7 +26,7 @@ InterviewSubject.type = {
     "forced_labor": "string",
     "categories": ["array", "string"],
     "prisons": ["array", "location"],
-    "movement": ["array", "string"],
+    "movement": ["array", "object"],
     "image": "file", // optional
     "email": "string",
     "contribution": "string"
