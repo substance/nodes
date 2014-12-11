@@ -27,7 +27,6 @@ ContributorView.Prototype = function() {
     // -------
 
     this.nameView = new TextView(this.node, this.viewFactory, {property: "name"});
-    $(this.nameView.el).addClass('toggle-resource');
     this.content.appendChild(this.nameView.render().el);
 
     // Resource Body
@@ -40,14 +39,18 @@ ContributorView.Prototype = function() {
     // Image
     // -------
 
-    var url = this.node.image || this.node.image_url;
+    this.imgEl = $$('img');
+    this.updateImage();
 
-    if (url) {
-      this.imageEl = $$('.image', {
-        children: [$$('img', {src: url})]
-      });
-      body.appendChild(this.imageEl);
-    }
+    this.imageEl = $$('.image', {
+      contenteditable: false,
+      children: [
+        this.imgEl
+      ],
+      'data-path': this.node.id+'.image'
+    });
+
+    body.appendChild(this.imageEl);
 
     // Description
     // -------
@@ -65,16 +68,14 @@ ContributorView.Prototype = function() {
       body.appendChild(this.contribEl);
     }
 
-    // Email
-    // -------
-
-    body.appendChild($$('.label', {text: 'Email', contenteditable: false}));
-    this.emailView = new TextView(this.node, this.viewFactory, {property: "email"});
-    body.appendChild(this.emailView.render().el);
-
     this.content.appendChild(body);
 
     return this;
+  };
+
+  this.updateImage = function() {
+    var url = this.node.getUrl() || "styles/contributor-image-placeholder.png";
+    this.imgEl.setAttribute("src", url);
   };
 
   this.dispose = function() {
@@ -83,8 +84,6 @@ ContributorView.Prototype = function() {
     this.organization.dispose();
     this.emailView.dispose();
   };
-
-
 };
 
 ContributorView.Prototype.prototype = NodeView.prototype;
