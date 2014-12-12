@@ -31,7 +31,6 @@ MultiAnnotation.Prototype = function() {
     var endComp = container.lookup(this.endPath);
     var start = startComp.pos;
     var end = endComp.pos;
-    debugger;
     for (var i = start; i <= end; i++) {
       var comp, startCharPos, endCharPos;
       if (i === start) {

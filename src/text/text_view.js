@@ -262,7 +262,9 @@ TextView.Prototype = function() {
         href: this.node.document.get(entry.id).url // "http://zive.at"
       });
     } else if (entry.type === "annotation_fragment") {
-      el = $$('span.annotation.'+entry.type+'.'+entry.id);
+      var annotationFragment = this.node.document.get(entry.id);
+      var annotation = this.node.document.get(annotationFragment.annotation_id);
+      el = $$('span.annotation.'+entry.type+'.'+entry.id+'.'+annotation.type);
     } else {
       el = $$('span.annotation.'+entry.type, {
         id: entry.id
