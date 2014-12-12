@@ -44,5 +44,6 @@ module.exports = {
   "annotation_fragment": require("./src/annotation_fragment"),
   "location_reference": require("./src/location_reference"),
   "person_reference": require("./src/person_reference"),
-  "definition_reference": require("./src/definition_reference")
+  "definition_reference": require("./src/definition_reference"),
+  "subject_reference": require("./src/subject_reference")
 };
