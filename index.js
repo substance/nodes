@@ -40,8 +40,11 @@ module.exports = {
   "remark_reference": require("./src/remark_reference"),
   "error_reference": require("./src/error_reference"),
 
-  // Archivist nodes
+  // Multi-Node annotation support
+  "multi_annotation": require("./src/multi_annotation"),
   "annotation_fragment": require("./src/annotation_fragment"),
+
+  // Archivist nodes
   "location_reference": require("./src/location_reference"),
   "person_reference": require("./src/person_reference"),
   "definition_reference": require("./src/definition_reference"),
