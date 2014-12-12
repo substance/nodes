@@ -41,6 +41,7 @@ module.exports = {
   "error_reference": require("./src/error_reference"),
 
   // Archivist nodes
+  "annotation_fragment": require("./src/annotation_fragment"),
   "location_reference": require("./src/location_reference"),
   "person_reference": require("./src/person_reference"),
   "definition_reference": require("./src/definition_reference")
