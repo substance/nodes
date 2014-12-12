@@ -130,7 +130,7 @@ TextView.Prototype = function() {
   this.delete = function(pos, length) {
     // console.log("TextView.delete", pos, length, this.__id__);
     if (length === 0) {
-      console.log("FIXME: received empty deletion which could be avoided.")
+      console.log("FIXME: received empty deletion which could be avoided.");
       return;
     }
 
@@ -261,6 +261,8 @@ TextView.Prototype = function() {
         id: entry.id,
         href: this.node.document.get(entry.id).url // "http://zive.at"
       });
+    } else if (entry.type === "annotation_fragment") {
+      el = $$('span.annotation.'+entry.type+'.'+entry.id);
     } else {
       el = $$('span.annotation.'+entry.type, {
         id: entry.id
