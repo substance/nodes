@@ -1,9 +1,9 @@
 "use strict";
 
-var Annotation = require('../annotation/annotation');
+var MultiAnnotation = require('../multi_annotation/multi_annotation');
 
 var SubjectReference = function(node, document) {
-  Annotation.call(this, node, document);
+  MultiAnnotation.call(this, node, document);
 };
 
 // Type definition
@@ -11,7 +11,7 @@ var SubjectReference = function(node, document) {
 
 SubjectReference.type = {
   "id": "subject_reference",
-  "parent": "annotation",
+  "parent": "multi_annotation",
   "properties": {
     "target": "string"
   }
@@ -19,7 +19,7 @@ SubjectReference.type = {
 
 SubjectReference.Prototype = function() {};
 
-SubjectReference.Prototype.prototype = Annotation.prototype;
+SubjectReference.Prototype.prototype = MultiAnnotation.prototype;
 SubjectReference.prototype = new SubjectReference.Prototype();
 SubjectReference.prototype.constructor = SubjectReference;
 
