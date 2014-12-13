@@ -33,17 +33,19 @@ MultiAnnotation.Prototype = function() {
     var end = endComp.pos;
     for (var i = start; i <= end; i++) {
       var comp, startCharPos, endCharPos;
+      startCharPos = 0;
       if (i === start) {
         comp = startComp;
         startCharPos = this.startCharPos;
-        endCharPos = comp.getLength();
-      } else if (i === end) {
-        comp = endComp;
-        startCharPos = 0;
+        if (i === end) {
+          endCharPos = this.endCharPos;
+        } else {
+          endCharPos = comp.getLength();
+        }
+      } else if ( i === end ) {
         endCharPos = this.endCharPos;
       } else {
         comp = container.getComponent(i);
-        startCharPos = 0;
         endCharPos = comp.getLength();
       }
       var annotationFragment = {
