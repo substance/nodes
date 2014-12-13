@@ -97,7 +97,6 @@ InterviewSubjectView.Prototype = function() {
     
     // Add entries
     _.each(this.node.movement, function(movementEntry) {
-      console.log('movement', movementEntry);
       var movementEntry = $$('.movement-entry', {
         children: [
           $$('.location-name', {text: movementEntry.location}),
