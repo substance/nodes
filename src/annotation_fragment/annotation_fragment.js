@@ -18,6 +18,21 @@ AnnotationFragment.type = {
 AnnotationFragment.Prototype = function() {
   // internal nodes do not get serialized
   this.isInternal = true;
+
+  this.isFirst = function() {
+    return this.properties.fragment_number === 0;
+  };
+
+  this.isLast = function() {
+    return this.properties.fragment_number === this.getAnnotation().numberOfFragments - 1;
+  };
+
+  this.getAnnotation = function() {
+    if (!this.annotation) {
+      this.annotation = this.document.get(this.annotation_id);
+    }
+    return this.annotation;
+  };
 };
 
 AnnotationFragment.Prototype.prototype = Annotation.prototype;
