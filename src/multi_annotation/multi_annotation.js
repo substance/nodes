@@ -43,19 +43,25 @@ MultiAnnotation.Prototype = function() {
           endCharPos = comp.getLength();
         }
       } else if ( i === end ) {
+        comp = endComp;
         endCharPos = this.endCharPos;
       } else {
         comp = container.getComponent(i);
         endCharPos = comp.getLength();
       }
+      var fragNumber = (i-start);
       var annotationFragment = {
         "type": "annotation_fragment",
-        "id": util.uuid('fragment_'),
+        "id": annotationId+"_"+fragNumber,
         "annotation_id": annotationId,
         "path": comp.path,
-        "range": [startCharPos, endCharPos]
+        "range": [startCharPos, endCharPos],
+        "fragment_number": fragNumber
       };
-      this.document.create(annotationFragment);
+      // HACK: with our cloning via toJSON on transaction, this gets called too often
+      if (!this.document.nodes[annotationFragment.id]) {
+        this.document.create(annotationFragment);
+      }
     }
   };
 

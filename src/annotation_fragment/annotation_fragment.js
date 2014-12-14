@@ -10,11 +10,15 @@ AnnotationFragment.type = {
   "id": "annotation_fragment",
   "parent": "annotation",
   "properties": {
-    "annotation_id": "string"
+    "annotation_id": "string",
+    "fragment_number": "number"
   }
 };
 
-AnnotationFragment.Prototype = function() {};
+AnnotationFragment.Prototype = function() {
+  // internal nodes do not get serialized
+  this.isInternal = true;
+};
 
 AnnotationFragment.Prototype.prototype = Annotation.prototype;
 AnnotationFragment.prototype = new AnnotationFragment.Prototype();

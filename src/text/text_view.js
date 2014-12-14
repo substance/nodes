@@ -265,6 +265,8 @@ TextView.Prototype = function() {
       var annotationFragment = this.node.document.get(entry.id);
       var annotation = this.node.document.get(annotationFragment.annotation_id);
       el = $$('span.annotation.'+entry.type+'.'+entry.id+'.'+annotation.type);
+      el.dataset.annotationId = annotation.id;
+      el.dataset.fragmentNumber = annotationFragment.fragment_number;
     } else {
       el = $$('span.annotation.'+entry.type, {
         id: entry.id
