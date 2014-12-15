@@ -13,7 +13,7 @@ SubjectReference.type = {
   "id": "subject_reference",
   "parent": "multi_annotation",
   "properties": {
-    "target": "string"
+    "target": ["array", "string"]
   }
 };
 
