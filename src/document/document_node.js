@@ -27,6 +27,7 @@ DocumentNode.type = {
     "duration": "string",
     "license": "license",
     "title": "string",
+    "timemarks": "object",
     "abstract": "string",
     "created_at": "date",
     "updated_at": "date",
