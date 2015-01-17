@@ -29,6 +29,7 @@ DocumentNode.type = {
     "title": "string",
     "timemarks": "object",
     "abstract": "string",
+    "abstract_en": "string", // english abstract
     "created_at": "date",
     "updated_at": "date",
     "published_on": "date", // should be part of the main type?
