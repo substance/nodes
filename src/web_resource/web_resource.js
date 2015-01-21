@@ -54,7 +54,7 @@ WebResource.Prototype = function() {
   };
 
   this.getReferences = function() {
-    var references = this.document.indexes['references'];
+    var references = this.document.getIndex('references');
     if (references) {
       return references.get(this.properties.id);
     } else {

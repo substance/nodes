@@ -127,7 +127,7 @@ Text.Prototype = function() {
     var text = other.content;
 
     doc.update([this.id, "content"], [pos, text]);
-    var annotations = doc.indexes["annotations"].get(other.id);
+    var annotations = doc.getIndex("annotations").get(other.id);
 
     _.each(annotations, function(anno) {
       doc.set([anno.id, "path"], [this.properties.id, "content"]);
@@ -152,7 +152,7 @@ Text.Prototype = function() {
     doc.create(newNode);
 
     // 2. Move all annotations
-    var annotations = doc.indexes["annotations"].get(this.properties.id);
+    var annotations = doc.getIndex("annotations").get(this.properties.id);
     _.each(annotations, function(annotation) {
       if (annotation.range[0] >= pos) {
         doc.set([annotation.id, "path"], [newNode.id, "content"]);
