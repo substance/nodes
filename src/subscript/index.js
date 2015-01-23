@@ -1,5 +1,6 @@
 "use strict";
 
 module.exports = {
-  Model: require("./subscript")
+  Model: require("./subscript"),
+  View: require('../annotation/annotation_view')
 };

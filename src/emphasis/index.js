@@ -1,5 +1,6 @@
 "use strict";
 
 module.exports = {
-  Model: require("./emphasis")
+  Model: require("./emphasis"),
+  View: require('../annotation/annotation_view')
 };

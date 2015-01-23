@@ -1,7 +1,6 @@
 "use strict";
 
 var _ = require("underscore");
-var $$ = require("substance-application").$$;
 var Fragmenter = require("substance-util").Fragmenter;
 var Annotator = require("substance-document").Annotator;
 
@@ -17,8 +16,8 @@ function _getAnnotationBehavior(doc) {
 
 var __id__ = 0;
 
-var TextView = function(node, renderer, options) {
-  NodeView.call(this, node);
+var TextView = function(node, viewFactory, options) {
+  NodeView.call(this, node, viewFactory, options);
   options = options || {};
 
   // NOTE: left for debugging purposes
@@ -254,26 +253,12 @@ TextView.Prototype = function() {
     return false;
   };
 
-  this.createAnnotationElement = function(entry) {
-    var el;
-    if (entry.type === "link") {
-      el = $$('a.annotation.'+entry.type, {
-        id: entry.id,
-        href: this.node.document.get(entry.id).url // "http://zive.at"
-      });
-    } else if (entry.type === "annotation_fragment") {
-      var annotationFragment = this.node.document.get(entry.id);
-      var annotation = this.node.document.get(annotationFragment.annotation_id);
-      el = $$('span.annotation.'+entry.type+'.'+entry.id+'.'+annotation.type);
-      el.dataset.annotationId = annotation.id;
-      el.dataset.fragmentNumber = annotationFragment.fragment_number;
-    } else {
-      el = $$('span.annotation.'+entry.type, {
-        id: entry.id
-      });
-    }
-
-    return el;
+  this.createAnnotationView = function(entry) {
+    var annotation = this.node.document.get(entry.id);
+    var AnnotationView = this.viewFactory.getNodeViewClass(annotation);
+    var annotationView = new AnnotationView(annotation, this.viewFactory);
+    annotationView.render();
+    return annotationView;
   };
 
   this.getText = function() {
@@ -310,9 +295,9 @@ TextView.Prototype = function() {
     fragmenter.onEnter = function(entry, parentContext) {
       _entry = entry;
       _level++;
-      var el = self.createAnnotationElement(entry);
-      parentContext.appendChild(el);
-      return el;
+      var annotationView = self.createAnnotationView(entry);
+      parentContext.appendChild(annotationView.render().el);
+      return annotationView;
     };
 
     fragmenter.onExit = function() {
