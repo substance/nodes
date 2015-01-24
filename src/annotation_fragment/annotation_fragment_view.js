@@ -9,6 +9,7 @@ var AnnotationFragmentView = function() {
 
   this.content = window.document.createElement('span');
 };
+
 AnnotationFragmentView.Prototype = function() {
   var __super__ = AnnotationView.prototype;
 
@@ -24,35 +25,36 @@ AnnotationFragmentView.Prototype = function() {
 
   this.render = function() {
     this.el.innerHTML = "";
-
     // WIP
     if (this.node.isFirst()) {
       var leftRangeHandle = $$('span.range-handle.left', {
         children: [
-          $$('i.icon-caret-up')
-        ]
+          $$('span.range-handle-container', {
+            children: [$$('i.icon-caret-up')]
+          })
+        ],
+        contentEditable: false,
       });
       this.el.appendChild(leftRangeHandle);
     }
-
     this.el.appendChild(this.content);
-
     if (this.node.isLast()) {
       var rightRangeHandle = $$('span.range-handle.right', {
         children: [
-          $$('i.icon-caret-up')
-        ]
+          $$('span.range-handle-container', {
+            children: [$$('i.icon-caret-up')]
+          })
+        ],
+        contentEditable: false,
       });
       this.el.appendChild(rightRangeHandle);
     }
-
     return this;
   };
 
   this.appendChild = function(child) {
     this.content.appendChild(child);
   };
-
 };
 AnnotationFragmentView.Prototype.prototype = AnnotationView.prototype;
 AnnotationFragmentView.prototype = new AnnotationFragmentView.Prototype();
