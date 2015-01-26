@@ -19,36 +19,12 @@ AnnotationFragmentView.Prototype = function() {
     el.classList.add(annotation.type);
     el.classList.add(this.node.id);
     el.dataset.annotationId = annotation.id;
-    el.dataset.fragmentNumber = this.node.fragment_number;
     return el;
   };
 
   this.render = function() {
     this.el.innerHTML = "";
-    // WIP
-    if (this.node.isFirst()) {
-      var leftRangeHandle = $$('span.range-handle.left', {
-        children: [
-          $$('span.range-handle-container', {
-            children: [$$('i.icon-caret-up')]
-          })
-        ],
-        contentEditable: false,
-      });
-      this.el.appendChild(leftRangeHandle);
-    }
     this.el.appendChild(this.content);
-    if (this.node.isLast()) {
-      var rightRangeHandle = $$('span.range-handle.right', {
-        children: [
-          $$('span.range-handle-container', {
-            children: [$$('i.icon-caret-up')]
-          })
-        ],
-        contentEditable: false,
-      });
-      this.el.appendChild(rightRangeHandle);
-    }
     return this;
   };
 

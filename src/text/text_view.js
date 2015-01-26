@@ -257,7 +257,6 @@ TextView.Prototype = function() {
     var annotation = this.node.document.get(entry.id);
     var AnnotationView = this.viewFactory.getNodeViewClass(annotation);
     var annotationView = new AnnotationView(annotation, this.viewFactory);
-    annotationView.render();
     return annotationView;
   };
 
