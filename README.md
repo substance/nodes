@@ -1,4 +1,4 @@
-nodes
-=====
+Substance Nodes
+====
 
-Common node types for Substance.Article implmentations.
+**No longer maintained. Use http://github.com/substance/substance instead.**
